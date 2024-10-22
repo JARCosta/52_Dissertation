@@ -1,0 +1,158 @@
+(base) jar@LAPTOP-ZB14OLED:/mnt/c/Users/j040c/OneDrive - Universidade de Lisboa/IST/5º ano/521 Nonlinear Optimization$ python mvu.py
+(1965, 560)
+Total Images: 1965
+Pixels in each RGB Image: 76x101x3 = 560
+Length of constraints: 7861
+===============================================================================
+                                     CVXPY
+                                     v1.5.3
+===============================================================================
+(CVXPY) Oct 03 04:00:56 PM: Your problem has 3861225 variables, 7861 constraints, and 0 parameters.
+(CVXPY) Oct 03 04:00:56 PM: It is compliant with the following grammars: DCP, DQCP
+(CVXPY) Oct 03 04:00:56 PM: (If you need to solve this problem multiple times, but with different data, consider using parameters.)
+(CVXPY) Oct 03 04:00:56 PM: CVXPY will first compile your problem; then, it will invoke a numerical solver to obtain a solution.
+(CVXPY) Oct 03 04:00:56 PM: Your problem is compiled with the CPP canonicalization backend.
+-------------------------------------------------------------------------------
+                                  Compilation
+-------------------------------------------------------------------------------
+(CVXPY) Oct 03 04:00:58 PM: Compiling problem (target solver=SCS).
+(CVXPY) Oct 03 04:00:58 PM: Reduction chain: FlipObjective -> Dcp2Cone -> CvxAttr2Constr -> ConeMatrixStuffing -> SCS
+(CVXPY) Oct 03 04:00:58 PM: Applying reduction FlipObjective
+(CVXPY) Oct 03 04:00:58 PM: Applying reduction Dcp2Cone
+(CVXPY) Oct 03 04:01:00 PM: Applying reduction CvxAttr2Constr
+(CVXPY) Oct 03 04:01:03 PM: Applying reduction ConeMatrixStuffing
+(CVXPY) Oct 03 08:25:09 PM: Finished problem compilation (took 1.585e+04 seconds)
+(CVXPY) Oct 03 08:25:09 PM: Finished problem compilation (took 1.585e+04 seconds).
+-------------------------------------------------------------------------------  
+                                Numerical solver
+-------------------------------------------------------------------------------  
+(CVXPY) Oct 03 08:25:09 PM: Invoking solver SCS  to obtain a solution.
+------------------------------------------------------------------
+(CVXPY) Oct 03 08:25:09 PM: Finished problem compilation (took 1.585e+04 seconds).
+------------------------------------------------------------------------------- 
+                                Numerical solver
+-------------------------------------------------------------------------------  vars: 1931595, ssize: 1
+(CVXPY) Oct 03 08:25:09 PM: Invoking solver SCS  to obtain a solution.
+------------------------------------------------------------------
+-------------------------------------------------------------------------------ndan O'Donoghue, Stanford University, 2012
+
+                                Numerical solver
+-------------------------------------------------------------------------------imal zero / dual free vars: 7861
+
+(CVXPY) Oct 03 08:25:09 PM: Invoking solver SCS  to obtain a solution.
+------------------------------------------------------------------
+-------------------------------------------------------------------------------
+                                Numerical solver
+-------------------------------------------------------------------------------
+(CVXPY) Oct 03 08:25:09 PM: Invoking solver SCS  to obtain a solution.        sd vars: 1931595, ssize: 1
+------------------------------------------------------------------
+-------------------------------------------------------------------------------
+                                Numerical solver
+-------------------------------------------------------------------------------
+(CVXPY) Oct 03 08:25:09 PM: Invoking solver SCS  to obtain a solution.       psd vars: 1931595, ssize: 1
+------------------------------------------------------------------
+-------------------------------------------------------------------------------
+                                Numerical solver
+-------------------------------------------------------------------------------
+(CVXPY) Oct 03 08:25:09 PM: Invoking solver SCS  to obtain a solution.    s: psd vars: 1931595, ssize: 1
+------------------------------------------------------------------        
+-------------------------------------------------------------------------------
+                                Numerical solver
+-------------------------------------------------------------------------------
+(CVXPY) Oct 03 08:25:09 PM: Invoking solver SCS  to obtain a solution.    s: psd vars: 1931595, ssize: 1
+------------------------------------------------------------------      
+---------
+                                Numerical solver
+-------------------------------------------------------------------------------
+(CVXPY) Oct 03 08:25:09 PM: Invoking solver SCS  to obtain a solution.    z: primal zero / dual free vars: 7861
+
+------------------------------------------------------------------        
+               SCS v3.2.7 - Splitting Conic Solver
+---------
+                                Numerical solver
+-------------------------------------------------------------------------------
+(CVXPY) Oct 03 08:25:09 PM: Invoking solver SCS  to obtain a solution.
+------------------------------------------------------------------      
+               SCS v3.2.7 - Splitting Conic Solver
+---------
+                                Numerical solver
+-------------------------------------------------------------------------------
+(CVXPY) Oct 03 08:25:09 PM: Invoking solver SCS  to obtain a solution.
+------------------------------------------------------------------    | pri res | dua res |   gap   |   obj   |  scale  | time (
+               SCS v3.2.7 - Splitting Conic Solver
+---------
+                                Numerical solver
+-------------------------------------------------------------------------------
+(CVXPY) Oct 03 08:25:09 PM: Invoking solver SCS  to obtain a solution.
+------------------------------------------------------------------  r | pri res | dua res |   gap   |   obj   |  scale  | time (
+               SCS v3.2.7 - Splitting Conic Solver
+        (c) Brendan O'Donoghue, Stanford University, 2012
+------------------------------------------------------------------   0| 2.76e+00  1.07e+00  7.10e+03 -3.76e+03  1.00e-01  1.61
+
+               SCS v3.2.7 - Splitting Conic Solver
+        (c) Brendan O'Donoghue, Stanford University, 2012
+------------------------------------------------------------------tings: eps_abs: 1.0e-03, eps_rel: 1.0e-03, eps_infeas: 1.0e-
+
+problem:  variables n: 1931595, constraints m: 1939456
+cones:    z: primal zero / dual free vars: 7861
+          s: psd vars: 1931595, ssize: 1
+               SCS v3.2.7 - Splitting Conic Solver
+        (c) Brendan O'Donoghue, Stanford University, 2012                alpha: 1.50, scale: 1.00e-01, adaptive_scale: 1
+-----------
+problem:  variables n: 1931595, constraints m: 1939456
+cones:    z: primal zero / dual free vars: 7861
+          s: psd vars: 1931595, ssize: 1
+settings: eps_abs: 1.0e-03, eps_rel: 1.0e-03, eps_infeas: 1.0e-07
+-----------
+problem:  variables n: 1931595, constraints m: 1939456
+cones:    z: primal zero / dual free vars: 7861
+          s: psd vars: 1931595, ssize: 1
+settings: eps_abs: 1.0e-03, eps_rel: 1.0e-03, eps_infeas: 1.0e-07        ------------------------------------------------------------ 
+-----------
+problem:  variables n: 1931595, constraints m: 1939456
+cones:    z: primal zero / dual free vars: 7861
+          s: psd vars: 1931595, ssize: 1
+settings: eps_abs: 1.0e-03, eps_rel: 1.0e-03, eps_infeas: 1.0e-07       ------------------------------------------------------------- 
+-----------
+problem:  variables n: 1931595, constraints m: 1939456
+cones:    z: primal zero / dual free vars: 7861
+          s: psd vars: 1931595, ssize: 1
+settings: eps_abs: 1.0e-03, eps_rel: 1.0e-03, eps_infeas: 1.0e-07     --------------------------------------------------------------- 
+          alpha: 1.50, scale: 1.00e-01, adaptive_scale: 1
+-----------
+problem:  variables n: 1931595, constraints m: 1939456
+cones:    z: primal zero / dual free vars: 7861
+          s: psd vars: 1931595, ssize: 1
+settings: eps_abs: 1.0e-03, eps_rel: 1.0e-03, eps_infeas: 1.0e-07   ----------------------------------------------------------------- 
+          alpha: 1.50, scale: 1.00e-01, adaptive_scale: 1
+-----------
+problem:  variables n: 1931595, constraints m: 1939456
+cones:    z: primal zero / dual free vars: 7861
+          s: psd vars: 1931595, ssize: 1
+settings: eps_abs: 1.0e-03, eps_rel: 1.0e-03, eps_infeas: 1.0e-07
+          alpha: 1.50, scale: 1.00e-01, adaptive_scale: 1
+          max_iters: 100000, normalize: 1, rho_x: 1.00e-06
+          acceleration_lookback: 10, acceleration_interval: 10
+lin-sys:  sparse-direct-amd-qdldl
+          nnz(A): 3886770, nnz(P): 0
+------------------------------------------------------------------
+ iter | pri res | dua res |   gap   |   obj   |  scale  | time (s)
+------------------------------------------------------------------
+     0| 2.76e+00  1.07e+00  7.10e+03 -3.76e+03  1.00e-01  1.61e+01
+   250| 1.54e+17  5.16e+16  1.93e+18 -1.31e+21  2.79e-03  2.77e+03
+   500| 3.93e+00  2.81e-02  8.25e-01 -3.87e+04  1.56e-01  5.50e+03
+   750| 1.72e+00  8.78e-03  7.66e-02 -2.29e+04  1.56e-01  8.23e+03
+  1000| 1.69e+00  1.21e-03  1.10e-01 -2.70e+04  1.56e-01  1.10e+04
+  1250| 1.64e+00  3.07e-03  3.15e-02 -2.91e+04  1.56e-01  1.37e+04 
+  1500| 1.23e+00  1.47e-03  8.60e-03 -2.48e+04  1.56e-01  1.62e+04 
+  1750| 1.42e+00  4.68e-03  7.41e-03 -3.09e+04  4.95e-01  1.87e+04 
+  2000| 1.13e+00  2.17e-02  1.75e-03 -2.71e+04  4.95e-01  2.22e+04 
+  2250| 9.41e-01  6.19e-03  1.12e-03 -2.48e+04  4.95e-01  2.67e+04 
+  2500| 7.92e-01  7.56e-03  8.66e-04 -2.29e+04  4.95e-01  3.12e+04 
+  2750| 6.80e-01  1.03e-02  6.18e-04 -2.12e+04  4.95e-01  3.57e+04 
+  3000| 5.86e-01  1.06e-02  7.96e-04 -1.98e+04  4.95e-01  4.01e+04 
+  3250| 5.06e-01  1.09e-02  7.90e-04 -1.85e+04  4.95e-01  4.45e+04 
+  3500| 4.36e-01  1.14e-02  7.76e-04 -1.74e+04  4.95e-01  4.78e+04 
+  3750| 8.78e+02  4.90e+02  2.86e+00 -7.57e+04  4.95e-01  5.07e+04 
+  4000| 3.23e-01  1.02e-02  7.34e-04 -1.57e+04  4.95e-01  5.50e+04
+
