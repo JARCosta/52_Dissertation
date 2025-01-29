@@ -1,0 +1,68 @@
+Good morning, I'm João and am here to propose you the theme for my master thesis about maximum variance unfolding aplied todisjoint manifolds.
+Firstly, What is this all about. From the vast research field of dimensionality reduction, which aims to take a dataset with some given size and reduce the number of variables used.
+
+Throughout this study we consider a matrix representation of a dataset to represent each record as a row and each variable or dimension as columns.
+
+
+Maximum variance unfolding over disjoint manifolds
+- what is it about?
+  - maximum variance unfolding:
+    - dimensionality reduction process
+    - spectral methods
+    - non-linear DR
+  - disjoint manifolds
+
+
+
+
+
+- Intro
+- Dimensionality Reduction
+	- Talk about PCA (VERY quickly)
+	- Say that it is a linear method, bla bla
+- Manifold Learning
+	- Explain that data are assumed to be sampled from a lower-dimensional manifold
+	- Represents the geometry of the dataset in terms of a neighborhood graph
+	- Embeds the data while trying to preserve some of its properties
+- Neighborhood Graphs (in detail)
+	- Image of a curve with some points around it, connect the points for k=2 or k=3 to illustrate
+	- Explain local linearity
+- MVU (in detail)
+- Also these other methods
+	- Don't explain anything about them, except
+	- That they also rely on neighborhood graphs
+	- And that each attempts to preserve different properties of the data
+- Disjoint Manifolds
+	- Explain that in real scenarios, data are sampled from disjoint manifolds
+	- (Image of data in 3D space separated into connected components)
+	- Explain that this results in neighborhood graphs that have multiple connected components
+- Disjoint Manifolds and MVU
+	- Reiterate that data lying on disjoint manifolds results in a neighborhood graph with disconnected components
+	- Explain why a neighborhood graph with disconnected components crashes MVU
+- Related Work
+	- Just enumerate the things: out-of-sample extension, Nystrom approximation
+- Out-of-sample (have an image in 3D and one in 2D that shows one point (in red) being built as a combination of its neighbors (blue)
+- Nystrom approximation (idk, but try to be precise and concise about what happens)
+- Our solution
+	- Reiterate that data that lie on disjoint manifolds result in several connected components when you build a neighborhood graph, say that MVU is unbounded
+	- Present your overall solution
+- Step 1
+- Step 2
+- Step 3
+- Conclusion: don't explain each step again, but reiterate what your algorithm does
+- Final slide
+
+
+
+
+
+
+
+single decomposition
+
+kohonen maps
+bishop
+independent component
+
+
+
