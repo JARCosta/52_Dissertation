@@ -1,0 +1,244 @@
+PS C:\Users\j040c\OneDrive - Universidade de Lisboa\IST\5º ano\52 2nd Cycle Integrated Project in Computer Science and Engineering> python .\mvu.py
+Running: neigh=5
+12:14:19.836901  starting:       importing dataset
+12:14:19.836901  starting:       computing NN graph
+12:14:20.236717  kng:            1
+12:14:26.566730  kng:            2
+12:14:26.566730  starting:       checking connectivity
+12:14:33.997057  starting:       Isomap
+12:14:33.997057  isomap:         1
+12:15:06.314283  starting:       measuring 1-NN
+12:15:06.848162  kng:            1
+12:15:13.230108  kng:            2
+12:15:13.998075  kng:            1
+12:15:20.339492  kng:            2
+28.46
+12:15:26.481596  starting:       measuring C and T
+12:15:27.405444  measure:        1
+12:15:27.554973  measure:        2
+12:15:39.772512  measure:        3
+12:15:56.476427  measure:        4
+12:16:04.066127  measure:        5
+12:16:04.322930  measure:        6
+0.9996937419871795 0.9995824759615385
+Running: neigh=6
+12:16:04.587720  starting:       importing dataset
+12:16:04.587720  starting:       computing NN graph
+12:16:05.040114  kng:            1
+12:16:11.276701  kng:            2
+12:16:11.276701  starting:       checking connectivity
+12:16:18.492182  starting:       Isomap
+12:16:18.492182  isomap:         1
+12:16:47.100063  starting:       measuring 1-NN
+12:16:47.611279  kng:            1
+12:16:53.850681  kng:            2
+12:16:54.336408  kng:            1
+12:17:00.592595  kng:            2
+29.2
+12:17:06.692386  starting:       measuring C and T
+12:17:07.586133  measure:        1
+12:17:07.739970  measure:        2
+12:17:20.271103  measure:        3
+12:17:36.704872  measure:        4
+12:17:44.293316  measure:        5
+12:17:44.574636  measure:        6
+0.9996773402798651 0.9994746351400995
+Running: neigh=7
+12:17:44.835338  starting:       importing dataset
+12:17:44.836423  starting:       computing NN graph
+12:17:45.266643  kng:            1
+12:17:51.726075  kng:            2
+12:17:51.726075  starting:       checking connectivity
+12:17:59.092714  starting:       Isomap
+12:17:59.092714  isomap:         1
+12:18:36.507405  starting:       measuring 1-NN
+12:18:36.939377  kng:            1
+12:18:43.255955  kng:            2
+12:18:43.856308  kng:            1
+12:18:50.073824  kng:            2
+30.48
+12:18:56.297281  starting:       measuring C and T
+12:18:57.237982  measure:        1
+12:18:57.399280  measure:        2
+12:19:09.876243  measure:        3
+12:19:26.592851  measure:        4
+12:19:34.148846  measure:        5
+12:19:34.413764  measure:        6
+0.9995533201614981 0.999306485697105
+Running: neigh=8
+12:19:34.668383  starting:       importing dataset
+12:19:34.674502  starting:       computing NN graph
+12:19:35.119364  kng:            1
+12:19:41.738476  kng:            2
+12:19:41.738476  starting:       checking connectivity
+12:19:48.973709  starting:       Isomap
+12:19:48.973709  isomap:         1
+12:20:25.377331  starting:       measuring 1-NN
+12:20:25.895050  kng:            1
+12:20:32.267443  kng:            2
+12:20:32.746545  kng:            1
+12:20:38.970158  kng:            2
+31.08
+12:20:45.147926  starting:       measuring C and T
+12:20:46.103210  measure:        1
+12:20:46.243751  measure:        2
+12:20:58.808880  measure:        3
+12:21:15.497858  measure:        4
+12:21:23.001178  measure:        5
+12:21:23.298087  measure:        6
+0.9995071779448621 0.9992543458646617
+Running: neigh=9
+12:21:23.539473  starting:       importing dataset
+12:21:23.539473  starting:       computing NN graph
+12:21:23.987074  kng:            1
+12:21:30.325012  kng:            2
+12:21:30.325012  starting:       checking connectivity
+12:21:37.381241  starting:       Isomap
+12:21:37.381241  isomap:         1
+12:22:11.656145  starting:       measuring 1-NN
+12:22:12.095783  kng:            1
+12:22:18.446539  kng:            2
+12:22:18.915128  kng:            1
+12:22:25.238370  kng:            2
+30.68
+12:22:31.541115  starting:       measuring C and T
+12:22:32.464292  measure:        1
+12:22:32.618708  measure:        2
+12:22:45.150545  measure:        3
+12:23:01.756023  measure:        4
+12:23:09.296048  measure:        5
+12:23:09.544222  measure:        6
+0.999455225743192 0.999245460623078
+Running: neigh=10
+12:23:09.796712  starting:       importing dataset
+12:23:09.796712  starting:       computing NN graph
+12:23:10.215065  kng:            1
+12:23:16.605799  kng:            2
+12:23:16.605799  starting:       checking connectivity
+12:23:23.895997  starting:       Isomap
+12:23:23.895997  isomap:         1
+12:23:59.364255  starting:       measuring 1-NN
+12:23:59.862768  kng:            1
+12:24:06.075214  kng:            2
+12:24:06.561593  kng:            1
+12:24:12.819480  kng:            2
+31.86
+12:24:18.998751  starting:       measuring C and T
+12:24:20.015840  measure:        1
+12:24:20.178312  measure:        2
+12:24:32.527752  measure:        3
+12:24:49.407227  measure:        4
+12:24:57.021743  measure:        5
+12:24:57.308452  measure:        6
+0.9993911646102919 0.9991741117464139
+Running: neigh=11
+12:24:57.560850  starting:       importing dataset
+12:24:57.562878  starting:       computing NN graph
+12:24:57.969030  kng:            1
+12:25:04.389870  kng:            2
+12:25:04.389870  starting:       checking connectivity
+12:25:11.536891  starting:       Isomap
+12:25:11.536891  isomap:         1
+12:25:44.171716  starting:       measuring 1-NN
+12:25:44.704179  kng:            1
+12:25:51.072400  kng:            2
+12:25:51.573234  kng:            1
+12:25:57.814157  kng:            2
+32.22
+12:26:04.053345  starting:       measuring C and T
+12:26:04.886168  measure:        1
+12:26:05.048934  measure:        2
+12:26:17.399166  measure:        3
+12:26:34.129893  measure:        4
+12:26:41.651114  measure:        5
+12:26:41.922038  measure:        6
+0.9993601189498842 0.9991679419115903
+Running: neigh=12
+12:26:42.182670  starting:       importing dataset
+12:26:42.182670  starting:       computing NN graph
+12:26:42.611659  kng:            1
+12:26:48.898609  kng:            2
+12:26:48.898609  starting:       checking connectivity
+12:26:56.370912  starting:       Isomap
+12:26:56.370912  isomap:         1
+12:27:33.243912  starting:       measuring 1-NN
+12:27:33.636807  kng:            1
+12:27:39.848475  kng:            2
+12:27:40.326219  kng:            1
+12:27:46.524766  kng:            2
+32.22
+12:27:52.709097  starting:       measuring C and T
+12:27:53.679923  measure:        1
+12:27:53.839798  measure:        2
+12:28:06.250341  measure:        3
+12:28:22.999052  measure:        4
+12:28:30.523375  measure:        5
+12:28:30.772684  measure:        6
+0.9993368362942888 0.9992009769480411
+Running: neigh=13
+12:28:31.041303  starting:       importing dataset
+12:28:31.048121  starting:       computing NN graph
+12:28:31.461525  kng:            1
+12:28:37.767453  kng:            2
+12:28:37.767453  starting:       checking connectivity
+12:28:45.028693  starting:       Isomap
+12:28:45.028693  isomap:         1
+12:29:21.266208  starting:       measuring 1-NN
+12:29:21.778538  kng:            1
+12:29:28.006915  kng:            2
+12:29:28.508162  kng:            1
+12:29:34.821932  kng:            2
+32.84
+12:29:41.084362  starting:       measuring C and T
+12:29:42.076529  measure:        1
+12:29:42.228087  measure:        2
+12:29:54.992054  measure:        3
+12:30:11.929469  measure:        4
+12:30:19.442168  measure:        5
+12:30:19.705281  measure:        6
+0.9993334816187828 0.9992039172072907
+Running: neigh=14
+12:30:19.992795  starting:       importing dataset
+12:30:19.992795  starting:       computing NN graph
+12:30:20.410199  kng:            1
+12:30:26.969031  kng:            2
+12:30:26.970376  starting:       checking connectivity
+12:30:34.271972  starting:       Isomap
+12:30:34.271972  isomap:         1
+12:31:10.397561  starting:       measuring 1-NN
+12:31:10.854764  kng:            1
+12:31:17.169053  kng:            2
+12:31:17.602717  kng:            1
+12:31:22.575484  kng:            2
+33.76
+12:31:27.827205  starting:       measuring C and T
+12:31:28.742926  measure:        1
+12:31:28.876178  measure:        2
+12:31:39.512123  measure:        3
+12:31:55.300708  measure:        4
+12:32:02.857672  measure:        5
+12:32:03.278116  measure:        6
+0.9993138811173762 0.9992009124951577
+Running: neigh=15
+12:32:03.634377  starting:       importing dataset
+12:32:03.646731  starting:       computing NN graph
+12:32:04.099790  kng:            1
+12:32:10.418433  kng:            2
+12:32:10.418433  starting:       checking connectivity
+12:32:17.754604  starting:       Isomap
+12:32:17.770218  isomap:         1
+12:32:53.999821  starting:       measuring 1-NN
+12:32:54.540260  kng:            1
+12:33:00.874777  kng:            2
+12:33:01.360527  kng:            1
+12:33:07.633805  kng:            2
+33.92
+12:33:13.717131  starting:       measuring C and T
+12:33:14.729720  measure:        1
+12:33:14.895835  measure:        2
+12:33:27.453152  measure:        3
+12:33:44.545192  measure:        4
+12:33:52.446220  measure:        5
+12:33:52.724943  measure:        6
+0.9992994441095707 0.9992034907239971
+finished

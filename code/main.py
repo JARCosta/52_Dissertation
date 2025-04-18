@@ -1,0 +1,283 @@
+import json
+import multiprocessing
+import multiprocessing.managers
+import os
+import threading
+import matplotlib.pyplot as plt
+import numpy as np
+import sklearn.manifold
+from scipy.sparse.csgraph import connected_components
+
+import models
+import measure
+from utils import stamp_set, stamp_print
+from plot import plot
+
+def thread_func(threads_return:multiprocessing.managers.SyncManager, X:np.ndarray, labels:np.ndarray, model_args:dict) -> tuple[dict, np.ndarray, np.ndarray, np.ndarray, np.ndarray] | None:
+    print(f"Running {model_args['model']} on {model_args['dataname']} with {model_args['#neighs']} neighbors")
+    Y = models.run(X, model_args)
+
+    if Y is not None:
+        if np.any(np.isnan(Y)):
+            print(f"NaN in {model_args['model']} on {model_args['dataname']} with {model_args['#neighs']} neighbors")
+            # raise ValueError()
+        stamp_set()
+        One_nn = measure.one_NN(Y, labels)
+        stamp_print(f"*\t 1-NN \t {One_nn}")
+        T, C = measure.TC(X, Y, model_args["#neighs"])
+        stamp_print(f"*\t T, C \t {T}, {C}")
+        
+        threads_return[model_args['#neighs']] = (model_args, Y, One_nn, T, C)
+        return model_args, Y, One_nn, T, C
+    return
+
+def model_launcher(dataname, n_points, X, labels, t):
+    for model in [
+
+        # "pca", 
+        # "isomap",
+        "mvu",
+        # "lle",
+        # "le", # TODO: implement
+        # "hlle", # TODO: implement
+
+        # Sub
+        # "lle.skl",
+        # "le.skl",
+        # "hlle.skl",
+        # "ltsa.skl",
+        
+
+
+
+
+        # ENG paper
+        # "isomap",
+        # "lle",
+        # # "le", # TODO: implement
+        # # "hlle", # TODO: implement
+        # "isomap.eng",
+        # # "lle.eng", # TODO: extend
+        # # "le.eng", # TODO: extend
+        # # "hlle.eng", # TODO: extend
+        
+        # # Sub
+        # "lle.skl",
+        # "le.skl",
+        # "hlle.skl",
+        
+
+
+        # "tsne.skl",
+        
+        # "isomap.nystrom",
+        # "isomap.adaptative",
+        # "isomap.our",
+        # "mvu.nystrom",
+
+        # "umap.lib",
+        ]:
+    # for model in ["isomap", "isomap.nystrom", "isomap.eng", "isomap.adaptative"]:
+        
+        threads:list[multiprocessing.Process] = []
+        manager = multiprocessing.Manager()
+        threads_return = manager.dict()
+
+
+        for n_neighbors in range(5, 11):
+            model_args = {
+                k: v for k, v in {
+                    'dataname': dataname,
+                    '#points': n_points,
+                    '#neighs': n_neighbors,
+                    'model': model,
+                    '#components': 2 if model in [
+                        'pca', 'isomap', 'le', 'lle', 'hlle', 'ltsa', 
+                        'isomap.skl', 'le.skl', 'lle.skl', 'hlle.skl', 'ltsa.skl', 'tsne.skl', 
+                        'isomap.nystrom', 'isomap.eng', 'isomap.adaptative', 'isomap.our'
+                        ] else None,
+                    'eps': 1e-3 if model in ['mvu', 'mvu.ineq', 'mvu.nystrom', 'mvu.eng', 'mvu.our'] else None,
+                    'plotation': False,
+                    'verbose': False,
+                }.items() if v is not None
+            }
+
+            thread_func(threads_return, X, labels, model_args)
+            if model_args['plotation']:
+                input("continue?")
+            
+        #     t = threading.Thread(target=thread_func, args=[threads_return, X, labels, model_args])
+        #     t = multiprocessing.Process(target=thread_func, args=[threads_return, X, labels, model_args])
+        #     t.start()
+        #     threads.append(t)
+        #     print(f"launched {t}")
+        # print("waiting")
+        # [t.join() for t in threads]
+        # print("joined")
+        
+        if len(threads_return) == 0:
+            print("No results")
+            breakpoint()
+
+        def best_args(threads_return:multiprocessing.managers.DictProxy) -> tuple[int, dict]:
+            results = []
+            for model_args, _, One_nn, T, C in threads_return.values():
+                results.append([model_args['#neighs'], One_nn, T, C])
+            results.sort(key=lambda x: x[0])
+            results = np.array(results).T
+    
+            # try:
+            results[2:] = np.log10(1 - results[2:])
+            # except IndexError as e:
+            #     print(results)
+            #     print(model_args)
+            #     raise e
+
+            TC = results[2]
+            if len(np.where(TC != -np.inf)[0]) > 0:
+                best = np.min(TC[np.where(TC != -np.inf)])
+            else:
+                best = -4
+            TC[np.where(TC == -np.inf)] = best - 1
+
+
+            fig, ax1 = plt.subplots()
+            plt.title(f"{model_args['model']} applied on {model_args['dataname']}")
+
+            ax1.set_xlabel('size of k-neighbourhood')
+            ax1.set_ylabel('log10 of T and C')
+            ax1.tick_params(axis='y')
+            ax2 = ax1.twinx()  # instantiate a second Axes that shares the same x-axis
+            ax2.set_ylabel('1-NN')  # we already handled the x-label with ax1
+            ax2.tick_params(axis='y')
+
+            
+            ax1.plot(results[0], results[2], color='tab:red')
+            ax1.scatter(results[0], results[2], color='tab:red')
+            ax1.plot(results[0], results[3], color='tab:orange')
+            ax1.scatter(results[0], results[3], color='tab:orange')
+            ax2.plot(results[0], results[1], color='tab:blue')
+            ax2.scatter(results[0], results[1], color='tab:blue')
+
+            fig.tight_layout()  # otherwise the right y-label is slightly clipped
+            fig.legend(["T", "C", "1-NN"])
+            # plt.show()
+            
+            os.makedirs("cache") if not os.path.exists("cache") else None
+            os.makedirs(f"cache/{model_args['model']}") if not os.path.exists(f"cache/{model_args['model']}") else None
+            plt.savefig(f"cache/{model_args['model']}/{model_args['dataname']}.png")
+            
+            results[2] = 1 - 10**(results[2])
+            results[3] = 1 - 10**(results[3])
+            results.round(3)
+
+
+            k_best, k_best_measures, k_best_measures_sum = None, None, -np.inf
+            for k in results.T:
+                k_sum = np.sum((1-k[1]) + k[2] + k[3])
+                if k_sum > k_best_measures_sum:
+                    k_best = int(k[0])
+                    k_best_measures_sum = k_sum
+                    k_best_measures = {"1-NN": k[1], "T": k[2], "C":k[3]}
+            return k_best, k_best_measures
+
+        k_best, best_measure = best_args(threads_return)
+
+        with open("cache/measures.csv", "a") as f:
+            f.write(f"{model_args['dataname']},{model},{model_args['#points']},{k_best},{best_measure['1-NN']},{best_measure['T']},{best_measure['C']}\n")
+
+        if model_args['plotation']:
+            plot(threads_return[k_best][1], c=labels, block=True, title=f"Best {model_args['dataname']} {model} {best_measure}")
+        print(f"Best {model_args['dataname']} {model} {best_measure}, k={k_best}")
+
+        model_args['#points'] = str(model_args['#points'])
+        model_args.pop('plotation')
+        model_args.pop('verbose')
+        model_args.pop('#neighs')
+        model_args.pop('#components') if 'components' in model_args.keys() else None
+
+        with open("cache/measures.json", "r") as f:
+            try:
+                measures = json.loads(f.read())
+            except:
+                measures = {}
+
+        measures[model_args['dataname']] = measures.get(model_args['dataname'], {})
+        measures[model_args['dataname']][model_args['#points']] = measures[model_args['dataname']].get(model_args['#points'], {})
+        measures[model_args['dataname']][model_args['#points']][model] = measures[model_args['dataname']][model_args['#points']].get(model, {})
+        best_measure['k'] = k_best
+        measures[model_args['dataname']][model_args['#points']][model] = best_measure
+
+        with open("cache/measures.json", "w") as f:
+            f.write(json.dumps(measures, indent=4) + "\n")
+
+
+
+if __name__ == "__main__":
+    from generate_data import get_dataset
+
+    n_points = 3000
+
+    datasets = [
+        # comparative review
+        'swiss',
+        'helix',
+        'twinpeaks',
+        # 'broken.swiss',
+        'difficult',
+
+
+        # ENG paper
+        # 'broken.swiss',
+        # 'paralell.swiss',
+        # 'broken.s_curve',
+        # 'four.moons',
+        
+        # 'coil20',
+        # 'mit-cbcl', # TODO: import
+
+
+        # 's_curve',
+        # 'changing.swiss',
+        # 'swiss_toro',
+        # '3d_clusters',
+
+        # 'teapots',
+        # 'mnist',
+        # # # 'nisis',
+        # 'orl',
+        # # # 'hiva',
+    ]
+
+    # for dataname in datasets:
+    #     X, labels, t = get_dataset({'model': "set", 'dataname': dataname, "#points": n_points}, cache=False, random_state=11)
+
+        # with open("cache/measures.csv", "a") as f:
+        #     None_1_NN = measure.one_NN(X, labels)
+        #     f.write(f"{dataname},none,{n_points},None,{None_1_NN},None,None\n")
+
+    #     plot(X, block=False, c=labels, title=dataname)
+
+    # input("finished?")
+
+
+    threads:list[multiprocessing.Process] = []
+
+    for dataname in datasets:
+    # for dataname in ['swiss_toro', ]:
+    # for dataname in ["coil20", "orl", ]:
+    # for dataname in ["hiva", ]:
+        X, labels, t = get_dataset({'model': "set", 'dataname': dataname, "#points": n_points}, cache=False, random_state=11)
+        
+        model_launcher(dataname, n_points, X, labels, t)
+
+    #     t = multiprocessing.Process(target=model_launcher, args=[dataname, n_points, X, labels, t])
+    #     # t = threading.Thread(target=model_launcher, args=[dataname, n_points, X, labels, t])
+    #     t.start()
+    #     threads.append(t)
+    #     print(f"launched {t}")
+    # [t.join() for t in threads]        
+    # input("finished")
+
+
+

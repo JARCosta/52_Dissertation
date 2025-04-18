@@ -43,20 +43,20 @@ def plot_check_ortonormality(eigenvectors):
     plt.hist(ortonormality, bins=100, range=(min(ortonormality), 0))
     plt.show()
 
-def plot_Gram(Gram, dataset_name, block=True):
+def plot_Gram(Gram, dataname, block=True):
     abs = np.abs(Gram)
     
     # plot 1x2 Gram matrix and its absolute value and color bars
     fig, axs = plt.subplots(1, 2, figsize=(15,5))
     axs[0].imshow(Gram)
-    axs[0].set_title(f"Inner Product between Points of {dataset_name}")
+    axs[0].set_title(f"Inner Product between Points of {dataname}")
     axs[1].imshow(abs)
-    axs[1].set_title(f"Absolute Value of Inner Product between Points of {dataset_name}")
+    axs[1].set_title(f"Absolute Value of Inner Product between Points of {dataname}")
     plt.colorbar(axs[0].imshow(Gram), ax=axs[0])
     plt.colorbar(axs[1].imshow(abs), ax=axs[1])
     plt.show(block=block)
 
-def plot_MVU(Gram, dataset_name, block=True):
+def plot_MVU(Gram, dataname, block=True):
 
     eigenvalues, eigenvectors = np.linalg.eig(Gram)
 
@@ -69,12 +69,12 @@ def plot_MVU(Gram, dataset_name, block=True):
     values = eigenvectors @ np.diag(values)
 
     print("eigenvalues:\n",eigenvalues)
-    save_eigenvalues(eigenvalues, f"resources/{dataset_name}.eigenvalues")
+    save_eigenvalues(eigenvalues, f"resources/{dataname}.eigenvalues")
     
     plot_check_ortonormality(eigenvectors)
 
-    plot_2D(values[:, 0], values[:, 1], 'MVU', dataset_name)
-    plot_3D(values[:, 0], values[:, 1], values[:, 2], 'MVU', dataset_name, block)
+    plot_2D(values[:, 0], values[:, 1], 'MVU', dataname)
+    plot_3D(values[:, 0], values[:, 1], values[:, 2], 'MVU', dataname, block)
 
 def plot_connections(connections, n_neighbors):
 

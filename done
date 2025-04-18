@@ -1,0 +1,99 @@
+Practical
+Study
+    Done
+    Continuation
+    Repeating
+    Hard
+
+Feb 7:
+- (P, D) Rework PIC's MVU extension (DNF, not fully working)
+- (P, D) Create modular script to run and compare different methods
+Feb 14:
+- (P, D) Implement all NLDR methods and test them (MVU, Isomap)
+- (P, D) Understand evaluation metrics, make a small write-up explaining them, and implement them (DNF, 1-NN)
+Feb 21:
+- (P, C) Implement all NLDR methods and test them (MVU, Isomap)
+Feb 28:
+- (P, D) Understand evaluation metrics, make a small write-up explaining them, and implement them (1-NN)
+- (P, D) Collect/generate all the datasets, including preprocessing them as needed (DNF, NiSIS and HIVA)
+Mar 7: buffer
+- (S, D) Bishop 12.1 and 12.2
+- (S, D) Bishop 12.3 and 12.4 (DNF, 12.4)
+- (P, D) Implement out-of-sample and Nyström extensions
+ 
+Mar 14:
+- (P) Collect/generate all the datasets, including preprocessing them as needed (NiSIS and HIVA)
+- (P) Implement all NLDR methods and test them (LE, LLE, TSNE (all skl))
+- (S, R) Read and take notes https://helper.ipam.ucla.edu/publications/mgaws3/mgaws3_5131.pdf
+- (S, R) Read and take notes https://inc.ucsd.edu/mplab/users/nick/dimensionalityReduction.pdf
+- (S, D) Supervised MVU paper https://sci-hub.se/https://www.sciencedirect.com/science/article/abs/pii/S0169743916303409
+- (S, R) Unified framework for a bunch of stuff https://arxiv.org/pdf/2106.15379
+- (S, R) Landmark MVU https://proceedings.mlr.press/r5/weinberger05a/weinberger05a.pdf
+
+
+Mar 21:
+- (S, R) Read, take notes, and explore https://stats.stackexchange.com/questions/99171/why-is-euclidean-distance-not-a-good-metric-in-high-dimensions/99191 (Read)
+- (S, H) Parallel transport unfolding https://arxiv.org/pdf/1806.09039 (Read)
+- (S, H) Adaptive Manifold Learning (paper) (1st part: Read, implemented)
+- (S, R) Parameterless Isomap with Adaptive Neighborhood Selection (paper) (read before already, )
+
+
+Mar 28:
+- (S, R) Read, study, and understand the ENG paper
+- (P, D) Implement ENG
+
+
+Apr 4: buffer
+- (P) Implement a tool to easily visualize results
+- (S): This Reddit thread, the biology thing is interesting https://www.reddit.com/r/learnmachinelearning/comments/r42ner/is_pca_the_best_way_to_reduce_dimensionality/
+write metric explanation
+
+
+
+Apr 11:
+- (S) Selection of the optimal parameter value for the Isomap algorithm (paper, kinda ass but read it)
+- (S) Non-Local Manifold Learning (paper, introduces interesting thoughts)
+- (S) Adaptive Neighborhood Selection for Manifold Learning (paper)
+
+- (S) Read papers/secondary literature - default study from now on
+- (P) Implement our first solution (and interpret results)
+
+
+Doing:
+
+- (P) Reproduce results of sklearn and the comparative review paper (comparative review)
+- (P, C) Implement a tool to easily visualize results
+
+check for more interesting datasets
+    Broken Toro of broken Swiss rolls
+
+- (P) Reproduce results from the ENG paper
+- (P) Reproduce results of sklearn and the comparative review paper (sklearn)
+
+- (P) Optimizations: tune solution epsilons, test ineq-MVU
+
+
+
+- (S) Bishop 12.3 and 12.4 (12.4)
+
+Stopped:
+- (P) Collect/generate all the datasets, including preprocessing them as needed (NiSIS)
+
+
+
+
+
+
+
+
+Random advantages de manifold learning methods vs. autoencoders:
+ - Neural network-based methods usually require a lot of data to generalize effectively (e.g., several thousands of examples)
+ - More interpretable and reproducible representations
+ - Neural network-based methods don't capture the geometry of the data, which might be relevant (e.g., in scientific simulations, physics-based modeling)
+ - Autoencoders don't take into consideration the intrinsic dimensionality of the data, while manifold learners explicitly try to estimate it
+
+Reasons why MVU might perform better than Isomap:
+ - Geodesic distances might be unreliable due to short-circuiting
+ - More performant on strongly curved manifolds, e.g., a highly twisted swiss roll
+ - If local geometry is very important. If you're working with biological data where local relationships (e.g., gene expression similarities) matter more than large-scale trends, MVU may be preferable
+ - MVU explicitly maximizes variance in the low-dimensional space. If you need clusters to be well-separated, making them more easily classifiable, MVU may be better than Isomap

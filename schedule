@@ -1,0 +1,100 @@
+Feb 7:
+- (S) Bishop 12.1 and 12.2
+- (P) Collect/generate all the datasets, including preprocessing them as needed
+Feb 14:
+- (S) Bishop 12.3 and 12.4
+- (P) Understand evaluation metrics, make a small write-up explaining them, and implement them
+Feb 21:
+- (S) Read, study, and understand the ENG paper
+- (P) Implement all NLDR methods and test them
+- (P) Reproduce results of sklearn and the comparative review paper
+Feb 28:
+- (P) Implement out-of-sample and Nyström extensions
+Mar 7: buffer
+Mar 14:
+- (S) Read and take notes https://helper.ipam.ucla.edu/publications/mgaws3/mgaws3_5131.pdf
+- (S) Read and take notes https://inc.ucsd.edu/mplab/users/nick/dimensionalityReduction.pdf
+- (S) Read, take notes, and explore https://stats.stackexchange.com/questions/99171/why-is-euclidean-distance-not-a-good-metric-in-high-dimensions/99191
+- (S) Supervised MVU paper https://sci-hub.se/https://www.sciencedirect.com/science/article/abs/pii/S0169743916303409
+- (S) Unified framework for a bunch of stuff https://arxiv.org/pdf/2106.15379
+- (S) Landmark MVU https://proceedings.mlr.press/r5/weinberger05a/weinberger05a.pdf
+Mar 21:
+- (S) Parallel transport unfolding https://arxiv.org/pdf/1806.09039
+- (S) Adaptive Manifold Learning (paper)
+- (S) Parameterless Isomap with Adaptive Neighborhood Selection (paper)
+- (P) Implement ENG
+- (P) Reproduce results from the ENG paper
+Mar 28:
+- (S) Selection of the optimal parameter value for the Isomap algorithm (paper, kinda ass but read it)
+- (S) Non-Local Manifold Learning (paper, introduces interesting thoughts)
+- (S) Adaptive Neighborhood Selection for Manifold Learning (paper)
+- (S) This Reddit thread, the biology thing is interesting https://www.reddit.com/r/learnmachinelearning/comments/r42ner/is_pca_the_best_way_to_reduce_dimensionality/
+- (P) Optimizations: tune solution epsilons, test ineq-MVU
+- (P) Implement a tool to easily visualize results
+Apr 4: buffer
+Apr 11:
+- (S) Read papers/secondary literature - default study from now on
+- (P) Implement our first solution (and interpret results)
+
+
+- Reproduce results of ENG
+- Plot metrics in the same graph for different parametrizations (e.g., number of neighbors, number of components)
+
+TODO:
+- Bishop
+- Fix Nystrom
+- Make MVU runnable
+    - MVU's inner product matrix scallar value
+
+
+
+
+
+
+Apr 18:
+- (P) Implement different ways of calculating inter-component distance
+- (P) Implement different ways of computing representative subsets of each component
+
+
+
+
+Apr 25:
+- (P) Implement different ways of placing the (representative) components (e.g., aligning principal components)
+- (P) Implement other miscellaneous stuff/variants of MVU we might think of
+May 2: buffer
+
+May 9:
+- (P) Test methods in semi-supervised learning (SSL)
+- (P) Find SSL datasets for classification/regression, preprocess as needed
+- (P) Set up a training/validation pipeline with a few relevant methods (e.g., linear regression, MLP, SVM)
+- (P) Test MVU against PCA and Isomap
+May 16:
+- (P) Ablations on everything
+May 23:
+- (P) Search for more interesting applications #1
+May 30:
+- (P) Apply our method and test it against PCA and Isomap in the new applications #1
+Jun 5: buffer
+
+Jun 12:
+- (P) Search for more interesting applications #2
+Jun 19:
+- (P) Apply our method and test it against PCA and Isomap in the new applications #2
+Jul 3 (2 weeks):
+- (P) Write paper
+
+Jul 17 (2 weeks):
+- (P) Perform more experiments that might come up
+Jul 31 (2 weeks):
+- (P) Write paper, send to FMelo for feedback
+Aug 7:
+- (P) Implement FMelo's suggestions
+- (P) AAAI abstract deadline
+
+Aug 15:
+- (P) Final touches on the paper
+- (P) AAAI full paper deadline
+Aug 19:
+- (P) AAAI supplementary material and code deadline
+Sep 12: rest
+From here on out, it's thesis time
