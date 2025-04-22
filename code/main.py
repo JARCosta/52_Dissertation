@@ -31,6 +31,69 @@ def thread_func(threads_return:multiprocessing.managers.SyncManager, X:np.ndarra
         return model_args, Y, One_nn, T, C
     return
 
+def best_args(threads_return:multiprocessing.managers.DictProxy) -> tuple[int, dict]:
+    results = []
+    for model_args, _, One_nn, T, C in threads_return.values():
+        results.append([model_args['#neighs'], One_nn, T, C])
+    results.sort(key=lambda x: x[0])
+    results = np.array(results).T
+
+    # try:
+    results[2:] = np.log10(1 - results[2:])
+    # except IndexError as e:
+    #     print(results)
+    #     print(model_args)
+    #     raise e
+
+    TC = results[2]
+    if len(np.where(TC != -np.inf)[0]) > 0:
+        best = np.min(TC[np.where(TC != -np.inf)])
+    else:
+        best = -4
+    TC[np.where(TC == -np.inf)] = best - 1
+
+
+    fig, ax1 = plt.subplots()
+    plt.title(f"{model_args['model']} applied on {model_args['dataname']}")
+
+    ax1.set_xlabel('size of k-neighbourhood')
+    ax1.set_ylabel('log10 of T and C')
+    ax1.tick_params(axis='y')
+    ax2 = ax1.twinx()  # instantiate a second Axes that shares the same x-axis
+    ax2.set_ylabel('1-NN')  # we already handled the x-label with ax1
+    ax2.tick_params(axis='y')
+
+    
+    ax1.plot(results[0], results[2], color='tab:red')
+    ax1.scatter(results[0], results[2], color='tab:red')
+    ax1.plot(results[0], results[3], color='tab:orange')
+    ax1.scatter(results[0], results[3], color='tab:orange')
+    ax2.plot(results[0], results[1], color='tab:blue')
+    ax2.scatter(results[0], results[1], color='tab:blue')
+
+    fig.tight_layout()  # otherwise the right y-label is slightly clipped
+    fig.legend(["T", "C", "1-NN"])
+    # plt.show()
+    
+    os.makedirs("cache") if not os.path.exists("cache") else None
+    os.makedirs(f"cache/{model_args['model']}") if not os.path.exists(f"cache/{model_args['model']}") else None
+    plt.savefig(f"cache/{model_args['model']}/{model_args['dataname']}.png")
+    
+    results[2] = 1 - 10**(results[2])
+    results[3] = 1 - 10**(results[3])
+    results.round(3)
+
+
+    k_best, k_best_measures, k_best_measures_sum = None, None, -np.inf
+    for k in results.T:
+        k_sum = np.sum((1-k[1]) + k[2] + k[3])
+        if k_sum > k_best_measures_sum:
+            k_best = int(k[0])
+            k_best_measures_sum = k_sum
+            k_best_measures = {"1-NN": k[1], "T": k[2], "C":k[3]}
+    return k_best, k_best_measures
+
+
 def model_launcher(dataname, n_points, X, labels, t):
     for model in [
 
@@ -118,68 +181,6 @@ def model_launcher(dataname, n_points, X, labels, t):
         if len(threads_return) == 0:
             print("No results")
             breakpoint()
-
-        def best_args(threads_return:multiprocessing.managers.DictProxy) -> tuple[int, dict]:
-            results = []
-            for model_args, _, One_nn, T, C in threads_return.values():
-                results.append([model_args['#neighs'], One_nn, T, C])
-            results.sort(key=lambda x: x[0])
-            results = np.array(results).T
-    
-            # try:
-            results[2:] = np.log10(1 - results[2:])
-            # except IndexError as e:
-            #     print(results)
-            #     print(model_args)
-            #     raise e
-
-            TC = results[2]
-            if len(np.where(TC != -np.inf)[0]) > 0:
-                best = np.min(TC[np.where(TC != -np.inf)])
-            else:
-                best = -4
-            TC[np.where(TC == -np.inf)] = best - 1
-
-
-            fig, ax1 = plt.subplots()
-            plt.title(f"{model_args['model']} applied on {model_args['dataname']}")
-
-            ax1.set_xlabel('size of k-neighbourhood')
-            ax1.set_ylabel('log10 of T and C')
-            ax1.tick_params(axis='y')
-            ax2 = ax1.twinx()  # instantiate a second Axes that shares the same x-axis
-            ax2.set_ylabel('1-NN')  # we already handled the x-label with ax1
-            ax2.tick_params(axis='y')
-
-            
-            ax1.plot(results[0], results[2], color='tab:red')
-            ax1.scatter(results[0], results[2], color='tab:red')
-            ax1.plot(results[0], results[3], color='tab:orange')
-            ax1.scatter(results[0], results[3], color='tab:orange')
-            ax2.plot(results[0], results[1], color='tab:blue')
-            ax2.scatter(results[0], results[1], color='tab:blue')
-
-            fig.tight_layout()  # otherwise the right y-label is slightly clipped
-            fig.legend(["T", "C", "1-NN"])
-            # plt.show()
-            
-            os.makedirs("cache") if not os.path.exists("cache") else None
-            os.makedirs(f"cache/{model_args['model']}") if not os.path.exists(f"cache/{model_args['model']}") else None
-            plt.savefig(f"cache/{model_args['model']}/{model_args['dataname']}.png")
-            
-            results[2] = 1 - 10**(results[2])
-            results[3] = 1 - 10**(results[3])
-            results.round(3)
-
-
-            k_best, k_best_measures, k_best_measures_sum = None, None, -np.inf
-            for k in results.T:
-                k_sum = np.sum((1-k[1]) + k[2] + k[3])
-                if k_sum > k_best_measures_sum:
-                    k_best = int(k[0])
-                    k_best_measures_sum = k_sum
-                    k_best_measures = {"1-NN": k[1], "T": k[2], "C":k[3]}
-            return k_best, k_best_measures
 
         k_best, best_measure = best_args(threads_return)
 
