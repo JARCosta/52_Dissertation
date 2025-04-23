@@ -20,13 +20,17 @@ class Isomap(models.Neighbourhood):
 
         cc, labels = csgraph.connected_components(self.NM, directed=False)
         if cc > 1:
-            print(f"Warning: {cc} components found. Using largest component and nystrom approximating the rest.")
-            largest_component_indexes = np.where(labels == np.argmax(np.bincount(labels)))[0]
-            model = Nystrom(self.model_args, self.n_neighbors, self.n_components, subset_indices=largest_component_indexes)
-            model.neigh_matrix(X[largest_component_indexes])
-            model._fit(X)
-            self.kernel_ = model.kernel_
-            return self
+            print(f"Warning: {cc} components found. Adding shortest connections possible to merge components.")
+            while cc > 1:
+                largest_component = np.argmax(np.bincount(labels))
+                largest_component_idx = np.where(labels == largest_component)[0]
+                other_idx = np.where(labels != largest_component)[0]
+
+                distances = np.linalg.norm(X[largest_component_idx][:, np.newaxis] - X[other_idx], axis=2)
+                closest_idx = other_idx[np.argmin(distances, axis=0)[0]]
+
+                self.NM[largest_component_idx, closest_idx] = np.linalg.norm(X[largest_component_idx] - X[closest_idx])
+                cc, labels = csgraph.connected_components(self.NM, directed=False)
 
         # Compute shortest paths using Dijkstra
         D_sq = csgraph.shortest_path(self.NM, directed=False, method='D') ** 2  # Squared distance matrix
