@@ -2,8 +2,8 @@
 import numpy as np
 import cvxpy as cvx
 
+import mosek
 from scipy.sparse import csgraph, csr_matrix
-from scipy.spatial.distance import cdist
 
 import models.neighbourhood
 import models.extensions
@@ -67,7 +67,7 @@ class MVU(models.Neighbourhood):
         print("Length of constraints:",len(constraints))
 
         problem = cvx.Problem(objective, constraints)
-        problem.solve(solver="SCS", verbose=True, eps=self.eps)
+        problem.solve(solver="MOSEK", verbose=True, eps=self.eps)
         print(problem.status)
         self.kernel_ = K.value
 
