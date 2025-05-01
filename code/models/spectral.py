@@ -4,7 +4,7 @@ from scipy.sparse.linalg import eigsh
 
 from plot import plot
 from utils import save_cache
-from utils import stamp_set, stamp_print
+from utils import stamp
 
 class Spectral(ABC):
     def __init__(self, model_args:dict, n_components:int=None):
@@ -19,12 +19,13 @@ class Spectral(ABC):
 
     def fit(self, X: np.ndarray):
         """Computes the kernel matrix."""
-        stamp_set()
-
+        stamp.set()
+        
+        print("Fitting Spectral...")
         ret = self._fit(X)
         # save_cache(self.model_args, self.kernel_, "K")
         
-        stamp_print(f"*\t {self.model_args['model']}\t fit")
+        stamp.print(f"*\t {self.model_args['model']}\t fit")
         return ret
 
     def _transform(self, verbose:bool=False):
@@ -35,6 +36,7 @@ class Spectral(ABC):
             eigenvalues, eigenvectors = np.linalg.eigh(self.kernel_)
         else:
             eigenvalues, eigenvectors = eigsh(self.kernel_, k=self.n_components, which='LM')
+        
         # Sort eigenvalues and eigenvectors in descending order
         idx = np.argsort(eigenvalues)[::-1]
         eigenvalues, eigenvectors = eigenvalues[idx], eigenvectors[:, idx]
@@ -62,7 +64,7 @@ class Spectral(ABC):
             if verbose:
                 print(f"Eigenvalues (top {self.n_components}):", eigenvalues)
 
-        eigenvalues = np.sqrt(np.maximum(eigenvalues, 0))  # Ensure non-negative eigenvalues
+        # eigenvalues = np.sqrt(np.maximum(eigenvalues, 0))  # Ensure non-negative eigenvalues
 
         self.embedding_ = eigenvectors @ np.diag(eigenvalues)  # Project data
 
@@ -70,16 +72,13 @@ class Spectral(ABC):
 
     def transform(self):
         """Performs spectral embedding using the top eigenvectors."""
-        stamp_set()
+        stamp.set()
 
         self._transform()
         # save_cache(self.model_args, self.embedding_, "Y")
         
-        stamp_print(f"*\t {self.model_args['model']}\t transform")
+        stamp.print(f"*\t {self.model_args['model']}\t transform")
         
-        if self.model_args['plotation']:
-            plot(self.embedding_, title=f"{self.model_args['model']} output", block=False)
-
         return self.embedding_
 
 

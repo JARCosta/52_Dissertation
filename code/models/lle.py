@@ -1,12 +1,12 @@
 # models/lle.py
 
 import numpy as np
-from scipy.linalg import eigh, solve, LinAlgError
+from scipy.linalg import eigh, solve, LinAlgError, pinv
 from scipy.sparse.linalg import eigsh
 from scipy.sparse import csr_matrix, eye as sparse_eye
 
 import models
-from utils import save_cache, stamp_set, stamp_print
+from utils import save_cache, stamp
 from plot import plot
 
 class LocallyLinearEmbedding(models.Neighbourhood):
@@ -54,11 +54,12 @@ class LocallyLinearEmbedding(models.Neighbourhood):
         if self.n_neighbors <= 0:
             raise ValueError("n_neighbors must be positive.")
 
-        stamp_set()
+        stamp.set()
 
         # 2. Compute Reconstruction Weights W
         W = np.zeros((n_samples, n_samples))
         for i in range(n_samples):
+            print(i)
             neighbors_i = np.where(self.NM[i] != 0)[0].tolist() # Indices of neighbors for point i
             X_i = X[i]
             X_neighbors = X[neighbors_i] # Coordinates of neighbors
@@ -78,34 +79,37 @@ class LocallyLinearEmbedding(models.Neighbourhood):
             #     R = self.reg * trace
             # else:
             #     R = self.reg # Failsafe for zero trace
-            # C += R * np.eye(self.n_neighbors)
+            # C += R * np.eye(len(neighbors_i))
 
             # Alternative regularization (more common): C = C + reg * I
-            C += self.reg * np.eye(self.n_neighbors)
+            C = C + self.reg * np.eye(len(neighbors_i))
 
             # Solve C w = 1 for weights w (vector of size n_neighbors)
-            try:
-                # Weights should sum to 1
-                # We solve C w = 1 (1 is a vector of ones)
-                ones_vec = np.ones(self.n_neighbors)
-                w = solve(C, ones_vec, assume_a='pos') # Use 'pos' if C is positive definite
+            # try:
+            # Weights should sum to 1
+            # We solve C w = 1 (1 is a vector of ones)
+            ones_vec = np.ones(len(neighbors_i))
+            # w = solve(C, ones_vec, assume_a='pos') # Use 'pos' if C is positive definite
+            w = pinv(C) @ ones_vec # Pseudo-inverse for stability
 
-                # Normalize weights to sum to 1
-                w /= np.sum(w)
-                
-                # Store weights in the main matrix W
-                W[i, neighbors_i] = w
+            # Normalize weights to sum to 1
+            w /= np.sum(w)
+            
+            # Store weights in the main matrix W
+            W[i, neighbors_i] = w
 
-            except LinAlgError:
-                print(f"Warning: Singular matrix encountered for point {i}. Setting weights to zero.")
-                # Handle cases where C is singular - could assign equal weights or zero
-                W[i, neighbors_i] = 1.0 / self.n_neighbors # Fallback: equal weights
-            except Exception as e:
-                 print(f"Warning: Error solving for weights for point {i}: {e}")
-                 W[i, neighbors_i] = 1.0 / self.n_neighbors # Fallback
+            # except LinAlgError:
+            #     print(f"Warning: Singular matrix encountered for point {i}. Setting weights to zero.")
+            #     print(C)
+            #     breakpoint()
+            #     # Handle cases where C is singular - could assign equal weights or zero
+            #     W[i, neighbors_i] = 1.0 / len(neighbors_i) # Fallback: equal weights
+            # except Exception as e:
+            #      print(f"Warning: Error solving for weights for point {i}: {e}")
+            #      W[i, neighbors_i] = 1.0 / len(neighbors_i) # Fallback
 
         self.weights_ = csr_matrix(W)
-        stamp_print(f"*\t {self.model_args['model']}\t Computed Weights")
+        stamp.print(f"*\t {self.model_args['model']}\t Computed Weights")
 
         # 3. Compute Embedding Matrix M = (I - W)^T (I - W)
         I = sparse_eye(n_samples)
@@ -154,7 +158,7 @@ class LocallyLinearEmbedding(models.Neighbourhood):
     #         print(f"Selected Eigenvalues (indices 1 to {self.n_components}):", eigenvalues[1:(self.n_components + 1)])
 
     # except Exception as e:
-        # stamp_print(f"*\t {self.model_args['model']}\t Error in eigsh: {e}, attempting dense solver eigh...")
+        # stamp.print(f"*\t {self.model_args['model']}\t Error in eigsh: {e}, attempting dense solver eigh...")
         # Fallback to dense solver
         eigenvalues, eigenvectors = eigh(self.kernel_.toarray()) # eigh sorts eigenvalues
 
@@ -169,3 +173,6 @@ class LocallyLinearEmbedding(models.Neighbourhood):
 
         if self.model_args['plotation']:
             plot(self.embedding_, title=f"{self.model_args['model']} output", block=False)
+
+class ENG(models.extensions.ENG, LocallyLinearEmbedding):
+    pass

@@ -9,14 +9,15 @@ from .pca import *
 from .le import *
 from .lle import *
 from .ltsa import *
+from .hlle import *
 
 from .extensions import *
 
 def run(X, model_args):
     import sklearn.manifold
-    from utils import stamp_set, stamp_print
+    from utils import stamp
 
-    stamp_set()
+    stamp.set()
 
     ########################################################
     # PCA ##################################################
@@ -44,7 +45,7 @@ def run(X, model_args):
 
     elif model_args['model'].lower() == "isomap.nystrom":
 
-        model = models.isomap.Nystrom(model_args, ratio=0.1, n_neighbors=model_args['#neighs'], n_components=model_args['#components'])
+        model = models.isomap.Nystrom(model_args, ratio=0.2, n_neighbors=model_args['#neighs'], n_components=model_args['#components'])
         Y = model.fit_transform(X)
     
     elif model_args['model'].lower() == "isomap.eng":
@@ -113,6 +114,11 @@ def run(X, model_args):
         model = sklearn.manifold.SpectralEmbedding(n_neighbors=model_args['#neighs'], n_components=model_args['#components'])
         Y = model.fit_transform(X)
 
+    elif model_args['model'].lower() == "le.eng":
+            
+        model = models.le.ENG(model_args, model_args['#neighs'], model_args['#components'])
+        Y = model.fit_transform(X)
+
     ########################################################
     # LLE ##################################################
     ########################################################
@@ -127,9 +133,11 @@ def run(X, model_args):
         
         model = sklearn.manifold.LocallyLinearEmbedding(n_neighbors=model_args['#neighs'], n_components=model_args['#components'])
         Y = model.fit_transform(X)
-        
 
+    elif model_args["model"].lower() == "lle.eng":
 
+        model = models.lle.ENG(model_args, model_args['#neighs'], model_args['#components'])
+        Y = model.fit_transform(X)
 
     ########################################################
     # HLLE #################################################
@@ -137,7 +145,7 @@ def run(X, model_args):
 
     elif model_args["model"].lower() == "hlle":
         
-        model = models.hlle.HLLE(model_args, model_args['#neighs'], model_args['#components'])
+        model = models.hlle.HessianLLE(model_args, model_args['#neighs'], model_args['#components'])
         Y = model.fit_transform(X)
 
     elif model_args["model"].lower() == "hlle.skl":
@@ -148,6 +156,11 @@ def run(X, model_args):
             return None
         
         model = sklearn.manifold.LocallyLinearEmbedding(n_neighbors=model_args['#neighs'], n_components=model_args['#components'], method='hessian', eigen_solver='dense')
+        Y = model.fit_transform(X)
+    
+    elif model_args["model"].lower() == "hlle.eng":
+        
+        model = models.hlle.ENG(model_args, model_args['#neighs'], model_args['#components'])
         Y = model.fit_transform(X)
 
     ########################################################

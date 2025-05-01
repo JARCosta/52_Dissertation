@@ -6,7 +6,7 @@ from scipy.sparse import csr_matrix, lil_matrix, eye as sparse_eye
 from scipy.sparse.linalg import eigsh
 
 import models
-from utils import save_cache, stamp_set, stamp_print
+from utils import save_cache, stamp
 from plot import plot
 
 class LTSA(models.Neighbourhood):
@@ -50,7 +50,7 @@ class LTSA(models.Neighbourhood):
         if self.n_neighbors <= self.n_components:
              raise ValueError(f"n_neighbors ({self.n_neighbors}) must be greater than n_components ({self.n_components}) for SVD.")
 
-        stamp_set()
+        stamp.set()
         print("Computing LTSA local tangent spaces and alignment matrix...")
 
         # 1. Find Neighbors (using sklearn for indices)
@@ -183,7 +183,7 @@ class LTSA(models.Neighbourhood):
         self.kernel_ = self.alignment_matrix_ # Set kernel to B
 
         # save_cache(self.model_args, self.alignment_matrix_, "B_ltsa")
-        stamp_print(f"*\t {self.model_args['model']}\t Computed Alignment Matrix B")
+        stamp.print(f"*\t {self.model_args['model']}\t Computed Alignment Matrix B")
         return self
 
     def _transform(self, verbose: bool = False):
@@ -193,7 +193,7 @@ class LTSA(models.Neighbourhood):
         if self.kernel_ is None: # B matrix stored in kernel_
             raise ValueError("Alignment matrix B is not initialized. Run fit(X) first.")
 
-        stamp_set()
+        stamp.set()
         print(f"Solving eigenvalue problem for LTSA alignment matrix B...")
 
         # We need the largest eigenvalues/vectors of B.
@@ -241,7 +241,7 @@ class LTSA(models.Neighbourhood):
 
 
         # save_cache(self.model_args, self.embedding_, "Y")
-        stamp_print(f"*\t {self.model_args['model']}\t transform (LTSA)")
+        stamp.print(f"*\t {self.model_args['model']}\t transform (LTSA)")
 
         if self.model_args['plotation']:
             plot(self.embedding_, title=f"{self.model_args['model']} output", block=False)

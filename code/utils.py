@@ -28,20 +28,31 @@ class bcolors:
     LIGHTCYAN = '\033[96m'
 
 
-timestamp = datetime.datetime.now()
-def stamp_set():
-    global timestamp
-    timestamp = datetime.datetime.now()
+class Stamp:
+    def __init__(self):
+        self.timestamp = datetime.datetime.now()
+        self.color = bcolors.GREEN
 
-def stamp_print(text:str="*"):
-    global timestamp
-    time_diff = datetime.datetime.now() - timestamp
-    if time_diff.total_seconds() > 1:
-        color = bcolors.RED
-    else:
-        color = bcolors.GREEN
-    print(text.replace("*", color + str(time_diff) + bcolors.ENDC ))
+    def set(self):
+        self.timestamp = datetime.datetime.now()
 
+    def print(self, text:str="*"):
+        time_diff = datetime.datetime.now() - self.timestamp
+        if time_diff.total_seconds() > 1:
+            self.color = bcolors.RED
+        else:
+            self.color = bcolors.GREEN
+        minutes = time_diff.seconds // 60
+        seconds = time_diff.seconds % 60
+        milliseconds = time_diff.microseconds // 1000
+        time_diff = '{:02}:{:02}.{:02}'.format(minutes, seconds, milliseconds)
+        print(text.replace("*", self.color + time_diff + bcolors.ENDC ))
+        return self
+    
+    def print_set(self, text:str="*"):
+        return self.print(text).set()
+
+stamp = Stamp()
 
 ############################################################
 # CACHE ####################################################
@@ -85,6 +96,13 @@ def load_cache(model_args:dict, datatype:str):
     
 
 
+def intra_dist_matrix(data: np.ndarray):
+    n_samples = data.shape[0]
+    dist, indices = NearestNeighbors(n_neighbors=n_samples).fit(data).kneighbors(data)
+    dist_matrix = np.zeros((n_samples, n_samples))
+    for i in range(n_samples):
+        dist_matrix[i][indices[i]] = dist[i]
+    return dist_matrix
 
 
 

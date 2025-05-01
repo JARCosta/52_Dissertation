@@ -3,12 +3,12 @@ import numpy as np
 from sklearn.neighbors import NearestNeighbors
 from scipy.sparse import csr_matrix
 import warnings
-from scipy.spatial.distance import cdist
 
 
 from models.spectral import Spectral
 from plot import plot
-from utils import stamp_set, stamp_print
+from utils import stamp
+import utils
 
 class Neighbourhood(Spectral):
     def __init__(self, model_args:dict, n_neighbors:int, n_components:int=None):
@@ -31,7 +31,7 @@ class Neighbourhood(Spectral):
         """
         k = self.n_neighbors
         n_samples = data.shape[0]
-        dist_matrix = cdist(data, data)  # Calculate pairwise distances
+        dist_matrix = utils.intra_dist_matrix(data) # TODO: I don't get how can sklearn.neighbors.NearestNeighbors be so much faster than scipy.spatial.distance.cdist, it knows its cdist between the same data?
         neigh_matrix = np.zeros((n_samples, n_samples))
 
         for i in range(n_samples):
@@ -60,9 +60,9 @@ class Neighbourhood(Spectral):
         return neigh_graph, neigh_matrix
 
     def neigh_matrix(self, X):
-        stamp_set()
+        stamp.set()
         self.NM = self._neigh_matrix(X)
-        stamp_print(f"*\t {self.model_args['model']}\t neigh_matrix\t {np.count_nonzero(self.NM)} connections")
+        stamp.print(f"*\t {self.model_args['model']}\t neigh_matrix\t {np.count_nonzero(self.NM)} connections")
         if self.model_args['plotation']:
             plot(X, self.NM, title=f"{self.model_args['model']} neigh_matrix, k={self.n_neighbors}", block=False)
         return self.NM

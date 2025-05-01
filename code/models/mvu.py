@@ -68,7 +68,9 @@ class MVU(models.Neighbourhood):
 
         problem = cvx.Problem(objective, constraints)
         problem.solve(solver="MOSEK", verbose=True, eps=self.eps)
-        print(problem.status)
+        if problem.status != cvx.OPTIMAL:
+            print("Warning: Problem not solved optimally. Status:", problem.status)
+            raise ValueError("Problem not solved optimally")
         self.kernel_ = K.value
 
         return self

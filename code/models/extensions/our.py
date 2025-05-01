@@ -3,7 +3,7 @@ import numpy as np
 from scipy.linalg import pinv
 from scipy.sparse import csgraph, csr_matrix
 
-from utils import stamp_set, stamp_print
+from utils import stamp
 from plot import plot
 
 class Our:
@@ -132,12 +132,12 @@ class Our:
         
         temp, self.model_args['plotation'] = self.model_args['plotation'], False
         
-        stamp_set()
+        stamp.set()
         NM = super()._neigh_matrix(X)
         cc = csgraph.connected_components(NM)
         if cc[0] == 1:
             return NM
-        stamp_print(f"*\t {self.model_args['dataname']}\t connected_components: {cc[0]}")
+        stamp.print(f"*\t {self.model_args['dataname']}\t connected_components: {cc[0]}")
 
         
         C_global_index_list = [[] for _ in range(cc[0])] # [indexes of points corresponding to component i, for i in n_components]

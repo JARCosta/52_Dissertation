@@ -37,18 +37,6 @@ Apr 11:
 - (P) Implement our first solution (and interpret results)
 
 
-- Reproduce results of ENG
-- Plot metrics in the same graph for different parametrizations (e.g., number of neighbors, number of components)
-
-TODO:
-- Bishop
-- Fix Nystrom
-- Make MVU runnable
-    - MVU's inner product matrix scallar value
-
-
-
-
 
 
 Apr 18:
@@ -62,6 +50,18 @@ Apr 25:
 - (P) Implement different ways of placing the (representative) components (e.g., aligning principal components)
 - (P) Implement other miscellaneous stuff/variants of MVU we might think of
 May 2: buffer
+
+TODO:
+- Bishop
+- Reproduce results of ENG
+- Ver o source code do isomap.skl; como é que lida com disconnected components? no caso do isomap.skl dar valores mais proximos aos do comparative review
+- Make MVU runnable
+
+
+
+
+
+
 
 May 9:
 - (P) Test methods in semi-supervised learning (SSL)

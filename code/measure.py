@@ -1,9 +1,10 @@
 import numpy as np
 import sklearn.manifold
 
-from utils import k_neigh, stamp_set, stamp_print, load_cache, save_cache
+from utils import k_neigh, load_cache, save_cache, stamp
+import utils
 
-def TC(X, Y, n_neighbors):
+def TC(X, Y, n_neighbors) -> tuple[float, float]:
     import scipy.spatial
     
     n_samples = X.shape[0]
@@ -16,11 +17,8 @@ def TC(X, Y, n_neighbors):
 
     NM_T = NM_Y - NM_X
 
-    for i in range(n_samples):
-        for j in range(n_samples):
-            if NM_T[i][j] == -1:
-                NM_T[i][j] = 0
-    D_X = scipy.spatial.distance_matrix(X, X)
+    NM_T[np.where(NM_T == -1)] = 0
+    D_X = utils.intra_dist_matrix(X)
     R_X = np.argsort(np.argsort(D_X, axis=1), axis=1)
     T = NM_T * R_X
     T[T != 0] -= n_neighbors
@@ -29,11 +27,8 @@ def TC(X, Y, n_neighbors):
 
 
     NM_C = NM_X - NM_Y
-    for i in range(n_samples):
-        for j in range(n_samples):
-            if NM_C[i][j] == -1:
-                NM_C[i][j] = 0
-    D_Y = scipy.spatial.distance_matrix(Y, Y)
+    NM_C[np.where(NM_C == -1)] = 0
+    D_Y = utils.intra_dist_matrix(Y)
     R_Y = np.argsort(np.argsort(D_Y, axis=1), axis=1)
     C = NM_C * R_Y
     C[C != 0] -= n_neighbors
@@ -46,9 +41,9 @@ def TC(X, Y, n_neighbors):
 
 
 
-    return round(T, 3), round(C, 3)
+    return round(float(T), 3), round(float(C), 3)
 
-def one_NN(Y, labels):
+def one_NN(Y, labels) -> float:
     if type(labels) == type(None):
         return None
     
@@ -59,7 +54,7 @@ def one_NN(Y, labels):
         Y_labels[i] = labels[IM[i]]
     
     one_NN = np.count_nonzero(Y_labels - labels) / labels.shape[0]
-    return round(one_NN, 3)
+    return round(float(one_NN), 3)
 
 
 if __name__ == "__main__":
@@ -97,13 +92,11 @@ if __name__ == "__main__":
                     continue
 
                 print(model_args)
-                stamp_set()
+                stamp.set()
                 nn = one_NN(X, labels)
-                stamp_print(f"*\t 1-NN\t {round(nn, 3)}")
-
-                stamp_set()
+                stamp.print_set(f"*\t 1-NN\t {round(nn, 3)}")
                 T, C = TC(X, Y, n_neighbors)
-                stamp_print(f"*\t C, T\t {round(C, 3)}, {round(T, 3)} ")
+                stamp.print(f"*\t C, T\t {round(C, 3)}, {round(T, 3)} ")
 
                 results = [nn, T, C]
                 # save_cache(model_args, results, "results")

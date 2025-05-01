@@ -57,6 +57,10 @@ def generate_data(model_args:dict, noise:float=0.05, random_state:int=None) -> t
     elif model_args['dataname'] == 'paralell.swiss':
         return datasets.parallel(n, noise, random_state=random_state)
 
+    elif model_args['dataname'] == 'two.swiss':
+        return datasets.swiss.two(n, noise, random_state=random_state)
+
+
     elif model_args['dataname'] == 'changing.swiss':
         return datasets.swiss.changing(n, noise, random_state=random_state)
 
@@ -72,6 +76,7 @@ def generate_data(model_args:dict, noise:float=0.05, random_state:int=None) -> t
         t = (t ** 1.0) * 2 * np.pi
         X = np.hstack([(2 + np.cos(8 * t)) * np.cos(t), (2 + np.cos(8 * t)) * np.sin(t), np.sin(8 * t)]) + noise * np.random.randn(n, 3)
         labels = np.remainder(np.round(t * 1.5), 2)
+        # plot(X, c=labels, title=model_args['dataname'], block=True)
 
 
     elif model_args['dataname'] == 'twinpeaks':
@@ -81,7 +86,7 @@ def generate_data(model_args:dict, noise:float=0.05, random_state:int=None) -> t
         X = np.hstack([xy.T, (np.sin(np.pi * xy[0, :]) * np.tanh(3 * xy[1, :]))[:, None]]) + noise * np.random.randn(n, 3)
         X[:, 2] *= 10
         labels = np.remainder(np.sum(np.round((X - np.min(X, axis=0)) / 10), axis=1), 2)
-
+        # plot(X, c=labels, title=model_args['dataname'], block=True)
 
     elif model_args['dataname'] == '3d_clusters':
         num_clusters = 5
@@ -138,7 +143,7 @@ def import_data(model_args:dict) -> tuple[np.ndarray, np.ndarray, None]:
 
     if model_args['dataname'] == "teapots":
         from scipy.io import loadmat
-        X = loadmat('datasets/teapots.mat')
+        X = loadmat('code/datasets/teapots.mat')
         X = X["Input"][0][0][0]
         X = X.T.astype(np.float64)
         X = X - X.mean(0)
@@ -170,10 +175,10 @@ def import_data(model_args:dict) -> tuple[np.ndarray, np.ndarray, None]:
             images = np.array(images)
 
             return images.reshape(images.shape[0], -1), np.array(labels)
-        training_images_filepath = 'datasets/mnist/train-images.idx3-ubyte'
-        training_labels_filepath = 'datasets/mnist/train-labels.idx1-ubyte'
-        test_images_filepath = 'datasets/mnist/t10k-images.idx3-ubyte'
-        test_labels_filepath = 'datasets/mnist/t10k-labels.idx1-ubyte'
+        training_images_filepath = 'code/datasets/mnist/train-images.idx3-ubyte'
+        training_labels_filepath = 'code/datasets/mnist/train-labels.idx1-ubyte'
+        test_images_filepath = 'code/datasets/mnist/t10k-images.idx3-ubyte'
+        test_labels_filepath = 'code/datasets/mnist/t10k-labels.idx1-ubyte'
         x_train, y_train = read_images_labels(training_images_filepath, training_labels_filepath)
         x_test, y_test = read_images_labels(test_images_filepath, test_labels_filepath)
         print(x_train.shape, y_train.shape)
@@ -192,7 +197,7 @@ def import_data(model_args:dict) -> tuple[np.ndarray, np.ndarray, None]:
         X = []
         labels = []
         for i in range(1,21):
-            data_directory = f"datasets/coil20/{i}/"
+            data_directory = f"code/datasets/coil20/{i}/"
             file_names = [n for n in os.listdir(data_directory) if n[-3:] == "png"]
             file_names.sort()
             
@@ -204,8 +209,8 @@ def import_data(model_args:dict) -> tuple[np.ndarray, np.ndarray, None]:
 
         X, labels = np.vstack(X), np.vstack(labels)
 
-        print("X:", X.shape)
-        print("labels:", labels.shape)
+        # print("X:", X.shape)
+        # print("labels:", labels.shape)
 
     elif model_args['dataname'] == "nisis":
         raise ValueError(f"TODO: import dataset {model_args['dataname']}.")
@@ -217,7 +222,7 @@ def import_data(model_args:dict) -> tuple[np.ndarray, np.ndarray, None]:
         X = []
         labels = []
         for i in range(1,41):
-            data_directory = f"datasets/orl/s{i}/"
+            data_directory = f"code/datasets/orl/s{i}/"
             file_names = [n for n in os.listdir(data_directory) if n[-3:] == "pgm"]
             file_names.sort()
             

@@ -1,6 +1,7 @@
 import numpy as np
 
 from scipy.sparse import csr_matrix, csgraph
+from scipy.spatial.distance import cdist
 
 import models
 
@@ -26,10 +27,13 @@ class Isomap(models.Neighbourhood):
                 largest_component_idx = np.where(labels == largest_component)[0]
                 other_idx = np.where(labels != largest_component)[0]
 
-                distances = np.linalg.norm(X[largest_component_idx][:, np.newaxis] - X[other_idx], axis=2)
-                closest_idx = other_idx[np.argmin(distances, axis=0)[0]]
+                distances = cdist(X[largest_component_idx], X[other_idx])
+                shortest_distance = np.min(distances)
+                ab = np.where(distances == shortest_distance)
 
-                self.NM[largest_component_idx, closest_idx] = np.linalg.norm(X[largest_component_idx] - X[closest_idx])
+                a_idx, b_idx = largest_component_idx[ab[0]], other_idx[ab[1]]
+                self.NM[a_idx, b_idx] = np.linalg.norm(X[a_idx] - X[b_idx])
+
                 cc, labels = csgraph.connected_components(self.NM, directed=False)
 
         # Compute shortest paths using Dijkstra

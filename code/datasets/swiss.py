@@ -46,6 +46,35 @@ def parallel(n_points, noise, random_state=None):
 
     return X, labels, t
 
+def two(n_points, noise, random_state=None):
+    np.random.seed(random_state) if random_state is not None else None
+
+    X1, labels1, t1 = default(n_points, noise, random_state)
+    X2, labels2, t2 = default(n_points, noise, random_state)
+    
+    angle_radians = - np.pi / 4
+    rotation_matrix = np.array([
+        [np.cos(angle_radians), -np.sin(angle_radians), 0],
+        [np.sin(angle_radians), np.cos(angle_radians), 0],
+        [0, 0, 1]
+    ])
+
+    X1 = X1 @ rotation_matrix.T
+    
+    X1[:, 0] += 20
+    X1[:, 1] += 20
+    X1[:, 2] += 30
+
+
+    X2[:, 1] += -20
+
+    X = np.vstack([X1, X2])
+    labels = np.hstack([labels1, labels2])
+    t = np.vstack([t1, t2])
+    # t = np.hstack([np.ones((X.shape[0], 1)), 2 * np.ones((X.shape[0], 1))])
+
+    return X, labels, t
+
 def changing(n_points, noise, random_state=None):
     np.random.seed(random_state) if random_state is not None else None
 

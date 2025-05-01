@@ -4,3 +4,4 @@ code/datasets/HIVA-agno
 code/datasets/HIVA-prior
 .venv
 cache
+out.txt
