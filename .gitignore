@@ -1,7 +1,9 @@
-drtoolbox
 desktop.ini
+
 code/datasets/HIVA-agno
 code/datasets/HIVA-prior
+
+drtoolbox
 .venv
 cache
-out.txt
+logs

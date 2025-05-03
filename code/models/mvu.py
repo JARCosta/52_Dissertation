@@ -4,6 +4,7 @@ import cvxpy as cvx
 
 import mosek
 from scipy.sparse import csgraph, csr_matrix
+from scipy.spatial.distance import cdist
 
 import models.neighbourhood
 import models.extensions
@@ -23,27 +24,46 @@ class MVU(models.Neighbourhood):
         n_samples = X.shape[0]
 
 
+        # cc, labels = csgraph.connected_components(self.NM, directed=False)
+        # if cc > 1:
+        #     print(f"Warning: {cc} components found. Using largest component and nystrom approximating the rest.")
+        #     largest_component_indexes = np.where(labels == np.argmax(np.bincount(labels)))[0]
+        #     model = Nystrom(self.model_args, self.n_neighbors, self.eps, subset_indices=largest_component_indexes)
+        #     model.neigh_matrix(X[largest_component_indexes])
+        #     model._fit(X)
+        #     self.kernel_ = model.kernel_
+        #     return self
+
         cc, labels = csgraph.connected_components(self.NM, directed=False)
         if cc > 1:
-            print(f"Warning: {cc} components found. Using largest component and nystrom approximating the rest.")
-            largest_component_indexes = np.where(labels == np.argmax(np.bincount(labels)))[0]
-            model = Nystrom(self.model_args, self.n_neighbors, self.eps, subset_indices=largest_component_indexes)
-            model.neigh_matrix(X[largest_component_indexes])
-            model._fit(X)
-            self.kernel_ = model.kernel_
-            return self
+            print(f"Warning: {cc} components found. Adding shortest connections possible to merge components.")
+            while cc > 1:
+                largest_component = np.argmax(np.bincount(labels))
+                largest_component_idx = np.where(labels == largest_component)[0]
+                other_idx = np.where(labels != largest_component)[0]
+
+                distances = cdist(X[largest_component_idx], X[other_idx])
+                shortest_distance = np.min(distances)
+                ab = np.where(distances == shortest_distance)
+
+                a_idx, b_idx = largest_component_idx[ab[0]], other_idx[ab[1]]
+                self.NM[a_idx, b_idx] = np.linalg.norm(X[a_idx] - X[b_idx])
+
+                cc, labels = csgraph.connected_components(self.NM, directed=False)
+
 
         # inner product matrix of the original data
         inner_prod = (X @ X.T)
         ratio = 10**(np.round(np.log10(np.max(inner_prod)))-2)
-        inner_prod = inner_prod / ratio
-
-        # inner_prod = inner_prod * (100 / np.median(inner_prod)) #np.max(inner_prod))
-        if starting_K is None:
-            starting_K = inner_prod
+        inner_prod = (inner_prod / ratio).astype(inner_prod.dtype)
+        # print(inner_prod.dtype)
 
         K = cvx.Variable((n_samples, n_samples), PSD=True)
-        K.value = starting_K #TODO: previously optimized K's are not fully PSD (check the smallest eigenvalues, maybe apply same clause as in the embedding (if neg, 0))
+        if starting_K is not None:
+            K.value = starting_K #TODO: previously optimized K's are not fully PSD (check the smallest eigenvalues, maybe apply same clause as in the embedding (if neg, 0))
+        else:
+            # K.value = np.zeros((n_samples, n_samples))
+            K.value = inner_prod
         _X = cvx.Constant(inner_prod)
 
         objective = cvx.Maximize(cvx.trace(K))

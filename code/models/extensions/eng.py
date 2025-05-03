@@ -34,7 +34,7 @@ class ENG:
 
                 eta_d[i] = np.sum(sigma_i[range(d)]) / np.sum(sigma_i[range(min(X.shape[1], k))])
                 # print(sigma_i, eta_d[i])
-                print(f"eta_d:\t {i}/{Y.shape[0]}", end="\r")
+                # print(f"eta_d:\t {i}/{Y.shape[0]}", end="\r")
             print()
             
             return np.mean(eta_d)

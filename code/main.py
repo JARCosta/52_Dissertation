@@ -10,6 +10,7 @@ from scipy.sparse.csgraph import connected_components
 
 import models
 import measure
+from generate_data import get_dataset
 from utils import stamp
 from plot import plot
 
@@ -96,108 +97,62 @@ def best_args(threads_return:multiprocessing.managers.DictProxy) -> tuple[int, d
     return k_best, k_best_measures
 
 
-def model_launcher(dataname, n_points, X, labels, t):
-    for model in [
+def model_launcher(model_args:dict, models:list, threaded:bool, X:np.ndarray, labels:np.ndarray, t:np.ndarray):
+    
+    for model in models:
+        model_args['model'] = model
 
-        # "pca", 
-        # "isomap",
-        # "mvu",
-        # "lle",
-        # "le",
-        # "hlle",
-
-        # Sub
-        # "isomap.skl",
-        # "lle.skl",
-        # "le.skl",
-        # "hlle.skl",
-        # "ltsa.skl",
-        
-
-
-
-
-        # # ENG paper
-        # "isomap",
-        # "isomap.eng",
-        # "lle",
-        # "lle.eng",
-        # "le",
-        # "le.eng",
-        # "hlle",
-        # "hlle.eng",
-        # # "jme",
-        
-        # Sub
-        # "lle.skl",
-        # "le.skl",
-        # "hlle.skl",
-        
-
-
-        # "tsne.skl",
-        
-        # "isomap.nystrom",
-        # "isomap.adaptative",
-        # "isomap.our",
-        # "mvu.nystrom",
-
-        # "umap.lib",
-        ]:
-    # for model in ["isomap", "isomap.nystrom", "isomap.eng", "isomap.adaptative"]:
-        
         threads:list[multiprocessing.Process] = []
         manager = multiprocessing.Manager()
         threads_return = manager.dict()
+        for n_neighbors in range(5, 16):
+            model_args['#neighs'] = n_neighbors
 
-
-        for n_neighbors in range(5, 11):
-            if np.any([i in model for i in ["pca", "isomap", "le", "lle", "hlle", "ltsa"]]):
-                # four.moons, two.swiss, mit-cbcl
-                if dataname in ["mnist"]:
-                    n_components = 20
-                elif dataname in ["hiva", "nisis"]:
-                    n_components = 15
-                elif dataname in ["orl",]:
-                    n_components = 8
-                elif dataname in ["difficult", "coil20"]:
-                    n_components = 5
-                elif dataname in ["swiss", "twinpeaks", "broken.swiss", "paralell.swiss", "broken.s_curve", ]:
-                    n_neighbors = 2
-                elif dataname in ["helix",]:
-                    n_components = 1
+            if np.any([i in model for i in ["pca", "isomap", "le", "lle", "hlle", "ltsa", ".eng"]]):
+                # TODO: four.moons, two.swiss, mit-cbcl
+                if model_args['dataname'] in ["mnist"]:
+                    model_args["#components"] = 20
+                elif model_args['dataname'] in ["hiva", "nisis"]:
+                    model_args["#components"] = 15
+                elif model_args['dataname'] in ["orl",]:
+                    model_args["#components"] = 8
+                elif model_args['dataname'] in ["difficult", "coil20"]:
+                    model_args["#components"] = 5
+                elif model_args['dataname'] in ["swiss", "twinpeaks", "broken.swiss", "paralell.swiss", "broken.s_curve", ]:
+                    model_args["#components"] = 2
+                elif model_args['dataname'] in ["helix",]:
+                    model_args["#components"] = 1
+                else:
+                    raise ValueError(f"Unknown dataset {model_args['dataname']} for model {model}")
             else:
-                n_components = None
+                model_args["#components"] = None
+
+            model_args['eps'] = 1e-3 if np.any([i in model for i in ["mvu", "mvu.ineq", "eng", "adaptative", "adaptative2"]]) else None
+            model_args['plotation'] = False
+            model_args['verbose'] = False
 
             model_args = {
-                k: v for k, v in {
-                    'dataname': dataname,
-                    '#points': n_points,
-                    '#neighs': n_neighbors,
-                    'model': model,
-                    '#components': n_components,
-                    'eps': 1e-3 if np.any([i in model for i in ["mvu", ]]) else None,
-                    'plotation': False,
-                    'verbose': False,
-                }.items() if v is not None
+                k: v for k, v in model_args.items() if v is not None
             }
 
-            thread_func(threads_return, X, labels, model_args)
-            if model_args['plotation']:
-                input("continue?")
+            if threaded:
+                # t = threading.Thread(target=thread_func, args=[threads_return, X, labels, model_args])
+                t = multiprocessing.Process(target=thread_func, args=[threads_return, X, labels, model_args])
+                t.start()
+                threads.append(t)
+                print(f"launched {t}")
+            else:
+                thread_func(threads_return, X, labels, model_args)
+                if model_args['plotation']:
+                    input("continue?")
             
-        #     t = threading.Thread(target=thread_func, args=[threads_return, X, labels, model_args])
-        #     t = multiprocessing.Process(target=thread_func, args=[threads_return, X, labels, model_args])
-        #     t.start()
-        #     threads.append(t)
-        #     print(f"launched {t}")
-        # print("waiting")
-        # [t.join() for t in threads]
-        # print("joined")
+        print("waiting")
+        [t.join() for t in threads]
+        print("joined")
         
         if len(threads_return) == 0:
             print("No results")
-            breakpoint()
+            continue
 
         k_best, best_measure = best_args(threads_return)
 
@@ -230,69 +185,28 @@ def model_launcher(dataname, n_points, X, labels, t):
             f.write(json.dumps(measures, indent=4) + "\n")
 
 
-
-if __name__ == "__main__":
-    from generate_data import get_dataset
-
-    n_points = 3000
-
-    datasets = [
-        # # comparative review
-        # 'swiss',
-        # 'helix',
-        # 'twinpeaks',
-        # 'broken.swiss',
-        # 'difficult',
-
-        # 'mnist',
-        # 'coil20',
-        # 'orl',
-        # 'nisis',
-        # 'hiva',
-
-        # # ENG paper
-        # 'broken.swiss',
-        # 'paralell.swiss',
-        # 'broken.s_curve',
-        # 'four.moons',
-        # 'two.swiss',
-        'coil20',
-        # # 'mit-cbcl', # TODO: import
-
-
-        # 'teapots',
-        # 'swiss_toro',
-
-        # 's_curve',
-        # 'changing.swiss',
-        # '3d_clusters',
-    ]
-
-    def no_method_measure(dataname:str, n_points:int):
-        X, labels, t = get_dataset({'model': "set", 'dataname': dataname, "#points": n_points}, cache=False, random_state=11)
-        None_1_NN = measure.one_NN(X, labels)
-        with open("cache/measures.csv", "a") as f:
-            f.write(f"{dataname},none,{n_points},None,{None_1_NN},None,None\n")
-    # for dataname in datasets:
-    #     no_method_measure(dataname, n_points)
-    # input("finished?")
-
+def main(paper:str, models:list, datasets:list, n_points:int, threaded:bool) -> None:
+    model_args = {}
+    model_args["paper"] = paper
+    model_args["#points"] = n_points
 
     threads:list[multiprocessing.Process] = []
 
     for dataname in datasets:
+        model_args['dataname'] = dataname
         X, labels, t = get_dataset({'model': "set", 'dataname': dataname, "#points": n_points}, cache=False, random_state=11)
         # plot(X, c=t[:, 0], block=True, title=f"{dataname} {n_points} points")
         
-        model_launcher(dataname, n_points, X, labels, t)
-
-    #     t = multiprocessing.Process(target=model_launcher, args=[dataname, n_points, X, labels, t])
-    #     # t = threading.Thread(target=model_launcher, args=[dataname, n_points, X, labels, t])
-    #     t.start()
-    #     threads.append(t)
-    #     print(f"launched {t}")
-    # [t.join() for t in threads]        
-    # input("finished")
+        if threaded:
+            t = multiprocessing.Process(target=model_launcher, args=[model_args, models, threaded, X, labels, t])
+            t.start()
+            threads.append(t)
+            print(f"launched {t}")
+        else:
+            model_launcher(model_args, models, threaded, X, labels, t)
+    
+    [t.join() for t in threads]        
+    input("finished")
 
 
 

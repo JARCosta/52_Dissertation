@@ -59,7 +59,7 @@ class LocallyLinearEmbedding(models.Neighbourhood):
         # 2. Compute Reconstruction Weights W
         W = np.zeros((n_samples, n_samples))
         for i in range(n_samples):
-            print(i)
+            # print(f"{i}/{n_samples}", end="\r")
             neighbors_i = np.where(self.NM[i] != 0)[0].tolist() # Indices of neighbors for point i
             X_i = X[i]
             X_neighbors = X[neighbors_i] # Coordinates of neighbors

@@ -133,7 +133,7 @@ def generate_data(model_args:dict, noise:float=0.05, random_state:int=None) -> t
 
     # save_cache(model_args, X, "X")
     # save_cache(model_args, labels, "l")
-    # if type(t) != type(None):
+    # if t is not None:
     #     save_cache(model_args, t, "t")
     return X, labels, t
 
@@ -180,15 +180,15 @@ def import_data(model_args:dict) -> tuple[np.ndarray, np.ndarray, None]:
         test_images_filepath = 'code/datasets/mnist/t10k-images.idx3-ubyte'
         test_labels_filepath = 'code/datasets/mnist/t10k-labels.idx1-ubyte'
         x_train, y_train = read_images_labels(training_images_filepath, training_labels_filepath)
-        x_test, y_test = read_images_labels(test_images_filepath, test_labels_filepath)
-        print(x_train.shape, y_train.shape)
-        print(x_test.shape, y_test.shape)
+        # x_test, y_test = read_images_labels(test_images_filepath, test_labels_filepath)
+        # print(x_train.shape, y_train.shape)
+        # print(x_test.shape, y_test.shape)
         
         # X = np.vstack([x_train, x_test])
         # labels = np.vstack([y_train, y_test])
         X, labels = x_train, y_train
 
-        print(X.shape, labels.shape)
+        # print(X.shape, labels.shape)
     
     elif model_args['dataname'] == "coil20":
         from PIL import Image
@@ -208,6 +208,7 @@ def import_data(model_args:dict) -> tuple[np.ndarray, np.ndarray, None]:
                 labels.append(i)
 
         X, labels = np.vstack(X), np.vstack(labels)
+        X = X.astype(np.float64)
 
         # print("X:", X.shape)
         # print("labels:", labels.shape)
@@ -232,12 +233,11 @@ def import_data(model_args:dict) -> tuple[np.ndarray, np.ndarray, None]:
                 X.append(x.reshape(x.shape[0] * x.shape[1]))
                 labels.append(np.array([i, ]))
 
-        print(type(X), type(labels))
         X, labels = np.vstack(X), np.vstack(np.array(labels))
-        print(type(X), type(labels))
+        X = X.astype(np.float64)
 
-        print(X, X.shape)
-        print(labels, labels.shape)
+        # print(X, X.shape)
+        # print(labels, labels.shape)
     
     elif model_args['dataname'] == "hiva":
         raise ValueError(f"TODO: import dataset {model_args['dataname']}.")
@@ -247,9 +247,9 @@ def import_data(model_args:dict) -> tuple[np.ndarray, np.ndarray, None]:
     
     
     # save_cache(model_args, X, "X")
-    # if type(labels) != type(None):
+    # if labels is not None:
     #     save_cache(model_args, labels, "l")
-    # if type(t) != type(None):
+    # if t is not None:
     #     save_cache(model_args, t, "t")
 
     return X, labels, t
@@ -276,7 +276,7 @@ def get_dataset(model_args:dict, cache:bool=True, random_state:int=None) -> tupl
 
     if cache:
         X, labels, t = load_set(model_args)
-        if type(X) != type(None):
+        if X is None:
             from utils import bcolors
             print(bcolors.LIGHTGREEN + "Dataset loaded from cache" + bcolors.ENDC)
             return X, labels, t

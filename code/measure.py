@@ -44,7 +44,7 @@ def TC(X, Y, n_neighbors) -> tuple[float, float]:
     return round(float(T), 3), round(float(C), 3)
 
 def one_NN(Y, labels) -> float:
-    if type(labels) == type(None):
+    if labels is None:
         return None
     
     _, _, IM = k_neigh(Y, 1, reduction=False) # need symetrix
@@ -68,7 +68,7 @@ if __name__ == "__main__":
         from plot import plot
         plot(X, block=False, c=labels, title=str(model_args))
 
-        if type(X) == type(None):
+        if X is None:
             input(f"TODO: X[{dataname}] = None")
         
         for model in ["isomap", "mvu", "mvu.ineq"]:
@@ -87,7 +87,7 @@ if __name__ == "__main__":
 
 
                 Y:np.ndarray = load_cache(model_args, "Y")
-                if type(Y) == type(None):
+                if Y is None:
                     print(f"Skipping {model_args}")
                     continue
 

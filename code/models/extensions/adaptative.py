@@ -318,7 +318,7 @@ class Adaptative2:
 
             # breakpoint()
 
-            print(f"{i}/{N}", end="\r")
+            # print(f"{i}/{N}", end="\r")
             for j in range(N):
                 if neigh_matrix[i, j] == 0:  # If point j is not in the contracted neighborhood
                     x_j = X[j]

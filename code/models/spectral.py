@@ -28,9 +28,11 @@ class Spectral(ABC):
         stamp.print(f"*\t {self.model_args['model']}\t fit")
         return ret
 
-    def _transform(self, verbose:bool=False):
+    def _transform(self, verbose:bool=False) -> np.ndarray | None:
         if self.kernel_ is None:
-            raise ValueError("Kernel matrix is not initialized. Run fit(X) first.")
+            # raise ValueError("Kernel matrix is not initialized. Run fit(X) first.")
+            print("Warning: Kernel matrix is not initialized. Run fit(X) first.")
+            return
         
         if self.n_components is None:
             eigenvalues, eigenvectors = np.linalg.eigh(self.kernel_)
