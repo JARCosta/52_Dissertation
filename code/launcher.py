@@ -35,7 +35,7 @@ if __name__ == "__main__":
             'broken.swiss',
             'difficult',
 
-            'mnist', # TODO: memory issues
+            # 'mnist', # TODO: memory issues
             'coil20',
             'orl',
             # 'nisis',
