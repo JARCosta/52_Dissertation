@@ -68,13 +68,11 @@ def run(X, model_args):
     # MVU ##################################################
     ########################################################
 
-
     elif model_args['model'].lower() == "mvu":
 
         model = models.mvu.MVU(model_args, model_args['#neighs'], model_args['eps'])
         Y = model.fit_transform(X)
     
-
     elif model_args['model'].lower() == "mvu.ineq":
 
         model = models.mvu.Ineq(model_args['#neighs'], model_args['eps'])
@@ -99,6 +97,7 @@ def run(X, model_args):
 
         model = models.mvu.Our(model_args, model_args['#neighs'], model_args['eps'])
         Y = model.fit_transform(X)
+
 
     ########################################################
     # LE ###################################################

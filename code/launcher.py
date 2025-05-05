@@ -1,11 +1,14 @@
 import argparse
+
 from main import main
+from generate_data import get_dataset
+import measure
 
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Run the model launcher.")
     parser.add_argument("--paper", type=str, default=["comparative", "eng"], help="Paper to use for the model launcher.")
-    parser.add_argument("--n_points", type=int, default=3000, help="Number of points to use for the model launcher.")
+    parser.add_argument("--n_points", type=int, default=2000, help="Number of points to use for the model launcher.")
     parser.add_argument("--threaded", action='store_true', default=False, help="Use threading for the model launcher.")
     args = parser.parse_args()
 
@@ -57,9 +60,9 @@ if __name__ == "__main__":
             "hlle.skl",    
         ]
         datasets = [
-            'broken.swiss',
-            'paralell.swiss',
-            'broken.s_curve',
+            # 'broken.swiss',
+            # 'paralell.swiss',
+            # 'broken.s_curve',
             'four.moons',
             'two.swiss',
             'coil20', 
@@ -89,10 +92,12 @@ if __name__ == "__main__":
         datasets = [
         ]
         for dataname in datasets:
-            X, labels, t = get_dataset({'model': "set", 'dataname': dataname, "#points": n_points}, cache=False, random_state=11)
+            X, labels, t = get_dataset({'model': "set", 'dataname': dataname, "#points": args.n_points}, cache=False, random_state=11)
             None_1_NN = measure.one_NN(X, labels)
-            with open("cache/measures.csv", "a") as f:
-                f.write(f"{dataname},none,{n_points},None,{None_1_NN},None,None\n")
+            with open("measures.best.csv", "a") as f:
+                f.write(f"none,{dataname},none,{args.n_points},None,{None_1_NN},None,None\n")
+            with open("measures.all.csv", "a") as f:
+                f.write(f"none,{dataname},none,{args.n_points},None,{None_1_NN},None,None\n")
         input("finished?")
 
     else:

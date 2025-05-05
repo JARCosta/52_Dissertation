@@ -14,22 +14,22 @@ from generate_data import get_dataset
 from utils import stamp
 from plot import plot
 
-def thread_func(threads_return:multiprocessing.managers.SyncManager, X:np.ndarray, labels:np.ndarray, model_args:dict) -> tuple[dict, np.ndarray, np.ndarray, np.ndarray, np.ndarray] | None:
+def model_func(threads_return:multiprocessing.managers.SyncManager, X:np.ndarray, labels:np.ndarray, model_args:dict) -> tuple[dict, np.ndarray, np.ndarray, np.ndarray, np.ndarray] | None:
     print(f"Running {model_args['model']} on {model_args['dataname']} with {model_args['#neighs']} neighbors")
     Y = models.run(X, model_args)
 
-    if Y is not None:
-        if model_args['plotation']:
-            plot(Y, c=labels, block=False, title=f"{model_args['model']} {model_args['dataname']} {model_args['#neighs']} neighbors")
-        stamp.set()
-        One_nn = measure.one_NN(Y, labels)
-        stamp.print_set(f"*\t 1-NN \t {One_nn}")
-        T, C = measure.TC(X, Y, model_args["#neighs"])
-        stamp.print_set(f"*\t T, C \t {T}, {C}")
-        
-        threads_return[model_args['#neighs']] = (model_args, Y, One_nn, T, C)
-        return model_args, Y, One_nn, T, C
-    return
+    if Y is None:
+        print(f"Warning: could not compute Y for {model_args['model']} on {model_args['dataname']}")
+        return None
+    if model_args['plotation']:
+        plot(Y, c=labels, block=False, title=f"{model_args['model']} {model_args['dataname']} {model_args['#neighs']} neighbors")
+    stamp.set()
+    One_nn = measure.one_NN(Y, labels)
+    stamp.print_set(f"*\t 1-NN \t {One_nn}")
+    T, C = measure.TC(X, Y, model_args["#neighs"])
+    stamp.print_set(f"*\t T, C \t {T}, {C}")
+    
+    threads_return[model_args['#neighs']] = (model_args, Y, One_nn, T, C)
 
 def plot_args(results:np.ndarray, model_args:dict, k_best:int) -> None:
     fig, ax1 = plt.subplots()
@@ -61,10 +61,15 @@ def plot_args(results:np.ndarray, model_args:dict, k_best:int) -> None:
         plt.show()
     plt.savefig(f"cache/{model_args['model']}/{model_args['dataname']}.png")
 
-def best_args(threads_return:multiprocessing.managers.DictProxy) -> tuple[int, dict]:
+def best_args(threads_return:multiprocessing.managers.DictProxy, labels:np.ndarray) -> tuple[int, dict]:
+    if len(threads_return) == 0:
+        print("No results")
+        return
     results = []
     for model_args, _, One_nn, T, C in threads_return.values():
         results.append([model_args['#neighs'], One_nn, T, C])
+        with open("measures.all.csv", "a") as f:
+            f.write(f"{model_args['paper']},{model_args['dataname']},{model_args['model']},{model_args['#points']},{model_args['#neighs']},{One_nn},{T},{C}\n")
     results.sort(key=lambda x: x[0])
     results = np.array(results).T
 
@@ -94,7 +99,13 @@ def best_args(threads_return:multiprocessing.managers.DictProxy) -> tuple[int, d
             k_best_measures = {"1-NN": k[1], "T": k[2], "C": k[3]}
     
     plot_args(results, model_args, k_best) # Warning: model_args defined inside the loop (last thread computed)
-    return k_best, k_best_measures
+    
+    print(f"Best {model_args['dataname']} {model_args['model']} {k_best_measures}, k={k_best}")
+    with open("measures.best.csv", "a") as f:
+        f.write(f"{model_args['paper']},{model_args['dataname']},{model_args['model']},{model_args['#points']},{k_best},{k_best_measures['1-NN']},{k_best_measures['T']},{k_best_measures['C']}\n")
+
+    if model_args['plotation']:
+        plot(threads_return[k_best][1], c=labels, block=True, title=f"Best {model_args['dataname']} {model_args['model']} {k_best_measures}")
 
 
 def model_launcher(model_args:dict, models:list, threaded:bool, X:np.ndarray, labels:np.ndarray, t:np.ndarray):
@@ -122,67 +133,34 @@ def model_launcher(model_args:dict, models:list, threaded:bool, X:np.ndarray, la
                     model_args["#components"] = 2
                 elif model_args['dataname'] in ["helix",]:
                     model_args["#components"] = 1
+                elif model_args['dataname'] in ["four.moons", "two.swiss"]:
+                    model_args["#components"] = 2 #3 # TODO: confirm
                 else:
                     raise ValueError(f"Unknown dataset {model_args['dataname']} for model {model}")
             else:
-                model_args["#components"] = None
+                model_args["#components"] = None # other models don't need #components to be specified
 
             model_args['eps'] = 1e-3 if np.any([i in model for i in ["mvu", "mvu.ineq", "eng", "adaptative", "adaptative2"]]) else None
             model_args['plotation'] = False
             model_args['verbose'] = False
+            model_args = {k: v for k, v in model_args.items() if v is not None}
 
-            model_args = {
-                k: v for k, v in model_args.items() if v is not None
-            }
-
-            if threaded:
-                # t = threading.Thread(target=thread_func, args=[threads_return, X, labels, model_args])
-                t = multiprocessing.Process(target=thread_func, args=[threads_return, X, labels, model_args])
-                t.start()
-                threads.append(t)
-                print(f"launched {t}")
-            else:
-                thread_func(threads_return, X, labels, model_args)
+            if not threaded:
+                model_func(threads_return, X, labels, model_args)
                 if model_args['plotation']:
                     input("continue?")
-            
-        print("waiting")
+            else:
+                t = multiprocessing.Process(target=model_func, args=[threads_return, X, labels, model_args])
+                threads.append(t)
+                print(f"launching sub-thread {t}")
+                t.start()
         [t.join() for t in threads]
         print("joined")
         
-        if len(threads_return) == 0:
-            print("No results")
-            continue
-
-        k_best, best_measure = best_args(threads_return)
-
-        with open("cache/measures.csv", "a") as f:
-            f.write(f"{model_args['dataname']},{model},{model_args['#points']},{k_best},{best_measure['1-NN']},{best_measure['T']},{best_measure['C']}\n")
-
-        if model_args['plotation']:
-            plot(threads_return[k_best][1], c=labels, block=True, title=f"Best {model_args['dataname']} {model} {best_measure}")
-        print(f"Best {model_args['dataname']} {model} {best_measure}, k={k_best}")
-
-        model_args['#points'] = str(model_args['#points'])
-        model_args.pop('plotation')
-        model_args.pop('verbose')
-        model_args.pop('#neighs')
-        model_args.pop('#components') if 'components' in model_args.keys() else None
-
-        try:
-            with open("cache/measures.json", "r") as f:
-                measures = json.loads(f.read())
-        except FileNotFoundError:
-            measures = {}
-
-        measures[model_args['dataname']] = measures.get(model_args['dataname'], {})
-        measures[model_args['dataname']][model_args['#points']] = measures[model_args['dataname']].get(model_args['#points'], {})
-        measures[model_args['dataname']][model_args['#points']][model] = measures[model_args['dataname']][model_args['#points']].get(model, {})
-        best_measure['k'] = k_best
-        measures[model_args['dataname']][model_args['#points']][model] = best_measure
-
-        with open("cache/measures.json", "w") as f:
-            f.write(json.dumps(measures, indent=4) + "\n")
+        for model_args, _, One_nn, T, C in threads_return.values():
+            with open("measures.all.csv", "a") as f:
+                f.write(f"{model_args['paper']},{model_args['dataname']},{model_args['model']},{model_args['#points']},{model_args['#neighs']},{One_nn},{T},{C}\n")
+        best_args(threads_return, labels)
 
 
 def main(paper:str, models:list, datasets:list, n_points:int, threaded:bool) -> None:
@@ -196,17 +174,17 @@ def main(paper:str, models:list, datasets:list, n_points:int, threaded:bool) -> 
         model_args['dataname'] = dataname
         X, labels, t = get_dataset({'model': "set", 'dataname': dataname, "#points": n_points}, cache=False, random_state=11)
         # plot(X, c=t[:, 0], block=True, title=f"{dataname} {n_points} points")
-        
-        if threaded:
-            t = multiprocessing.Process(target=model_launcher, args=[model_args, models, threaded, X, labels, t])
-            t.start()
-            threads.append(t)
-            print(f"launched {t}")
-        else:
-            model_launcher(model_args, models, threaded, X, labels, t)
-    
-    [t.join() for t in threads]        
-    input("finished")
+        t = multiprocessing.Process(target=model_launcher, args=[model_args, models, threaded, X, labels, t])
+        print(f"launching thread     {t}")
+        t.start()
+        threads.append(t)
+        if not threaded:
+            print("joining")
+            t.join()
+    if threaded:
+        print("joining")
+        [t.join() for t in threads]
+    print("finished")
 
 
 

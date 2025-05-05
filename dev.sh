@@ -9,4 +9,4 @@
 #SBATCH --time=24:00:00
 
 source .venv/bin/activate
-python code/launcher.py --paper dev --n_points 1000 --threaded
+python code/launcher.py --paper dev --threaded

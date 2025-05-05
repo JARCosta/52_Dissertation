@@ -87,12 +87,12 @@ class MVU(models.Neighbourhood):
         print("Length of constraints:",len(constraints))
 
         problem = cvx.Problem(objective, constraints)
-        problem.solve(solver="MOSEK", verbose=True, eps=self.eps)
+        problem.solve(solver="SCS", verbose=True, eps=self.eps)
         if problem.status != cvx.OPTIMAL:
             print("Warning: Problem not solved optimally. Status:", problem.status)
             raise ValueError("Problem not solved optimally")
+        print(problem.status) # TODO: when threaded, from here on nothing is printed, probably gets silently killed; when single-threaded, it gets killed (oom, MOSEK)
         self.kernel_ = K.value
-
         return self
 
 class Ineq(MVU):
