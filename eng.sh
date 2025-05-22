@@ -1,7 +1,8 @@
 #!/bin/bash
 #SBATCH --job-name=mvu-eng_models
-#SBATCH --mem=50G # ram
-#SBATCH --mincpus=1
+#SBATCH --mem=30G # ram
+#SBATCH --mincpus=3
+#SBATCH --cpus-per-task=3
 #SBATCH --output=logs/job.%A.eng.out # %a
 
 

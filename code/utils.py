@@ -55,6 +55,34 @@ class Stamp:
 stamp = Stamp()
 
 ############################################################
+# MEASURES #################################################
+############################################################
+
+def store_measure(model_args:dict, One_nn:float=None, T:float=None, C:float=None, fail=None):
+    model_args['end'] = datetime.datetime.now().strftime("%d-%H:%M:%S")
+    data = {
+        'start': model_args['start'],
+        'end': model_args['end'],
+        'dataname': model_args['dataname'],
+        'model': model_args['model'],
+        '#points': model_args['#points'],
+        '#neighs': model_args['#neighs'],
+    }
+    if fail is not None:
+        data['1-NN'] = None
+        data['T'] = None
+        data['C'] = None
+        data['fail'] = fail
+        print(f"Warning: storing failed model ({fail})")
+    else:
+        data['1-NN'] = One_nn
+        data['T'] = T
+        data['C'] = C
+    with open("measures.all.csv", "a") as f:
+        f.write(str(list(data.values())).replace("'", "").replace("[", "").replace("]", "").replace(", ", ",") + "\n")
+
+
+############################################################
 # CACHE ####################################################
 ############################################################
 

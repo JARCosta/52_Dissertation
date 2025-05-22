@@ -7,3 +7,4 @@ drtoolbox
 .venv
 cache
 logs
+logs.old

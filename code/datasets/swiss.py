@@ -19,8 +19,10 @@ def default(n_points, noise, random_state=None):
 def broken(n_points, noise, random_state=None):
     np.random.seed(random_state) if random_state is not None else None
     
-    t1 = (3 * np.pi / 2) * (1 + 2 * np.random.rand(int(np.ceil(n_points / 2)), 1) * 0.4)
-    t2 = (3 * np.pi / 2) * (1 + 2 * (np.random.rand(int(np.floor(n_points / 2)), 1) * 0.4 + 0.6))
+    # t1 = (3 * np.pi / 2) * (1 + 2 * np.random.rand(int(np.ceil(n_points / 2)), 1) * 0.4)
+    # t2 = (3 * np.pi / 2) * (1 + 2 * (np.random.rand(int(np.floor(n_points / 2)), 1) * 0.4 + 0.6))
+    t1 = (3 * np.pi / 2) * (1 + 2 * np.random.rand(n_points, 1) * .4)
+    t2 = (3 * np.pi / 2) * (1 + 2 * (np.random.rand(n_points, 1) * .4 + .6))
     t = np.vstack([t1, t2])
     height = 30 * np.random.rand(n_points, 1)
     X = np.hstack([

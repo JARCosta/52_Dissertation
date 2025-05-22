@@ -55,9 +55,10 @@ class Spectral(ABC):
                 if eigenvalues[i] > (np.median(eigenvalues) + np.std(eigenvalues)):
                     eigenvalues_idx.append(i)
 
-            eigenvalues = eigenvalues[eigenvalues_idx]
-            eigenvectors = eigenvectors[:, eigenvalues_idx]
-            print(f"Selected eigenvalues:", eigenvalues)
+            eigenvalues = eigenvalues[:self.model_args['#components']:]
+            eigenvectors = eigenvectors[:, :self.model_args['#components']:]
+            if verbose:
+                print(f"Eigenvalues (top {self.model_args['#components']}):", eigenvalues)
         else:
             # Take only the top `n_components`
             eigenvalues = eigenvalues[:self.n_components]
