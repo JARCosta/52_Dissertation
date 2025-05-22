@@ -54,6 +54,9 @@ class Stamp:
 
 stamp = Stamp()
 
+def warning(text:str):
+    print(f"{bcolors.ORANGE}Warning: {text}{bcolors.ENDC}")
+
 ############################################################
 # MEASURES #################################################
 ############################################################
@@ -73,7 +76,7 @@ def store_measure(model_args:dict, One_nn:float=None, T:float=None, C:float=None
         data['T'] = None
         data['C'] = None
         data['fail'] = fail
-        print(f"Warning: storing failed model ({fail})")
+        warning(f"storing failed model ({fail})")
     else:
         data['1-NN'] = One_nn
         data['T'] = T

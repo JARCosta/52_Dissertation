@@ -22,8 +22,10 @@ def model_func(threads_return:multiprocessing.managers.SyncManager, X:np.ndarray
     Y = models.run(X, model_args)
 
     if Y is None:
-        print(f"Warning: could not compute Y for {model_args['model']} on {model_args['dataname']}")
+        utils.warning(f"could not compute Y for {model_args['model']} on {model_args['dataname']}")
         return None
+    if Y.shape[1] != model_args['#components']:
+        utils.warning(f"Y has {Y.shape[1]} dimensions, expected {model_args['#components']}")
     if model_args['plotation']:
         plot(Y, c=labels, block=False, title=f"{model_args['model']} {model_args['dataname']} {model_args['#neighs']} neighbors")
     stamp.set()

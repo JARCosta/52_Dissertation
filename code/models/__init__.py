@@ -151,7 +151,7 @@ def run(X, model_args):
     
         if model_args['#neighs'] <= model_args['#components'] * (model_args['#components'] + 3) / 2:
             # raise ValueError("n_neighbors must be greater than [n_components * (n_components + 3) / 2]")
-            print(f"Warning: n_neighbors must be greater than [n_components * (n_components + 3) / 2]")
+            utils.warning(f"n_neighbors must be greater than [n_components * (n_components + 3) / 2]")
             return None
         
         model = sklearn.manifold.LocallyLinearEmbedding(n_neighbors=model_args['#neighs'], n_components=model_args['#components'], method='hessian', eigen_solver='dense')

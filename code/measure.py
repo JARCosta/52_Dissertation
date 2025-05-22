@@ -45,7 +45,7 @@ def TC(X, Y, n_neighbors) -> tuple[float, float]:
 
 def one_NN(Y, labels) -> float:
     if labels is None:
-        print("Warning: labels is None")
+        utils.warning("labels is None")
         return None
     
     _, _, IM = k_neigh(Y, 1, reduction=False) # need symetrix

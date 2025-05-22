@@ -4,6 +4,7 @@ from scipy.sparse import csr_matrix, csgraph
 from scipy.spatial.distance import cdist
 
 import models
+import utils
 
 class Isomap(models.Neighbourhood):
     def __init__(self, model_args:dict, n_neighbors:int, n_components:int):
@@ -21,7 +22,7 @@ class Isomap(models.Neighbourhood):
 
         cc, labels = csgraph.connected_components(self.NM, directed=False)
         if cc > 1:
-            print(f"Warning: {cc} components found. Adding shortest connections possible to merge components.")
+            utils.warning(f"{cc} components found. Adding shortest connections possible to merge components.")
             while cc > 1:
                 largest_component = np.argmax(np.bincount(labels))
                 largest_component_idx = np.where(labels == largest_component)[0]
