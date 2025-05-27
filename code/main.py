@@ -16,18 +16,24 @@ from generate_data import get_dataset
 from utils import stamp
 from plot import plot
 
+os.environ['LOKY_MAX_CPU_COUNT'] = str(os.cpu_count())
+os.environ['OMP_NUM_THREADS'] = str(os.cpu_count())
+
 def model_func(threads_return:multiprocessing.managers.SyncManager, X:np.ndarray, labels:np.ndarray, model_args:dict) -> tuple[dict, np.ndarray, np.ndarray, np.ndarray, np.ndarray] | None:
     model_args['start'] = datetime.datetime.now().strftime("%d-%H:%M:%S")
-    print(f"Running {model_args['model']} on {model_args['dataname']} with {model_args['#neighs']} neighbors")
+    utils.important(f"Running {model_args['model']} on {model_args['dataname']} with {model_args['#neighs']} neighbors")
     Y = models.run(X, model_args)
 
     if Y is None:
         utils.warning(f"could not compute Y for {model_args['model']} on {model_args['dataname']}")
         return None
     if Y.shape[1] != model_args['#components']:
-        utils.warning(f"Y has {Y.shape[1]} dimensions, expected {model_args['#components']}")
+        utils.warning(f"Y has {Y.shape[1]} dimensions, intrinsic is {model_args['#components']}. Selecting the first {model_args['#components']} dimensions.")
+        Y = Y[:, :model_args['#components']]
+
     if model_args['plotation']:
-        plot(Y, c=labels, block=False, title=f"{model_args['model']} {model_args['dataname']} {model_args['#neighs']} neighbors")
+        plot(X, c=labels, block=False, title=f"{model_args['dataname']} {model_args['#neighs']} neighbors")
+        plot(Y, c=labels, block=True, title=f"{model_args['model']} {model_args['dataname']} {model_args['#neighs']} neighbors")
     stamp.set()
     One_nn = measure.one_NN(Y, labels)
     stamp.print_set(f"*\t 1-NN \t {One_nn}")
@@ -86,35 +92,25 @@ def best_args(threads_return:multiprocessing.managers.DictProxy, labels:np.ndarr
     TC[np.where(TC == -np.inf)] = best - 1
 
 
-    print(results)
     
     results[2:] = np.round((1 - 10**(results[2:])).astype(float), 3)
 
-    k_best, k_best_measures, k_best_measures_sum = None, None, -np.inf
+    best_k, best_measure_sum = None, -np.inf
+    best_1_NN, best_T, best_C = None, None, None
     for k in results.T:
-        if k[1] is not None:
-            k_sum = np.sum(1 - k[1] + k[2] + k[3])
-            # print(f"k={k[0]}\t -{k[1]} + {k[2]} + {k[3]} = {k_sum}")
-        else:
-            k_sum = np.sum(k[2] + k[3])
-            # print(f"k={k[0]}\t {k[2]} + {k[3]} = {k_sum}")
-        if k_sum > k_best_measures_sum:
-            # print(f"new best: {k_sum}(k={k[0]})")
-            k_best = int(k[0])
-            k_best_measures_sum = k_sum
-            k_best_measures = {"1-NN": k[1], "T": k[2], "C": k[3]}
+        k_sum = np.sum(1 - k[1] + k[2] + k[3]) if k[1] is not None else np.sum(k[2] + k[3])
+        if k_sum > best_measure_sum:
+            best_k = int(k[0])
+            best_measure_sum = k_sum
+            best_1_NN, best_T, best_C = float(k[1]), float(k[2]), float(k[3])
+    plot_args(results, model_args, best_k) # Warning: model_args defined inside the loop (last thread computed)
     
-    plot_args(results, model_args, k_best) # Warning: model_args defined inside the loop (last thread computed)
-    
-    print(f"Best {model_args['dataname']} {model_args['model']} {k_best_measures}, k={k_best}")
-    with open("measures.best.csv", "a") as f:
-        print(model_args)
-        print(k_best)
-        print(k_best_measures)
-        f.write(f"{model_args['paper']},{model_args['dataname']},{model_args['model']},{model_args['#points']},{k_best},{k_best_measures['1-NN']},{k_best_measures['T']},{k_best_measures['C']}\n")
+    print(f"Best {model_args['dataname']} {model_args['model']} {best_1_NN}, {best_T}, {best_C}, k={best_k}")
+    model_args['#neighs'] = best_k
+    utils.store_measure(model_args, best_1_NN, best_T, best_C, best=True)
 
     if model_args['plotation']:
-        plot(threads_return[k_best][1], c=labels, block=True, title=f"Best {model_args['dataname']} {model_args['model']} {k_best_measures}")
+        plot(threads_return[best_k][1], c=labels, block=True, title=f"Best {model_args['dataname']} {model_args['model']} {best_1_NN}, {best_T}, {best_C}")
 
 
 def model_launcher(model_args:dict, models:list, threaded:bool, plotation:bool, verbose:bool, X:np.ndarray, labels:np.ndarray, t:np.ndarray):
@@ -137,7 +133,7 @@ def model_launcher(model_args:dict, models:list, threaded:bool, plotation:bool, 
                 model_args["#components"] = 8
             elif model_args['dataname'] in ["difficult", "coil20"]:
                 model_args["#components"] = 5
-            elif model_args['dataname'] in ["swiss", "twinpeaks", "broken.swiss", "paralell.swiss", "broken.s_curve", ]:
+            elif model_args['dataname'] in ["swiss", "twinpeaks", "broken.swiss", "parallel.swiss", "broken.s_curve", "broken.s_curve.4", "broken.s_curve.1"]:
                 model_args["#components"] = 2
             elif model_args['dataname'] in ["helix",]:
                 model_args["#components"] = 1

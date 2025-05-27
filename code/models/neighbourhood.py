@@ -10,54 +10,59 @@ from plot import plot
 from utils import stamp
 import utils
 
+def k_neigh(data, n_neighbors, bidirectional=False, common_neighbors=False):
+    """
+    Builds a k-nearest neighbor (k-NN) neighborhood matrix.
+
+    Args:
+        data (numpy.ndarray): The dataset (n_samples, n_features).
+        bidirectional (bool, optional): If True, the connections are bidirectional, neighbourhood matrix is upper triangular.
+            Defaults to False, neighbourhood matrix is directly computed from the k-nn graph.
+        common_neighbors (bool, optional): If True, considers nodes with common neighbours to be neighbours as well.
+            Defaults to False.
+
+    Returns:
+        numpy.ndarray: The neighborhood matrix (n_samples, n_samples).
+    """
+    k = n_neighbors
+    n_samples = data.shape[0]
+    dist_matrix = utils.intra_dist_matrix(data[:, :5]) # TODO: I don't get how can sklearn.neighbors.NearestNeighbors be so much faster than scipy.spatial.distance.cdist, it knows its cdist between the same data?
+    neigh_matrix = np.zeros((n_samples, n_samples))
+
+    for i in range(n_samples):
+        # Find indices of k nearest neighbors (excluding itself)
+        nearest_indices = np.argsort(dist_matrix[i])[0:k + 1]
+        nearest_indices = np.delete(nearest_indices, np.where(nearest_indices == i))
+        nearest_indices = nearest_indices[0:k]
+        for j in nearest_indices:
+            neigh_matrix[i, j] = dist_matrix[i, j] + (1e-10 if dist_matrix[i, j] == 0 else 0)
+    if bidirectional:
+        neigh_bidirectional = np.maximum(neigh_matrix, neigh_matrix.T) # connections are unidirectional
+        neigh_matrix = np.triu(neigh_bidirectional) # keep upper triangle.
+
+    if common_neighbors:
+        adj_bool = neigh_matrix > 0
+        common_neigh = adj_bool.astype(int) @ adj_bool.astype(int).T
+        common_neigh = (common_neigh > 0) & (~adj_bool) # selection of common neighbors that are not already connected
+        for i,j in zip(*np.where(common_neigh)):
+            shortest_path = np.inf
+            # Find the k node that minimizes the distance between i and j
+            for k in range(n_samples):
+                if neigh_matrix[i,k] > 0 and neigh_matrix[j,k] > 0:
+                    shortest_path = min(shortest_path, neigh_matrix[i,k] + neigh_matrix[j,k])
+            neigh_matrix[i,j] = shortest_path
+            neigh_matrix[j,i] = shortest_path
+    
+    neigh_graph = csr_matrix(neigh_matrix != 0)
+    return neigh_graph, neigh_matrix
+
 class Neighbourhood(Spectral):
     def __init__(self, model_args:dict, n_neighbors:int, n_components:int=None):
         super().__init__(model_args, n_components)
         self.n_neighbors = n_neighbors
 
-    def k_neigh(self, data, bidirectional=False, common_neighbors=False):
-        """
-        Builds a k-nearest neighbor (k-NN) neighborhood matrix.
-
-        Args:
-            data (numpy.ndarray): The dataset (n_samples, n_features).
-            bidirectional (bool, optional): If True, the connections are bidirectional, neighbourhood matrix is upper triangular.
-                Defaults to False, neighbourhood matrix is directly computed from the k-nn graph.
-            common_neighbors (bool, optional): If True, considers nodes with common neighbours to be neighbours as well.
-                Defaults to False.
-
-        Returns:
-            numpy.ndarray: The neighborhood matrix (n_samples, n_samples).
-        """
-        k = self.n_neighbors
-        n_samples = data.shape[0]
-        dist_matrix = utils.intra_dist_matrix(data) # TODO: I don't get how can sklearn.neighbors.NearestNeighbors be so much faster than scipy.spatial.distance.cdist, it knows its cdist between the same data?
-        neigh_matrix = np.zeros((n_samples, n_samples))
-
-        for i in range(n_samples):
-            # Find indices of k nearest neighbors (excluding itself)
-            nearest_indices = np.argsort(dist_matrix[i])[1:k + 1]
-            for j in nearest_indices:
-                neigh_matrix[i, j] = dist_matrix[i, j]
-        if bidirectional:
-            neigh_bidirectional = np.maximum(neigh_matrix, neigh_matrix.T) # connections are unidirectional
-            neigh_matrix = np.triu(neigh_bidirectional) # keep upper triangle.
-
-        if common_neighbors:
-            adj_bool = neigh_matrix > 0
-            common_neigh = adj_bool.astype(int) @ adj_bool.astype(int).T
-            common_neigh = (common_neigh > 0) & (~adj_bool) # selection of common neighbors that are not already connected
-            for i,j in zip(*np.where(common_neigh)):
-                shortest_path = np.inf
-                # Find the k node that minimizes the distance between i and j
-                for k in range(n_samples):
-                    if neigh_matrix[i,k] > 0 and neigh_matrix[j,k] > 0:
-                        shortest_path = min(shortest_path, neigh_matrix[i,k] + neigh_matrix[j,k])
-                neigh_matrix[i,j] = shortest_path
-                neigh_matrix[j,i] = shortest_path
-        
-        neigh_graph = csr_matrix(neigh_matrix != 0)
-        return neigh_graph, neigh_matrix
+    def k_neigh(self, X:np.ndarray, bidirectional:bool=False, common_neighbors:bool=False):
+        return k_neigh(X, self.n_neighbors, bidirectional, common_neighbors)
 
     def neigh_matrix(self, X):
         stamp.set()

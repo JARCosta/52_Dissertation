@@ -1,4 +1,4 @@
-function K = solve_mvu_optimization(X, inner_prod, NM, eps, mode)
+function [K, cvx_status] = solve_mvu_optimization(X, inner_prod, NM, eps, mode)
     % SOLVE_MVU_OPTIMIZATION Solves the Maximum Variance Unfolding optimization problem
     % Inputs:
     %   X - Original data matrix
@@ -28,7 +28,6 @@ function K = solve_mvu_optimization(X, inner_prod, NM, eps, mode)
     % Pre-compute constraint values
     constraint_vals = inner_prod_diff(sub2ind(size(inner_prod_diff), i, j));
 
-    disp('Variables set.')
     
     % Use CVX to solve the optimization problem
     cvx_begin sdp
@@ -53,16 +52,4 @@ function K = solve_mvu_optimization(X, inner_prod, NM, eps, mode)
             constraint_vals >= K(sub2ind(size(K), i, i)) - 2*K(sub2ind(size(K), i, j)) + K(sub2ind(size(K), j, j))
         end
     cvx_end
-    
-    % Check if the problem was solved successfully
-    if strcmp(cvx_status, 'Solved')
-        % Problem solved successfully
-        return
-    % elseif strcmp(cvx_status, 'Infeasible') || strcmp(cvx_status, 'Unbounded')
-    %     % Problem is infeasible or unbounded
-    %     error('MVU optimization failed: Problem is %s', cvx_status);
-    else
-        % Any other status is an error
-        warning('MVU optimization failed with unexpected status: %s', cvx_status);
-    end
 end 

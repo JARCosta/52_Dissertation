@@ -28,9 +28,8 @@ class Spectral(ABC):
         stamp.print(f"*\t {self.model_args['model']}\t fit")
         return ret
 
-    def _transform(self, verbose:bool=False) -> np.ndarray | None:
+    def _transform(self) -> np.ndarray | None:
         if self.kernel_ is None:
-            # raise ValueError("Kernel matrix is not initialized. Run fit(X) first.")
             utils.warning("Kernel matrix is not initialized. Run fit(X) first.")
             return
         
@@ -42,11 +41,12 @@ class Spectral(ABC):
         # Sort eigenvalues and eigenvectors in descending order
         idx = np.argsort(eigenvalues)[::-1]
         eigenvalues, eigenvectors = eigenvalues[idx], eigenvectors[:, idx]
-        # print(f"Sorted Eigenvalues:", eigenvalues)
+        if self.model_args['verbose']:
+            print(f"Sorted Eigenvalues:", eigenvalues)
 
         if self.n_components is None:
             # Compute the top components
-            if verbose:
+            if self.model_args['verbose']:
                 print("std:", np.std(eigenvalues))
                 print("median:", np.median(eigenvalues))
 
@@ -55,16 +55,16 @@ class Spectral(ABC):
                 if eigenvalues[i] > (np.median(eigenvalues) + np.std(eigenvalues)):
                     eigenvalues_idx.append(i)
 
-            eigenvalues = eigenvalues[:self.model_args['#components']:]
-            eigenvectors = eigenvectors[:, :self.model_args['#components']:]
-            if verbose:
+            eigenvalues = eigenvalues[eigenvalues_idx]
+            eigenvectors = eigenvectors[:, eigenvalues_idx]
+            if self.model_args['verbose']:
                 print(f"Eigenvalues (top {self.model_args['#components']}):", eigenvalues)
         else:
             # Take only the top `n_components`
             eigenvalues = eigenvalues[:self.n_components]
             eigenvectors = eigenvectors[:, :self.n_components]
             
-            if verbose:
+            if self.model_args['verbose']:
                 print(f"Eigenvalues (top {self.n_components}):", eigenvalues)
 
         # eigenvalues = np.sqrt(np.maximum(eigenvalues, 0))  # Ensure non-negative eigenvalues

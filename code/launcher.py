@@ -63,7 +63,7 @@ if __name__ == "__main__":
         ]
         datasets = [
             # 'broken.swiss',
-            # 'paralell.swiss',
+            # 'parallel.swiss',
             # 'broken.s_curve',
             'four.moons',
             'two.swiss',
@@ -77,27 +77,26 @@ if __name__ == "__main__":
             # "mvu.eng",
         ]
         datasets = [
-            'swiss',
-            'helix',
-            'twinpeaks',
-            'broken.swiss',
-            'difficult',
+            # 'swiss',
+            # 'helix',
+            # 'twinpeaks',
+            # 'broken.swiss',
+            # 'difficult',
 
-            'mnist', # TODO: memory issues, ada1 can't load dataset
-            'coil20',
-            'orl',
+            # 'mnist', # TODO: memory issues, ada1 can't load dataset
+            # 'coil20',
+            # 'orl',
             # 'nisis',
             # 'hiva',
 
-            'paralell.swiss',
-            'broken.s_curve',
-            'four.moons',
-            'two.swiss',
+            # 'parallel.swiss',
+            # 'broken.s_curve',
+            # 'four.moons',
+            # 'two.swiss',
             # 'mit-cbcl', # TODO: import
             ]
     elif args.paper == "dev":
         models = [
-            'mvu',
             # # Comparitive
             # "pca", 
             # "isomap",
@@ -111,6 +110,7 @@ if __name__ == "__main__":
             # "le.skl",
             # "hlle.skl",
             # "ltsa.skl",
+            
 
             # # Eng
             # "isomap.eng",
@@ -118,16 +118,37 @@ if __name__ == "__main__":
             # "le.eng",
             # "hlle.eng",
             # # "jme",
+            
+            'mvu',
         ]
         datasets = [
-            'teapots',
+            # 'swiss',
+            # 'helix',
+            # 'twinpeaks',
             # 'broken.swiss',
+            # 'difficult',
+
+            # 'mnist', # TODO: memory issues, ada1 can't load dataset
+            # 'coil20',
+            # 'orl',
+            # 'nisis',
+            # 'hiva',
+
+            # 'parallel.swiss',
+            # 'broken.s_curve.4', # easiest
+            # 'broken.s_curve', # default
+            'broken.s_curve.1', # most class changes
+            # 'four.moons',
+            # 'two.swiss',
+            # 'mit-cbcl', # TODO: import
+            
+            # 'teapots',
             ]
 
     elif args.paper == "none":
         datasets = [
             'broken.swiss',
-            'paralell.swiss',
+            'parallel.swiss',
             'broken.s_curve',
             'four.moons',
             'two.swiss',

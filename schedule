@@ -51,11 +51,17 @@ Apr 25:
 - (P) Implement other miscellaneous stuff/variants of MVU we might think of
 May 2: buffer
 
-TODO:
 - Bishop
-- Reproduce results of ENG
-- Ver o source code do isomap.skl; como é que lida com disconnected components? no caso do isomap.skl dar valores mais proximos aos do comparative review
 - Make MVU runnable
+
+
+
+TODO:
+
+- check 1-NN class change, base line same as comparative, futurely check other class changes
+    - broken swiss roll is particularly worse
+- try multimple parameters, check what changes on the default methods, and eng methods ( hope that default methods get better or worse, and eng doesnt change much)
+
 
 
 
@@ -72,6 +78,11 @@ May 16:
 - (P) Ablations on everything
 May 23:
 - (P) Search for more interesting applications #1
+
+
+
+
+
 May 30:
 - (P) Apply our method and test it against PCA and Isomap in the new applications #1
 Jun 5: buffer
@@ -82,6 +93,11 @@ Jun 19:
 - (P) Apply our method and test it against PCA and Isomap in the new applications #2
 Jul 3 (2 weeks):
 - (P) Write paper
+
+
+
+
+
 
 Jul 17 (2 weeks):
 - (P) Perform more experiments that might come up

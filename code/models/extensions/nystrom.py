@@ -53,19 +53,12 @@ class Nystrom:
 
     def transform(self):
         """Performs spectral embedding using the top eigenvectors."""
-        stamp.set()
-
-        self._transform()
-        # save_cache(self.model_args, self.embedding_, "Y")
-        
-        stamp.print(f"*\t {self.model_args['model']}\t transform")
-        
+        t = super().transform()
         if self.model_args['plotation']:
             colors = np.zeros(self.n_samples)
             colors[self.subset_indices] = 1
             plot(self.embedding_, block=False, c=colors, title="Final Nystrom", legend=json.dumps(self.model_args, indent=2))
-
-        return self.embedding_
+        return t
 
     def fit_transform(self, X):
         return models.spectral.Spectral.fit_transform(self, X)

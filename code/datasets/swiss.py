@@ -24,12 +24,12 @@ def broken(n_points, noise, random_state=None):
     t1 = (3 * np.pi / 2) * (1 + 2 * np.random.rand(n_points, 1) * .4)
     t2 = (3 * np.pi / 2) * (1 + 2 * (np.random.rand(n_points, 1) * .4 + .6))
     t = np.vstack([t1, t2])
-    height = 30 * np.random.rand(n_points, 1)
+    height = 30 * np.random.rand(t.shape[0], 1)
     X = np.hstack([
         t * np.cos(t),
         height,
         t * np.sin(t)
-    ]) + noise * np.random.randn(n_points, 3)
+    ]) + noise * np.random.randn(t.shape[0], 3)
     
     labels = np.remainder(np.sum(np.hstack([np.round(t / 2), np.round(height / 12)]), axis=1), 2)
     t = np.hstack([t, height])

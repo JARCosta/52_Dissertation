@@ -27,7 +27,7 @@ class MVU(models.Neighbourhood):
         self._mode = 0
 
     def _neigh_matrix(self, X:np.ndarray):
-        return self.k_neigh(X, bidirectional=False, common_neighbors=False)[1]
+        return self.k_neigh(X, bidirectional=True, common_neighbors=False)[1]
 
     def _fit(self, X:np.ndarray, starting_K:np.ndarray=None):
         """Fit the MVU model and compute the low-dimensional embeddings using MATLAB."""
@@ -61,15 +61,14 @@ class MVU(models.Neighbourhood):
         NM_matlab = matlab.double(self.NM.tolist())
         
         utils.stamp.print(f"*\t {self.model_args['model']}\t calling MATLAB")
-        try:
-            K_matlab = eng.solve_mvu_optimization(X_matlab, inner_prod_matlab, NM_matlab, 
-                                                float(self.eps), self._mode, nargout=1)
-            # Convert back to numpy array and ensure it's float64
-            self.kernel_ = np.array(K_matlab, dtype=np.float64)
-            # Scale back the kernel matrix
-            self.kernel_ = self.kernel_ * ratio
-        except Exception as e:
-            input(f"Error: {e}")
+        K_matlab, cvx_status = eng.solve_mvu_optimization(X_matlab, inner_prod_matlab, NM_matlab, 
+                                            float(self.eps), self._mode, nargout=2)
+        if cvx_status != 'Solved':
+            utils.warning(f"MATLAB couldn't solve optimally: {cvx_status}")
+        # Convert back to numpy array and ensure it's float64
+        self.kernel_ = np.array(K_matlab, dtype=np.float64)
+        # Scale back the kernel matrix
+        self.kernel_ = self.kernel_ * ratio
         return self
 
 class Ineq(MVU):

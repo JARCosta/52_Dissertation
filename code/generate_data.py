@@ -2,6 +2,7 @@ import numpy as np
 import sklearn.datasets
 
 from utils import load_cache, save_cache
+from utils import stamp
 from plot import plot
 import datasets
 
@@ -52,9 +53,12 @@ def generate_data(model_args:dict, noise:float=0.05, random_state:int=None) -> t
 
     elif model_args['dataname'] == 'broken.s_curve':
         return datasets.s_curve.broken(n, noise, random_state=random_state)
+    
+    elif model_args['dataname'] == 'broken.s_curve.1':
+        return datasets.s_curve.broken(n, noise, class_splits=1, random_state=random_state)
 
 
-    elif model_args['dataname'] == 'paralell.swiss':
+    elif model_args['dataname'] == 'parallel.swiss':
         return datasets.parallel(n, noise, random_state=random_state)
 
     elif model_args['dataname'] == 'two.swiss':
@@ -127,14 +131,10 @@ def generate_data(model_args:dict, noise:float=0.05, random_state:int=None) -> t
         X += noise * np.random.randn(*X.shape)
         labels = np.remainder(np.sum(1 + np.round(t), axis=1), 2)
 
-
     else:
         raise ValueError(f"Unknown dataset name {model_args['dataname']}.")
 
-    # save_cache(model_args, X, "X")
-    # save_cache(model_args, labels, "l")
-    # if t is not None:
-    #     save_cache(model_args, t, "t")
+    stamp.print_set(f"* {model_args['dataname']} dataset loaded ({X.shape[0]} points).")
     return X, labels, t
 
 def import_data(model_args:dict) -> tuple[np.ndarray, np.ndarray, None]:
@@ -240,18 +240,41 @@ def import_data(model_args:dict) -> tuple[np.ndarray, np.ndarray, None]:
         # print(labels, labels.shape)
     
     elif model_args['dataname'] == "hiva":
-        raise ValueError(f"TODO: import dataset {model_args['dataname']}.")
+        from rdkit import Chem
+        import os
+        
+        # Determine which version to use (prior or agno)
+        version = model_args.get('version', 'prior')  # default to prior version
+        base_path = f"code/datasets/HIVA-{version}"
+        
+        # Read training data
+        train_file = os.path.join(base_path, "hiva_train.sd" if version == "prior" else "hiva_train.data")
+        train_labels_file = os.path.join(base_path, "hiva_train.labels")
+        
+        # Read molecules
+        suppl = Chem.SDMolSupplier(train_file)
+        X = []
+        for mol in suppl:
+            if mol is not None:
+                # Convert molecule to fingerprint
+                fp = Chem.RDKFingerprint(mol)
+                X.append(np.array(fp))
+        
+        X = np.vstack(X)
+        
+        # Read labels
+        labels = np.loadtxt(train_labels_file, dtype=int)
+        
+        # Normalize data
+        X = X.astype(np.float64)
+        X = (X - X.mean(0)) / X.std(0)
+        
+        stamp.print(f"* HIVA-{version} dataset loaded ({X.shape[0]} points).")
 
     else:
         raise ValueError(f"Unknown dataset name {model_args['dataname']}.")
     
-    
-    # save_cache(model_args, X, "X")
-    # if labels is not None:
-    #     save_cache(model_args, labels, "l")
-    # if t is not None:
-    #     save_cache(model_args, t, "t")
-
+    stamp.print_set(f"* {model_args['dataname']} dataset loaded ({X.shape[0]} points).")
     return X, labels, t
 
 
