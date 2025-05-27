@@ -1,55 +1,33 @@
-function [K, cvx_status] = solve_mvu_optimization(X, inner_prod, NM, eps, mode)
+function [G, cvx_status] = solve_mvu_optimization(X, N)
     % SOLVE_MVU_OPTIMIZATION Solves the Maximum Variance Unfolding optimization problem
     % Inputs:
-    %   X - Original data matrix
-    %   inner_prod - Inner product matrix of original data
-    %   NM - Neighborhood matrix
-    %   eps - Tolerance for optimization
-    %   mode - 0 for equality constraints, 1 for inequality constraints
-    
-    % Convert inputs to double if they aren't already
-    X = double(X);
-    inner_prod = double(inner_prod);
-    NM = double(NM);
-    eps = double(eps);
-    mode = double(mode);
-    
-    n_samples = size(X, 1);
+    % X: n-by-D data matrix (rows are points)
+    % N: set of index pairs (i,j) in the neighborhood (e.g., from k-NN)
 
-    % Compute inner product difference matrix
-    inner_prod_diff = inner_prod;
-    inner_prod_diff(1:n_samples+1:end) = 0;  % Set diagonal to 0
-    inner_prod_diff = inner_prod_diff - 2 * inner_prod + inner_prod';
-
-    % Get non-zero elements of neighborhood matrix
-    [i, j] = find(NM);
-    n_edges = length(i);
-
-    % Pre-compute constraint values
-    constraint_vals = inner_prod_diff(sub2ind(size(inner_prod_diff), i, j));
-
-    
-    % Use CVX to solve the optimization problem
-    cvx_begin sdp
-        % Create optimization variable
-        variable K(n_samples, n_samples) symmetric
-        
-        % Objective function: maximize trace(K)
-        maximize(trace(K))
-        
-        % Centering constraint
-        sum(sum(K)) == 0
-        
-        % PSD constraint
-        K >= 0
-        
-        % Distance-preserving constraints
-        if mode == 0
-            % Equality constraints - vectorized
-            constraint_vals == K(sub2ind(size(K), i, i)) - 2*K(sub2ind(size(K), i, j)) + K(sub2ind(size(K), j, j))
-        else
-            % Inequality constraints - vectorized
-            constraint_vals >= K(sub2ind(size(K), i, i)) - 2*K(sub2ind(size(K), i, j)) + K(sub2ind(size(K), j, j))
+    n = size(X, 1);
+    % Compute squared distance matrix without pdist2
+    % D(i,j) = ||x_i - x_j||^2 = sum((x_i - x_j).^2)
+    D = zeros(n, n);
+    for i = 1:n
+        for j = 1:n
+            D(i,j) = sum((X(i,:) - X(j,:)).^2);
         end
+    end
+
+    % ==== Step 3: Solve MVU via CVX ====
+    cvx_solver mosek
+    cvx_begin sdp
+        variable G(n, n) symmetric
+        maximize( trace(G) )
+        subject to
+            G >= 0;
+            sum(sum(G)) == 0;  % centering constraint
+
+            % Distance-preserving constraints for neighbors
+            for p = 1:size(N, 1)
+                i = N(p, 1);
+                j = N(p, 2);
+                G(i,i) + G(j,j) - 2*G(i,j) == D(i,j);
+            end
     cvx_end
 end 

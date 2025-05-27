@@ -32,15 +32,19 @@ def k_neigh(data, n_neighbors, bidirectional=False, common_neighbors=False):
     for i in range(n_samples):
         # Find indices of k nearest neighbors (excluding itself)
         nearest_indices = np.argsort(dist_matrix[i])[0:k + 1]
+        
+        # Remove itself from the list of nearest neighbors
         nearest_indices = np.delete(nearest_indices, np.where(nearest_indices == i))
         nearest_indices = nearest_indices[0:k]
-        for j in nearest_indices:
-            neigh_matrix[i, j] = dist_matrix[i, j] + (1e-10 if dist_matrix[i, j] == 0 else 0)
-    if bidirectional:
-        neigh_bidirectional = np.maximum(neigh_matrix, neigh_matrix.T) # connections are unidirectional
-        neigh_matrix = np.triu(neigh_bidirectional) # keep upper triangle.
 
-    if common_neighbors:
+        for j in nearest_indices:
+            neigh_matrix[i, j] = dist_matrix[i, j] if dist_matrix[i, j] > 0 else 1e-10
+
+    if bidirectional:
+        neigh_bidirectional = np.maximum(neigh_matrix, neigh_matrix.T) # two-way unidirectional connections
+        neigh_matrix = np.triu(neigh_bidirectional) # keep only one connection per pair (upper triangle)
+
+    if common_neighbors: # if i and j are my neighs, then i and j are neighs of each other
         adj_bool = neigh_matrix > 0
         common_neigh = adj_bool.astype(int) @ adj_bool.astype(int).T
         common_neigh = (common_neigh > 0) & (~adj_bool) # selection of common neighbors that are not already connected

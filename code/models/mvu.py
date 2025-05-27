@@ -57,12 +57,21 @@ class MVU(models.Neighbourhood):
 
         # Convert data to MATLAB format
         X_matlab = matlab.double(X.tolist())
-        inner_prod_matlab = matlab.double(inner_prod.tolist())
-        NM_matlab = matlab.double(self.NM.tolist())
+        
+        # Get neighborhood graph and convert to index pairs
+        neigh_graph, _ = self.k_neigh(X, bidirectional=True, common_neighbors=False)
+        
+        # Extract index pairs from sparse matrix
+        # neigh_graph.nonzero() returns (row_indices, col_indices) of non-zero elements
+        rows, cols = neigh_graph.nonzero()
+        
+        # Convert to list of index pairs and add 1 for MATLAB's 1-based indexing
+        neighbor_pairs = [[int(i) + 1, int(j) + 1] for i, j in zip(rows, cols)]
+        
+        N_matlab = matlab.double(neighbor_pairs)
         
         utils.stamp.print(f"*\t {self.model_args['model']}\t calling MATLAB")
-        K_matlab, cvx_status = eng.solve_mvu_optimization(X_matlab, inner_prod_matlab, NM_matlab, 
-                                            float(self.eps), self._mode, nargout=2)
+        K_matlab, cvx_status = eng.solve_mvu_optimization(X_matlab, N_matlab, nargout=2)
         if cvx_status != 'Solved':
             utils.warning(f"MATLAB couldn't solve optimally: {cvx_status}")
         # Convert back to numpy array and ensure it's float64

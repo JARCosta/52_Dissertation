@@ -164,13 +164,13 @@ def model_launcher(model_args:dict, models:list, threaded:bool, plotation:bool, 
 def main(paper:str, model_list:list, datasets:list, n_points:int, threaded:bool, plotation:bool, verbose:bool) -> None:
     model_args = {}
     model_args["paper"] = paper
-    model_args["#points"] = n_points
 
     threads:list[multiprocessing.Process] = []
 
     for dataname in datasets:
         model_args['dataname'] = dataname
         X, labels, t = get_dataset({'model': "set", 'dataname': dataname, "#points": n_points}, cache=False, random_state=11)
+        model_args["#points"] = X.shape[0]
         # plot(X, c=t[:, 0], block=True, title=f"{dataname} {n_points} points")
         
         if threaded:

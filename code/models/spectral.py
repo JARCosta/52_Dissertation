@@ -58,7 +58,7 @@ class Spectral(ABC):
             eigenvalues = eigenvalues[eigenvalues_idx]
             eigenvectors = eigenvectors[:, eigenvalues_idx]
             if self.model_args['verbose']:
-                print(f"Eigenvalues (top {self.model_args['#components']}):", eigenvalues)
+                print(f"Eigenvalues (selected {len(eigenvalues_idx)}):", eigenvalues)
         else:
             # Take only the top `n_components`
             eigenvalues = eigenvalues[:self.n_components]
