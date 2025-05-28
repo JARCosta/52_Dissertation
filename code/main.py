@@ -10,7 +10,6 @@ import sklearn.manifold
 from scipy.sparse.csgraph import connected_components
 
 import models
-import measure
 import utils
 from generate_data import get_dataset
 from utils import stamp
@@ -19,7 +18,7 @@ from plot import plot
 os.environ['LOKY_MAX_CPU_COUNT'] = str(os.cpu_count())
 os.environ['OMP_NUM_THREADS'] = str(os.cpu_count())
 
-def model_func(threads_return:multiprocessing.managers.SyncManager, X:np.ndarray, labels:np.ndarray, model_args:dict) -> tuple[dict, np.ndarray, np.ndarray, np.ndarray, np.ndarray] | None:
+def model_func(threads_return:multiprocessing.managers.SyncManager, X:np.ndarray, labels:np.ndarray, model_args:dict, measure_bool:bool) -> tuple[dict, np.ndarray, np.ndarray, np.ndarray, np.ndarray] | None:
     model_args['start'] = datetime.datetime.now().strftime("%d-%H:%M:%S")
     utils.important(f"Running {model_args['model']} on {model_args['dataname']} with {model_args['#neighs']} neighbors")
     Y = models.run(X, model_args)
@@ -28,19 +27,17 @@ def model_func(threads_return:multiprocessing.managers.SyncManager, X:np.ndarray
         utils.warning(f"could not compute Y for {model_args['model']} on {model_args['dataname']}")
         return None
     if Y.shape[1] != model_args['#components']:
-        utils.warning(f"Y has {Y.shape[1]} dimensions, intrinsic is {model_args['#components']}. Selecting the first {model_args['#components']} dimensions.")
+        utils.warning(f"Y has {Y.shape[1]} dimensions, intrinsic is {model_args['#components']}. Considering the first {model_args['#components']}.")
+        model_args['status'] = "Dimension_mismatch"
         Y = Y[:, :model_args['#components']]
 
     if model_args['plotation']:
         plot(X, c=labels, block=False, title=f"{model_args['dataname']} {model_args['#neighs']} neighbors")
         plot(Y, c=labels, block=True, title=f"{model_args['model']} {model_args['dataname']} {model_args['#neighs']} neighbors")
-    stamp.set()
-    One_nn = measure.one_NN(Y, labels)
-    stamp.print_set(f"*\t 1-NN \t {One_nn}")
-    T, C = measure.TC(X, Y, model_args["#neighs"])
-    stamp.print_set(f"*\t T, C \t {T}, {C}")
     
-    utils.store_measure(model_args, One_nn, T, C)
+    One_nn, T, C = utils.get_measures(X, Y, labels, model_args["#neighs"])
+    if measure_bool:
+        utils.store_measure(model_args, One_nn, T, C)
     threads_return[model_args['#neighs']] = (model_args, Y, One_nn, T, C)
 
 def plot_args(results:np.ndarray, model_args:dict, k_best:int) -> None:
@@ -113,7 +110,7 @@ def best_args(threads_return:multiprocessing.managers.DictProxy, labels:np.ndarr
         plot(threads_return[best_k][1], c=labels, block=True, title=f"Best {model_args['dataname']} {model_args['model']} {best_1_NN}, {best_T}, {best_C}")
 
 
-def model_launcher(model_args:dict, models:list, threaded:bool, plotation:bool, verbose:bool, X:np.ndarray, labels:np.ndarray, t:np.ndarray):
+def model_launcher(model_args:dict, models:list, X:np.ndarray, labels:np.ndarray, t:np.ndarray, threaded:bool, plotation:bool, verbose:bool, measure:bool):
     
     for model in models:
         model_args['model'] = model
@@ -148,12 +145,12 @@ def model_launcher(model_args:dict, models:list, threaded:bool, plotation:bool, 
             model_args = {k: v for k, v in model_args.items() if v is not None}
 
             if threaded:
-                t = multiprocessing.Process(target=model_func, args=[threads_return, X, labels, model_args])
+                t = multiprocessing.Process(target=model_func, args=[threads_return, X, labels, model_args, measure])
                 threads.append(t)
                 print(f"launching sub-thread {t}")
                 t.start()
             else:
-                model_func(threads_return, X, labels, model_args)
+                model_func(threads_return, X, labels, model_args, measure)
         if threaded:
             [t.join() for t in threads]
             print("joined")
@@ -161,7 +158,7 @@ def model_launcher(model_args:dict, models:list, threaded:bool, plotation:bool, 
         best_args(threads_return, labels)
 
 
-def main(paper:str, model_list:list, datasets:list, n_points:int, threaded:bool, plotation:bool, verbose:bool) -> None:
+def main(paper:str, model_list:list, datasets:list, n_points:int, threaded:bool, plotation:bool, verbose:bool, measure:bool) -> None:
     model_args = {}
     model_args["paper"] = paper
 
@@ -174,12 +171,12 @@ def main(paper:str, model_list:list, datasets:list, n_points:int, threaded:bool,
         # plot(X, c=t[:, 0], block=True, title=f"{dataname} {n_points} points")
         
         if threaded:
-            t = multiprocessing.Process(target=model_launcher, args=[model_args, model_list, threaded, plotation, verbose, X, labels, t])
+            t = multiprocessing.Process(target=model_launcher, args=[model_args, model_list, X, labels, t, threaded, plotation, verbose, measure])
             threads.append(t)
             print(f"launching thread     {t}")
             t.start()
         else:
-            model_launcher(model_args, model_list, threaded, plotation, verbose, X, labels, t)
+            model_launcher(model_args, model_list, X, labels, t, threaded, plotation, verbose, measure)
     if threaded:
         [t.join() for t in threads]
         print("joined")

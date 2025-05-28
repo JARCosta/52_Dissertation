@@ -2,7 +2,7 @@ import argparse
 
 from main import main
 from generate_data import get_dataset
-import measure
+import utils
 
 if __name__ == "__main__":
 
@@ -12,6 +12,7 @@ if __name__ == "__main__":
     parser.add_argument("--threaded", action='store_true', default=False, help="Use threading for the model launcher.")
     parser.add_argument("--plotation", action='store_true', default=False, help="Plot the results.")
     parser.add_argument("--verbose", action='store_true', default=False, help="Verbose output.")
+    parser.add_argument("--measure", action='store_true', default=False, help="Store the measure's results.")
     args = parser.parse_args()
 
     if args.paper == "comparative":
@@ -122,7 +123,7 @@ if __name__ == "__main__":
             'mvu',
         ]
         datasets = [
-            # 'swiss',
+            'swiss',
             # 'helix',
             # 'twinpeaks',
             # 'broken.swiss',
@@ -137,7 +138,7 @@ if __name__ == "__main__":
             # 'parallel.swiss',
             # 'broken.s_curve.4', # easiest
             # 'broken.s_curve', # default
-            'broken.s_curve.1', # most class changes
+            # 'broken.s_curve.1', # most class changes
             # 'four.moons',
             # 'two.swiss',
             # 'mit-cbcl', # TODO: import
@@ -158,7 +159,7 @@ if __name__ == "__main__":
         for dataname in datasets:
             X, labels, t = get_dataset({'model': "set", 'dataname': dataname, "#points": args.n_points}, cache=False, random_state=11)
             print(f"loaded")
-            None_1_NN = measure.one_NN(X, labels)
+            None_1_NN = utils.one_NN(X, labels)
             with open("measures.best.csv", "a") as f:
                 f.write(f"none,{dataname},none,{args.n_points},None,{None_1_NN},None,None\n")
             with open("measures.all.csv", "a") as f:
@@ -182,5 +183,6 @@ if __name__ == "__main__":
         threaded=args.threaded,
         plotation=args.plotation if not args.threaded else False,
         verbose=args.verbose if not args.threaded else False,
+        measure=args.measure if not args.threaded else False,
     )
 

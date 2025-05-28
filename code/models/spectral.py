@@ -2,9 +2,7 @@ from abc import ABC, abstractmethod
 import numpy as np
 from scipy.sparse.linalg import eigsh
 
-from plot import plot
-from utils import stamp
-import utils
+from utils import stamp, warning
 
 class Spectral(ABC):
     def __init__(self, model_args:dict, n_components:int=None):
@@ -30,7 +28,7 @@ class Spectral(ABC):
 
     def _transform(self) -> np.ndarray | None:
         if self.kernel_ is None:
-            utils.warning("Kernel matrix is not initialized. Run fit(X) first.")
+            warning("Kernel matrix is not initialized. Run fit(X) first.")
             return
         
         if self.n_components is None:

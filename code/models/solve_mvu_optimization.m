@@ -14,20 +14,31 @@ function [G, cvx_status] = solve_mvu_optimization(X, N)
         end
     end
 
+    eps = 1e-3;
+    max_iter = 1000;
+
     % ==== Step 3: Solve MVU via CVX ====
-    cvx_solver mosek
     cvx_begin sdp
+        cvx_solver mosek
+        % cvx_precision low
+        cvx_solver_settings('MSK_DPAR_INTPNT_CO_TOL_PFEAS', eps, ...
+                        'MSK_DPAR_INTPNT_CO_TOL_DFEAS', eps, ...
+                        'MSK_DPAR_INTPNT_CO_TOL_REL_GAP', eps, ...
+                        'MSK_IPAR_INTPNT_MAX_ITERATIONS', max_iter)
+        
         variable G(n, n) symmetric
         maximize( trace(G) )
         subject to
             G >= 0;
             sum(sum(G)) == 0;  % centering constraint
 
-            % Distance-preserving constraints for neighbors
-            for p = 1:size(N, 1)
-                i = N(p, 1);
-                j = N(p, 2);
-                G(i,i) + G(j,j) - 2*G(i,j) == D(i,j);
-            end
-    cvx_end
+            % Vectorized distance-preserving constraints for neighbors
+            % Extract indices for vectorized operations
+            i_indices = N(:, 1);
+            j_indices = N(:, 2);
+            
+            % Create vectorized constraint: G(i,i) + G(j,j) - 2*G(i,j) == D(i,j) for all pairs
+            G_diag = diag(G);
+            G_diag(i_indices) + G_diag(j_indices) - 2*G(sub2ind([n,n], i_indices, j_indices)) <= D(sub2ind([n,n], i_indices, j_indices));
+        cvx_end
 end 

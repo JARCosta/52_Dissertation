@@ -6,7 +6,6 @@ from scipy.linalg import pinv
 from scipy.spatial.distance import cdist
 
 from plot import plot
-import measure
 import models
 from utils import stamp
 
