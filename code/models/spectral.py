@@ -48,10 +48,28 @@ class Spectral(ABC):
                 print("std:", np.std(eigenvalues))
                 print("median:", np.median(eigenvalues))
 
-            eigenvalues_idx = []
-            for i in idx:
-                if eigenvalues[i] > (np.median(eigenvalues) + np.std(eigenvalues)):
-                    eigenvalues_idx.append(i)
+            eigenvalues_idx, representation = [], 0
+            for eig_idx in range(len(eigenvalues)):
+                eigenvalues_idx.append(eig_idx)
+                representation += eigenvalues[eig_idx] / np.sum(eigenvalues)
+                if representation > 0.98:
+                    break
+            
+            stamp.print(f"*\t Smart selected {len(eigenvalues_idx)} components ({representation*100:.2f}%)")
+
+            if len(eigenvalues_idx) != self.model_args['#components']:
+                warning(f"Smart eigenvalue selection found {len(eigenvalues_idx)} components, but {self.model_args['#components']} components were requested. Forcing the selection of {self.model_args['#components']} components.")
+                eigenvalues = eigenvalues[eigenvalues_idx]
+                eigenvectors = eigenvectors[:, eigenvalues_idx]
+                embedding = eigenvectors @ np.diag(eigenvalues)  # Project data
+                
+                eigenvalues_idx = range(self.model_args['#components'])
+
+                eigenvalues = eigenvalues[eigenvalues_idx]
+                eigenvectors = eigenvectors[:, eigenvalues_idx]
+                embedding_restricted = eigenvectors @ np.diag(eigenvalues)  # Project data
+                
+                plot.plot_two(embedding, embedding_restricted, title=f"{self.model_args['model']} Eigenvalues")
 
             eigenvalues = eigenvalues[eigenvalues_idx]
             eigenvectors = eigenvectors[:, eigenvalues_idx]
