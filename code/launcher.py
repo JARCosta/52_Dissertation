@@ -32,7 +32,7 @@ if __name__ == "__main__":
             "hlle.skl",
             "ltsa.skl",
         ]
-        datasets = [
+        dataset_list = [
             'swiss',
             'helix',
             'twinpeaks',
@@ -63,7 +63,7 @@ if __name__ == "__main__":
             "le.skl",
             "hlle.skl",    
         ]
-        datasets = [
+        dataset_list = [
             # 'broken.swiss',
             # 'parallel.swiss',
             # 'broken.s_curve',
@@ -78,12 +78,12 @@ if __name__ == "__main__":
             "mvu",
             # "mvu.eng",
         ]
-        datasets = [
+        dataset_list = [
             # 'swiss',
-            # 'helix',
-            # 'twinpeaks',
-            # 'broken.swiss',
-            # 'difficult',
+            'helix',
+            'twinpeaks',
+            'broken.swiss',
+            'difficult',
 
             # 'mnist', # TODO: memory issues, ada1 can't load dataset
             # 'coil20', # TODO: 1440 points 1430 components found
@@ -123,7 +123,7 @@ if __name__ == "__main__":
             
             'mvu',
         ]
-        datasets = [
+        dataset_list = [
             'swiss',
             # 'helix',
             # 'twinpeaks',
