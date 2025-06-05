@@ -6,7 +6,7 @@ from scipy.sparse.linalg import eigsh
 from scipy.linalg import eigh, pinv
 
 import models
-from utils import save_cache, stamp
+from utils import stamp
 from plot import plot
 
 class LaplacianEigenmaps(models.Neighbourhood):
@@ -35,7 +35,7 @@ class LaplacianEigenmaps(models.Neighbourhood):
         Computes the k-nearest neighbor graph and returns the distance matrix.
         Uses bidirectional connections.
         """
-        _, neigh_matrix = self.k_neigh(X, bidirectional=True, common_neighbors=False)
+        neigh_matrix = self.k_neigh(X, bidirectional=True, common_neighbors=False)
         # neigh_matrix = neigh_matrix + neigh_matrix.T # no need for symmetry here?, Weight matrix will be made symmetric
         return neigh_matrix
 
@@ -78,9 +78,6 @@ class LaplacianEigenmaps(models.Neighbourhood):
         # Setting self.kernel_ = L might work if D is identity, but not generally.
         # We'll store L and D separately.
 
-        # save_cache(self.model_args, self.laplacian_, "L")
-        # save_cache(self.model_args, self.degree_matrix_, "D")
-        
         return self
 
     def _transform(self):
@@ -145,8 +142,6 @@ class LaplacianEigenmaps(models.Neighbourhood):
             print(f"Computed Eigenvalues (smallest {self.n_components + 1}):", eigenvalues[:self.n_components + 2])
             print(f"Selected Eigenvalues (indices 1 to {self.n_components}):", eigenvalues[1:(self.n_components + 1)])
 
-
-        # save_cache(self.model_args, self.embedding_, "Y")
         stamp.print(f"*\t {self.model_args['model']}\t transform (Laplacian)")
 
         if self.model_args['plotation']:

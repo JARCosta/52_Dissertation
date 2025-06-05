@@ -11,9 +11,9 @@ from scipy.sparse.csgraph import connected_components
 
 import models
 import utils
-from generate_data import get_dataset
+from datasets import get_dataset, datasets
 from utils import stamp
-from plot import plot
+import plot
 
 os.environ['LOKY_MAX_CPU_COUNT'] = str(os.cpu_count())
 os.environ['OMP_NUM_THREADS'] = str(os.cpu_count())
@@ -27,13 +27,11 @@ def model_func(threads_return:multiprocessing.managers.SyncManager, X:np.ndarray
         utils.warning(f"could not compute Y for {model_args['model']} on {model_args['dataname']}")
         return None
     if Y.shape[1] != model_args['#components']:
-        utils.warning(f"Y has {Y.shape[1]} dimensions, intrinsic is {model_args['#components']}. Considering the first {model_args['#components']}.")
-        model_args['status'] = "Dimension_mismatch"
-        Y = Y[:, :model_args['#components']]
+        raise ValueError(f"Y has {Y.shape[1]} dimensions, intrinsic is {model_args['#components']}.")
 
     if model_args['plotation']:
-        plot(X, c=labels, block=False, title=f"{model_args['dataname']} {model_args['#neighs']} neighbors")
-        plot(Y, c=labels, block=True, title=f"{model_args['model']} {model_args['dataname']} {model_args['#neighs']} neighbors")
+        plot.plot_scales(X, c=labels, block=False, title=f"{model_args['dataname']} {model_args['#neighs']} neighbors")
+        plot.plot_scales(Y, c=labels, block=True, title=f"{model_args['model']} {model_args['dataname']} {model_args['#neighs']} neighbors")
     
     One_nn, T, C = utils.get_measures(X, Y, labels, model_args["#neighs"])
     if measure_bool:
@@ -67,7 +65,7 @@ def plot_args(results:np.ndarray, model_args:dict, k_best:int) -> None:
     os.makedirs(f"cache/{model_args['model']}") if not os.path.exists(f"cache/{model_args['model']}") else None
     plt.savefig(f"cache/{model_args['model']}/{model_args['dataname']}.png")
     if model_args['plotation']:
-        plt.show()
+        plt.show(block=False)
 
 def best_args(threads_return:multiprocessing.managers.DictProxy, labels:np.ndarray) -> tuple[int, dict]:
     if len(threads_return) == 0:
@@ -107,10 +105,10 @@ def best_args(threads_return:multiprocessing.managers.DictProxy, labels:np.ndarr
     utils.store_measure(model_args, best_1_NN, best_T, best_C, best=True)
 
     if model_args['plotation']:
-        plot(threads_return[best_k][1], c=labels, block=True, title=f"Best {model_args['dataname']} {model_args['model']} {best_1_NN}, {best_T}, {best_C}")
+        plot.plot(threads_return[best_k][1], c=labels, block=True, title=f"Best {model_args['dataname']} {model_args['model']} {best_1_NN}, {best_T}, {best_C}")
 
 
-def model_launcher(model_args:dict, models:list, X:np.ndarray, labels:np.ndarray, t:np.ndarray, threaded:bool, plotation:bool, verbose:bool, measure:bool):
+def model_launcher(model_args:dict, models:list, X:np.ndarray, labels:np.ndarray, t:np.ndarray, threaded:bool, plotation:bool, verbose:bool, measure:bool, pause:bool):
     
     for model in models:
         model_args['model'] = model
@@ -118,26 +116,14 @@ def model_launcher(model_args:dict, models:list, X:np.ndarray, labels:np.ndarray
         threads:list[multiprocessing.Process] = []
         manager = multiprocessing.Manager()
         threads_return = manager.dict()
-        for n_neighbors in range(5, 16):
+        for n_neighbors in range(5, 6):
             model_args['#neighs'] = n_neighbors
 
-            # TODO: four.moons, two.swiss, mit-cbcl
-            if model_args['dataname'] in ["mnist"]:
-                model_args["#components"] = 20
-            elif model_args['dataname'] in ["hiva", "nisis"]:
-                model_args["#components"] = 15
-            elif model_args['dataname'] in ["orl",]:
-                model_args["#components"] = 8
-            elif model_args['dataname'] in ["difficult", "coil20"]:
-                model_args["#components"] = 5
-            elif model_args['dataname'] in ["swiss", "twinpeaks", "broken.swiss", "parallel.swiss", "broken.s_curve", "broken.s_curve.4", "broken.s_curve.1"]:
-                model_args["#components"] = 2
-            elif model_args['dataname'] in ["helix",]:
-                model_args["#components"] = 1
-            elif model_args['dataname'] in ["four.moons", "two.swiss"]:
-                model_args["#components"] = 2 #3 # TODO: confirm
-            else:
-                raise ValueError(f"Unknown dataset {model_args['dataname']} for model {model}")
+            # try:
+            model_args['eps'] = datasets[model_args['dataname']]['eps']
+            model_args['#components'] = datasets[model_args['dataname']]['#components']
+            # except KeyError:
+            #     raise KeyError(f"Unknown dataset {model_args['dataname']} for model {model}")
 
             model_args['eps'] = 1e-3 if np.any([i in model for i in ["mvu", "mvu.ineq", "eng", "adaptative", "adaptative2"]]) else None
             model_args['plotation'] = plotation
@@ -151,32 +137,39 @@ def model_launcher(model_args:dict, models:list, X:np.ndarray, labels:np.ndarray
                 t.start()
             else:
                 model_func(threads_return, X, labels, model_args, measure)
+                if pause:
+                    input("Press Enter to continue...")
         if threaded:
             [t.join() for t in threads]
             print("joined")
         
         best_args(threads_return, labels)
 
+        if threaded and pause:
+            input("Press Enter to continue...")
 
-def main(paper:str, model_list:list, datasets:list, n_points:int, threaded:bool, plotation:bool, verbose:bool, measure:bool) -> None:
+
+def main(paper:str, model_list:list, dataset_list:list, n_points:int, threaded:bool, plotation:bool, verbose:bool, measure:bool, pause:bool) -> None:
     model_args = {}
     model_args["paper"] = paper
+    model_args['status'] = None
 
     threads:list[multiprocessing.Process] = []
 
-    for dataname in datasets:
+    for dataname in dataset_list:
         model_args['dataname'] = dataname
-        X, labels, t = get_dataset({'model': "set", 'dataname': dataname, "#points": n_points}, cache=False, random_state=11)
+        X, labels, t = get_dataset(dataname, n_points, 0.05, random_state=11)
+        # X, labels, t = generate_data.get_dataset({'model': "set", 'dataname': dataname, "#points": n_points}, random_state=11)
         model_args["#points"] = X.shape[0]
         # plot(X, c=t[:, 0], block=True, title=f"{dataname} {n_points} points")
         
         if threaded:
-            t = multiprocessing.Process(target=model_launcher, args=[model_args, model_list, X, labels, t, threaded, plotation, verbose, measure])
+            t = multiprocessing.Process(target=model_launcher, args=[model_args, model_list, X, labels, t, threaded, plotation, verbose, measure, pause])
             threads.append(t)
             print(f"launching thread     {t}")
             t.start()
         else:
-            model_launcher(model_args, model_list, X, labels, t, threaded, plotation, verbose, measure)
+            model_launcher(model_args, model_list, X, labels, t, threaded, plotation, verbose, measure, pause)
     if threaded:
         [t.join() for t in threads]
         print("joined")

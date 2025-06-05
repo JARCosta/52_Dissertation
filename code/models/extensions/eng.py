@@ -2,7 +2,7 @@ import numpy as np
 
 from scipy.sparse import csgraph, csr_matrix
 
-from plot import plot
+import plot
 from utils import stamp
 import utils
 
@@ -24,7 +24,7 @@ class ENG:
             """
             k = self.n_neighbors
 
-            Y_neighs = self.k_neigh(Y)[1]
+            Y_neighs = self.k_neigh(Y)
             Y_neighs[np.where(Y_neighs == 0)] = np.inf
             
             eta_d = np.zeros((Y.shape[0]))
@@ -75,14 +75,13 @@ class ENG:
             return np.vstack((comp1[a], comp2[b])).T
 
         neigh_matrix = super()._neigh_matrix(X)
-        if self.model_args['plotation']:
-            plot(X, neigh_matrix, title=f"initial {self.model_args['model']} data", block=False)
+        oldNM = neigh_matrix.copy()
         cc = csgraph.connected_components(neigh_matrix)
 
-        self.eta_d = get_eta_d(X, self.n_components)
+        self.eta_d = get_eta_d(X, self.model_args['#components'])
         
         while cc[0] > 1:
-            print(cc[0])
+            # print(cc[0])
 
             for i in range(cc[0]):
                 comp1 = np.where(cc[1] == i)[0]
@@ -92,7 +91,7 @@ class ENG:
                 a, b = comp1[a], rest_comp[b]
                 comp2 = np.where(cc[1] == cc[1][b])[0]
 
-                p1, p2 = connections(comp1, comp2, self.n_components).T
+                p1, p2 = connections(comp1, comp2, self.model_args['#components']).T
                 # print(np.vstack((p1, p2, np.sqrt(np.sum(np.square(X[p2]-X[p1]), axis=1)))).T)
 
                 for a, b in zip(p1, p2):
@@ -105,4 +104,6 @@ class ENG:
                 stamp.print_set(f"*\t connections\t comp_{i}, comp_{cc[1][b]}, #cons={len(p1)}, #total_cons={np.count_nonzero(neigh_matrix)}")
             cc = csgraph.connected_components(neigh_matrix)
 
+        if self.model_args['plotation']:
+            plot.plot_two(X, X, oldNM, neigh_matrix, block=False, title=f"{self.model_args['dataname']} {self.model_args['#neighs']} neighbors")
         return neigh_matrix

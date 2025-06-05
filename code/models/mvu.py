@@ -7,6 +7,7 @@ from scipy.spatial.distance import cdist
 import matlab.engine
 import os
 
+import plot
 import utils
 import models.neighbourhood
 import models.extensions
@@ -27,15 +28,15 @@ class MVU(models.Neighbourhood):
         self._mode = 0
 
     def _neigh_matrix(self, X:np.ndarray):
-        return self.k_neigh(X, bidirectional=True, common_neighbors=False)[1]
+        return self.k_neigh(X, bidirectional=True, common_neighbors=False)
 
-    def _fit(self, X:np.ndarray, starting_K:np.ndarray=None):
+    def _fit(self, X:np.ndarray):
         """Fit the MVU model and compute the low-dimensional embeddings using MATLAB."""
-        n_samples = X.shape[0]
 
         cc, labels = csgraph.connected_components(self.NM, directed=False)
         if cc > 1:
-            print(f"Warning: {cc} components found. Adding shortest connections possible to merge components.")
+            oldNM = self.NM.copy()
+            utils.warning(f"Warning: {cc} components found. Adding shortest connections possible to merge components.")
             while cc > 1:
                 largest_component = np.argmax(np.bincount(labels))
                 largest_component_idx = np.where(labels == largest_component)[0]
@@ -49,35 +50,29 @@ class MVU(models.Neighbourhood):
                 self.NM[a_idx, b_idx] = np.linalg.norm(X[a_idx] - X[b_idx])
 
                 cc, labels = csgraph.connected_components(self.NM, directed=False)
-
-        # inner product matrix of the original data
-        inner_prod = (X @ X.T)
-        ratio = 10**(np.round(np.log10(np.max(inner_prod)))-2)
-        inner_prod = (inner_prod / ratio).astype(np.float64)
+            if self.model_args['plotation']:
+                plot.plot_two(X, X, oldNM, self.NM, False, False, block=False, title=f"{self.model_args['dataname']} {self.model_args['#neighs']} neighbors")
 
         # Convert data to MATLAB format
         X_matlab = matlab.double(X.tolist())
         
-        # Get neighborhood graph and convert to index pairs
-        neigh_graph, _ = self.k_neigh(X, bidirectional=True, common_neighbors=False)
-        
         # Extract index pairs from sparse matrix
         # neigh_graph.nonzero() returns (row_indices, col_indices) of non-zero elements
-        rows, cols = neigh_graph.nonzero()
+        print(f"connections: {np.count_nonzero(self.NM)}")
+        rows, cols = utils.k_graph(self.NM).nonzero()
         
         # Convert to list of index pairs and add 1 for MATLAB's 1-based indexing
         neighbor_pairs = [[int(i) + 1, int(j) + 1] for i, j in zip(rows, cols)]
-        
+
         N_matlab = matlab.double(neighbor_pairs)
         
         utils.stamp.print(f"*\t {self.model_args['model']}\t calling MATLAB")
-        K_matlab, cvx_status = eng.solve_mvu_optimization(X_matlab, N_matlab, nargout=2)
+        K_matlab, cvx_status = eng.solve_mvu_optimization(X_matlab, N_matlab, self.model_args['eps'], nargout=2)
+        self.model_args['status'] = cvx_status
         if cvx_status != 'Solved':
             utils.warning(f"MATLAB couldn't solve optimally: {cvx_status}")
         # Convert back to numpy array and ensure it's float64
         self.kernel_ = np.array(K_matlab, dtype=np.float64)
-        # Scale back the kernel matrix
-        self.kernel_ = self.kernel_ * ratio
         return self
 
 class Ineq(MVU):

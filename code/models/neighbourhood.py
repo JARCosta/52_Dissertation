@@ -21,15 +21,14 @@ class Neighbourhood(Spectral):
         stamp.set()
         self.NM = self._neigh_matrix(X)
         stamp.print(f"*\t {self.model_args['model']}\t neigh_matrix\t {np.count_nonzero(self.NM)} connections")
-        if self.model_args['plotation']:
-            plot(X, self.NM, title=f"{self.model_args['model']} neigh_matrix, k={self.n_neighbors}", block=False)
         return self.NM
 
     @abstractmethod
     def _neigh_matrix(self, X:np.ndarray):
-        return self.k_neigh(X)[1]
+        return self.k_neigh(X)
     
     def fit_transform(self, X: np.ndarray):
         """Fits the model and computes embeddings."""
         self.neigh_matrix(X)
-        return self.fit(X).transform()
+        self.fit(X).transform()
+        return self.embedding_

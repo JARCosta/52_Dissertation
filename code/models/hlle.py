@@ -4,7 +4,7 @@ from scipy.sparse.linalg import eigsh
 from scipy.sparse import csr_matrix, eye as sparse_eye
 
 import models
-from utils import save_cache, stamp
+from utils import stamp
 import utils
 from plot import plot
 

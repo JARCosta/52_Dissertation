@@ -6,7 +6,7 @@ from scipy.sparse import csr_matrix, lil_matrix, eye as sparse_eye
 from scipy.sparse.linalg import eigsh
 
 import models
-from utils import save_cache, stamp
+from utils import stamp
 from plot import plot
 
 class LTSA(models.Neighbourhood):
@@ -32,7 +32,7 @@ class LTSA(models.Neighbourhood):
         LTSA uses the direct neighbors for tangent space estimation.
         """
         # Use the default k_neigh which finds k closest neighbors for each point
-        _, neigh_matrix = self.k_neigh(X, bidirectional=False, common_neighbors=False)
+        neigh_matrix = self.k_neigh(X, bidirectional=False, common_neighbors=False)
         return neigh_matrix # We only need indices later
 
     def _fit(self, X: np.ndarray):
@@ -181,8 +181,6 @@ class LTSA(models.Neighbourhood):
         # So, we likely need the TOP eigenvectors of B.
         
         self.kernel_ = self.alignment_matrix_ # Set kernel to B
-
-        # save_cache(self.model_args, self.alignment_matrix_, "B_ltsa")
         stamp.print(f"*\t {self.model_args['model']}\t Computed Alignment Matrix B")
         return self
 
@@ -239,8 +237,6 @@ class LTSA(models.Neighbourhood):
                  print(f"Computed Eigenvalues (all):", eigenvalues)
                  print(f"Selected Eigenvalues (top {self.n_components}):", selected_eigenvalues)
 
-
-        # save_cache(self.model_args, self.embedding_, "Y")
         stamp.print(f"*\t {self.model_args['model']}\t transform (LTSA)")
 
         if self.model_args['plotation']:

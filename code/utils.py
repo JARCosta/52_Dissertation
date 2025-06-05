@@ -1,6 +1,5 @@
 import datetime
 import json
-import os
 import numpy as np
 from scipy.sparse import csr_matrix
 from sklearn.neighbors import NearestNeighbors
@@ -97,10 +96,12 @@ def k_neigh(data, n_neighbors, bidirectional=False, common_neighbors=False):
         for j in nearest_indices:
             neigh_matrix[i, j] = dist_matrix[i, j] if dist_matrix[i, j] > 0 else 1e-10
 
+    print(f"connections: {np.count_nonzero(neigh_matrix)}")
     if bidirectional:
         neigh_bidirectional = np.maximum(neigh_matrix, neigh_matrix.T) # two-way unidirectional connections
         neigh_matrix = np.triu(neigh_bidirectional) # keep only one connection per pair (upper triangle)
 
+    print(f"connections: {np.count_nonzero(neigh_matrix)}")
     if common_neighbors: # if i and j are my neighs, then i and j are neighs of each other
         adj_bool = neigh_matrix > 0
         common_neigh = adj_bool.astype(int) @ adj_bool.astype(int).T
@@ -113,9 +114,11 @@ def k_neigh(data, n_neighbors, bidirectional=False, common_neighbors=False):
                     shortest_path = min(shortest_path, neigh_matrix[i,k] + neigh_matrix[j,k])
             neigh_matrix[i,j] = shortest_path
             neigh_matrix[j,i] = shortest_path
-    
-    neigh_graph = csr_matrix(neigh_matrix != 0)
-    return neigh_graph, neigh_matrix
+    print(f"connections: {np.count_nonzero(neigh_matrix)}")
+    return neigh_matrix
+
+def k_graph(neigh_matrix:np.ndarray):
+    return csr_matrix(neigh_matrix != 0)
 
 ############################################################
 # MEASURES #################################################
@@ -125,8 +128,8 @@ def TC(X, Y, n_neighbors) -> tuple[float, float]:
     
     n_samples = X.shape[0]
     
-    NM_X = k_neigh(X, n_neighbors)[1] # need symetrix
-    NM_Y = k_neigh(Y, n_neighbors)[1] # need symetrix
+    NM_X = k_neigh(X, n_neighbors) # need symetrix
+    NM_Y = k_neigh(Y, n_neighbors) # need symetrix
 
     NM_X = np.where(NM_X != 0, 1, 0)
     NM_Y = np.where(NM_Y != 0, 1, 0)
@@ -157,7 +160,7 @@ def  one_NN(Y, labels) -> float:
         warning("labels is None")
         return None
     
-    NM = k_neigh(Y, 1)[1] # need symetrix
+    NM = k_neigh(Y, 1) # need symetrix
 
     Y_labels = np.zeros(labels.shape)
     for i in range(Y.shape[0]):
@@ -188,12 +191,12 @@ def store_measure(model_args:dict, One_nn:float=None, T:float=None, C:float=None
             else:
                 with open("measures.all.json", "r") as f:
                     measures = json.loads(f.read())
-        except FileNotFoundError:
+        except (FileNotFoundError, json.JSONDecodeError):
             measures = {}
         measures[dataname] = measures.get(dataname, {})
         measures[dataname][model] = measures[dataname].get(model, {})
         if not best:
-            measures[dataname][model][n_neighs] = measures[dataname][model].get(n_neighs, {})
+            measures[dataname][model][str(n_neighs)] = measures[dataname][model].get(str(n_neighs), {})
         return measures
 
     dataname = model_args['dataname']
@@ -210,7 +213,7 @@ def store_measure(model_args:dict, One_nn:float=None, T:float=None, C:float=None
             f.write(json.dumps(measures, indent=4) + "\n")
     else:
         measures = get_json(dataname, model, n_neighs, best)
-        measures[dataname][model][n_neighs] = {'#points': points, '1-NN': One_nn, 'T': T, 'C': C}
+        measures[dataname][model][str(n_neighs)] = {'#points': points, '1-NN': One_nn, 'T': T, 'C': C, 'status': model_args['status']}
         with open("measures.all.json", "w") as f:
             f.write(json.dumps(measures, indent=4) + "\n")
 
@@ -237,45 +240,7 @@ def json_to_csv(best:bool):
 
 
 
-############################################################
-# CACHE ####################################################
-############################################################
 
-def save_cache(model_args:dict, data, datatype:str):
-    model_args_copy = model_args.copy()
-    if "model" in model_args.keys():
-        file_name = model_args["model"] + "/"
-        model_args_copy.pop('model')
-    else:
-        file_name = ""
-    file_name += str(list(model_args_copy.values())).replace("'", "").replace("[", "").replace("]", "").replace(", ", ".") + f".{datatype}"
-    # print(file_name)
-
-    import pickle
-    if not os.path.exists("cache"):
-        os.makedirs("cache")
-    if not os.path.exists(f"cache/{model_args['model']}"):
-        os.makedirs(f"cache/{model_args['model']}")
-    with open(f"cache/{file_name}.out", "wb") as f:
-        pickle.dump(data, f)
-
-
-def load_cache(model_args:dict, datatype:str):
-    model_args_copy = model_args.copy()
-    if 'model' in model_args.keys():
-        file_name = model_args["model"] + "/"
-        model_args_copy.pop('model')
-    else:
-        file_name = ""
-    file_name += str(list(model_args_copy.values())).replace("'", "").replace("[", "").replace("]", "").replace(", ", ".") + f".{datatype}"
-    # print(f"cache/{file_name}")
-
-    import pickle
-    try:
-        with open(f"cache/{file_name}.out", "rb") as f:
-            return pickle.load(f)
-    except FileNotFoundError:
-        return None
     
 
 

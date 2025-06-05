@@ -1,7 +1,7 @@
 import argparse
 
 from main import main
-from generate_data import get_dataset
+from datasets import get_dataset
 import utils
 
 if __name__ == "__main__":
@@ -13,6 +13,7 @@ if __name__ == "__main__":
     parser.add_argument("--plotation", action='store_true', default=False, help="Plot the results.")
     parser.add_argument("--verbose", action='store_true', default=False, help="Verbose output.")
     parser.add_argument("--measure", action='store_true', default=False, help="Store the measure's results.")
+    parser.add_argument("--pause", action='store_true', default=False, help="Pause for every model execution.")
     args = parser.parse_args()
 
     if args.paper == "comparative":
@@ -85,15 +86,15 @@ if __name__ == "__main__":
             # 'difficult',
 
             # 'mnist', # TODO: memory issues, ada1 can't load dataset
-            # 'coil20',
-            # 'orl',
-            # 'nisis',
-            # 'hiva',
+            # 'coil20', # TODO: 1440 points 1430 components found
+            'orl',
+            # 'nisis', # Does not exist
+            'hiva',
 
-            # 'parallel.swiss',
-            # 'broken.s_curve',
-            # 'four.moons',
-            # 'two.swiss',
+            'parallel.swiss',
+            'broken.s_curve',
+            'four.moons',
+            'two.swiss',
             # 'mit-cbcl', # TODO: import
             ]
     elif args.paper == "dev":
@@ -147,7 +148,7 @@ if __name__ == "__main__":
             ]
 
     elif args.paper == "none":
-        datasets = [
+        dataset_list = [
             'broken.swiss',
             'parallel.swiss',
             'broken.s_curve',
@@ -156,8 +157,8 @@ if __name__ == "__main__":
             'coil20', 
             # 'mit-cbcl', # TODO: import
         ]
-        for dataname in datasets:
-            X, labels, t = get_dataset({'model': "set", 'dataname': dataname, "#points": args.n_points}, cache=False, random_state=11)
+        for dataname in dataset_list:
+            X, labels, t = get_dataset(dataname, args.n_points, 0.05, random_state=11)
             print(f"loaded")
             None_1_NN = utils.one_NN(X, labels)
             with open("measures.best.csv", "a") as f:
@@ -175,14 +176,21 @@ if __name__ == "__main__":
             '3d_clusters',
         ]
     
-    main(
-        paper=args.paper,
-        model_list=models,
-        datasets=datasets,
-        n_points=args.n_points,
-        threaded=args.threaded,
-        plotation=args.plotation if not args.threaded else False,
-        verbose=args.verbose if not args.threaded else False,
-        measure=args.measure if not args.threaded else False,
-    )
+    try:
+        main(
+            paper=args.paper,
+            model_list=models,
+            dataset_list=dataset_list,
+            n_points=args.n_points,
+            threaded=args.threaded,
+            plotation=args.plotation if not args.threaded else False,
+            verbose=args.verbose if not args.threaded else False,
+            measure=args.measure,
+            pause=args.pause if not args.threaded else False,
+        )
+    finally:
+        utils.stamp.print("* Killing process")
+        from models.mvu import eng
+        if eng is not None:
+            eng.quit()
 

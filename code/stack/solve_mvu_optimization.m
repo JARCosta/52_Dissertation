@@ -1,4 +1,4 @@
-function [G, cvx_status] = solve_mvu_optimization(X, N, eps)
+function [G, cvx_status] = solve_mvu_optimization(X, N)
     % SOLVE_MVU_OPTIMIZATION Solves the Maximum Variance Unfolding optimization problem
     % Inputs:
     % X: n-by-D data matrix (rows are points)
@@ -14,12 +14,15 @@ function [G, cvx_status] = solve_mvu_optimization(X, N, eps)
     
     % D = pdist2(X, X).^2; % squared pairwise distances
 
+    eps = 5e-3
+
     % ==== Step 3: Solve MVU via CVX ====
     cvx_begin sdp
         cvx_solver mosek
 
         cvx_solver_settings('MSK_DPAR_INTPNT_CO_TOL_PFEAS', eps)
         cvx_solver_settings('MSK_DPAR_INTPNT_CO_TOL_DFEAS', eps)
+        % cvx_solver_settings('MSK_DPAR_INTPNT_CO_TOL_NEAR_REL', 1e3)
 
         variable G(n, n) symmetric
         maximize( trace(G) )

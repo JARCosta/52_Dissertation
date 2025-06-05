@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import numpy as np
 from scipy.sparse.linalg import eigsh
 
+import plot
 from utils import stamp, warning
 
 class Spectral(ABC):
@@ -10,6 +11,7 @@ class Spectral(ABC):
         self.n_components = n_components
         self.embedding_ = None
         self.kernel_ = None
+        # self.plot = plt.subplots(2, 2, figsize=(12, 12), subplot_kw={'projection': '3d'})
 
     @abstractmethod
     def _fit(self, X: np.ndarray):
@@ -21,8 +23,6 @@ class Spectral(ABC):
         
         print("Fitting Spectral...")
         ret = self._fit(X)
-        # save_cache(self.model_args, self.kernel_, "K")
-        
         stamp.print(f"*\t {self.model_args['model']}\t fit")
         return ret
 
@@ -94,8 +94,6 @@ class Spectral(ABC):
         stamp.set()
 
         self._transform()
-        # save_cache(self.model_args, self.embedding_, "Y")
-        
         stamp.print(f"*\t {self.model_args['model']}\t transform")
         
         return self.embedding_

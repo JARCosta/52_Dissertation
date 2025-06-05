@@ -6,7 +6,7 @@ from scipy.sparse.linalg import eigsh
 from scipy.sparse import csr_matrix, eye as sparse_eye
 
 import models
-from utils import save_cache, stamp
+from utils import stamp
 from plot import plot
 
 class LocallyLinearEmbedding(models.Neighbourhood):
@@ -36,7 +36,7 @@ class LocallyLinearEmbedding(models.Neighbourhood):
         LLE uses the direct neighbors for reconstruction.
         """
         # Use the default k_neigh which finds k closest neighbors for each point
-        _, neigh_matrix = self.k_neigh(X, bidirectional=False, common_neighbors=False)
+        neigh_matrix = self.k_neigh(X, bidirectional=False, common_neighbors=False)
         return neigh_matrix # Returns distances, we only need indices later
 
     def _fit(self, X: np.ndarray):
@@ -116,9 +116,6 @@ class LocallyLinearEmbedding(models.Neighbourhood):
         M = (I - self.weights_).T @ (I - self.weights_)
         self.embedding_matrix_M_ = M # Store sparse M
 
-        # save_cache(self.model_args, self.weights_, "W_lle")
-        # save_cache(self.model_args, self.embedding_matrix_M_, "M_lle")
-
         # The base Spectral class sets self.kernel_ for transformation.
         # Here, M is the matrix whose eigenvectors we need.
         self.kernel_ = self.embedding_matrix_M_ # Assign M to kernel_ for transform
@@ -168,8 +165,6 @@ class LocallyLinearEmbedding(models.Neighbourhood):
         if self.model_args['verbose']:
                 print(f"Computed Eigenvalues (smallest {self.n_components + 2}):", eigenvalues[:self.n_components + 2])
                 print(f"Selected Eigenvalues (indices 1 to {self.n_components}):", eigenvalues[1:(self.n_components + 1)])
-
-        # save_cache(self.model_args, self.embedding_, "Y")
 
         if self.model_args['plotation']:
             plot(self.embedding_, title=f"{self.model_args['model']} output", block=False)

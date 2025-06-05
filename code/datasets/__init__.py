@@ -1,5 +1,146 @@
-# datasets/__init__.py
+# Dataset modules
+from . import swiss
+from . import s_curve
+from . import moons
+from . import artificial
+from . import natural
+from . import sklearn_datasets
 
-from .swiss import *
+from utils import stamp
+
+__all__ = [
+    'swiss',
+    's_curve', 
+    'moons',
+    'artificial',
+    'natural',
+    'sklearn_datasets'
+]
 from .s_curve import *
 from .moons import *
+
+from .artificial import *
+from .natural import *
+
+datasets = {
+    "swiss": {
+        "func": swiss.default,
+        "#components": 2,
+        "eps": 1e-7,
+    },
+    "helix": {
+        "func": artificial.helix,
+        "#components": 1,
+        "eps": 1e-2,
+    },
+    "twinpeaks": {
+        "func": artificial.twinpeaks,
+        "#components": 2,
+        "eps": 1e-5,
+    },
+    "broken.swiss": {
+        "func": swiss.broken,
+        "#components": 2,
+        "eps": 1e-7,
+    },
+    "difficult": {
+        "func": artificial.difficult,
+        "#components": 5,
+        "eps": 1e-7,
+    },
+
+
+    "mnist": {
+        "func": natural.mnist,
+        "#components": 20,
+        "eps": 1e-7,
+        "natural": True,
+    },
+    "coil20": {
+        "func": natural.coil20,
+        "#components": 5,
+        "eps": 1e-7,
+        "natural": True,
+    },
+    "orl": {
+        "func": natural.orl,
+        "#components": 8,
+        "eps": 1e-7,
+        "natural": True,
+    },
+    "hiva": {
+        "func": natural.hiva,
+        "#components": 15,
+        "eps": 1e-7,
+        "natural": True,
+    },
+    "mit-cbcl": {
+        "func": natural.mit_cbcl,
+        "#components": 0, # TODO
+        "eps": 1e-7,
+        "natural": True,
+    },
+
+
+    "parallel.swiss": {
+        "func": swiss.parallel,
+        "#components": 2,
+        "eps": 1e-7,
+    },
+    "broken.s_curve": {
+        "func": s_curve.broken,
+        "#components": 2,
+        "eps": 1e-7,
+    },
+    "four.moons": {
+        "func": moons.four,
+        "#components": 2, #3 # TODO: confirm
+        "eps": 1e-7,
+    },
+    "two.swiss": {
+        "func": swiss.two,
+        "#components": 2, #3 # TODO: confirm
+        "eps": 1e-7,
+    },
+
+
+
+    "parallel.swiss": {
+        "func": swiss.parallel,
+        "#components": 2,
+        "eps": 1e-7,
+    },
+
+    "s_curve": {
+        "func": s_curve.default,
+        "#components": 2,
+        "eps": 1e-7,
+    },
+    "broken.s_curve": {
+        "func": s_curve.broken,
+        "#components": 2,
+        "eps": 1e-7,
+    },
+
+    "moons": {
+        "func": moons.default,
+        "#components": 2,
+        "eps": 1e-7,
+    },
+    "four.moons": {
+        "func": moons.four,
+        "#components": 2,
+        "eps": 1e-7,
+    },
+}
+
+def get_dataset(dataname:str, n_points:int, noise:float, random_state:int=None) -> tuple[np.ndarray, np.ndarray, np.ndarray | None]:
+    if "natural" in datasets[dataname]:
+        X, labels, t = datasets[dataname]['func']()
+        stamp.print_set(f"* {dataname} dataset loaded ({X.shape[0]} points).")
+    else:
+        X, labels, t = datasets[dataname]['func'](n_points, noise, random_state=random_state)
+        stamp.print_set(f"* {dataname} dataset generated ({X.shape[0]} points).")
+
+    X = X - X.mean(0)
+    return X, labels, t

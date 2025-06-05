@@ -203,6 +203,4 @@ def run(X, model_args):
     ########################################################
     else:
         raise ValueError(f"Unknown model name {model_args['model']}.")
-
-    # save_cache(model_args, Y, "Y")
     return Y

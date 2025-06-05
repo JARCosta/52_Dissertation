@@ -4,7 +4,6 @@ def default(n_points, noise, random_state=None):
     np.random.seed(random_state) if random_state is not None else None
 
     t = (3 * np.pi) * (np.random.rand(n_points, 1)) - 3/2 * np.pi
-    print(np.min(t))
 
     # t = 3 * np.pi * (np.random.rand(n_points, 1) - 0.5)
     height = 2 * np.random.rand(n_points, 1)
