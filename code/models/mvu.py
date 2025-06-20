@@ -1,3 +1,4 @@
+import datetime
 import numpy as np
 import cvxpy as cvx
 
@@ -17,15 +18,17 @@ eng = None
 class MVU(models.Neighbourhood):
 
     def __init__(self, model_args:dict, n_neighbors:int, eps:float=1e-3):
+        super().__init__(model_args, n_neighbors)
+        self.eps = eps
+        self._mode = 0
+        
         global eng
         if eng is None:
             eng = matlab.engine.start_matlab()
             # Add the directory containing the MATLAB function to the MATLAB path
             current_dir = os.path.dirname(os.path.abspath(__file__))
             eng.addpath(current_dir, nargout=0)
-        super().__init__(model_args, n_neighbors)
-        self.eps = eps
-        self._mode = 0
+            utils.stamp.print(f"*\t {self.model_args['model']}\t MATLAB started")
 
     def _neigh_matrix(self, X:np.ndarray):
         return self.k_neigh(X, bidirectional=True, common_neighbors=False)
@@ -37,6 +40,7 @@ class MVU(models.Neighbourhood):
         if cc > 1:
             oldNM = self.NM.copy()
             utils.warning(f"Warning: {cc} components found. Adding shortest connections possible to merge components.")
+            self.model_args['artificial_connected'] = True
             while cc > 1:
                 largest_component = np.argmax(np.bincount(labels))
                 largest_component_idx = np.where(labels == largest_component)[0]
@@ -58,7 +62,6 @@ class MVU(models.Neighbourhood):
         
         # Extract index pairs from sparse matrix
         # neigh_graph.nonzero() returns (row_indices, col_indices) of non-zero elements
-        print(f"connections: {np.count_nonzero(self.NM)}")
         rows, cols = utils.k_graph(self.NM).nonzero()
         
         # Convert to list of index pairs and add 1 for MATLAB's 1-based indexing
@@ -67,7 +70,10 @@ class MVU(models.Neighbourhood):
         N_matlab = matlab.double(neighbor_pairs)
         
         utils.stamp.print(f"*\t {self.model_args['model']}\t calling MATLAB")
+        start = datetime.datetime.now()
         K_matlab, cvx_status = eng.solve_mvu_optimization(X_matlab, N_matlab, self.model_args['eps'], nargout=2)
+        end = datetime.datetime.now()
+        print(f"Time taken: {datetime.timedelta(seconds=(end - start).total_seconds())}")
         self.model_args['status'] = cvx_status
         if cvx_status != 'Solved':
             utils.warning(f"MATLAB couldn't solve optimally: {cvx_status}")

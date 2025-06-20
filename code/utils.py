@@ -82,7 +82,8 @@ def k_neigh(data, n_neighbors, bidirectional=False, common_neighbors=False):
     """
     k = n_neighbors
     n_samples = data.shape[0]
-    dist_matrix = intra_dist_matrix(data[:, :5]) # TODO: I don't get how can sklearn.neighbors.NearestNeighbors be so much faster than scipy.spatial.distance.cdist, it knows its cdist between the same data?
+    dist_matrix = intra_dist_matrix(data) # TODO: I don't get how can sklearn.neighbors.NearestNeighbors be so much faster than scipy.spatial.distance.cdist, it knows its cdist between the same data?
+    # print(list(dist_matrix[0]))
     neigh_matrix = np.zeros((n_samples, n_samples))
 
     for i in range(n_samples):
@@ -96,12 +97,10 @@ def k_neigh(data, n_neighbors, bidirectional=False, common_neighbors=False):
         for j in nearest_indices:
             neigh_matrix[i, j] = dist_matrix[i, j] if dist_matrix[i, j] > 0 else 1e-10
 
-    print(f"connections: {np.count_nonzero(neigh_matrix)}")
     if bidirectional:
         neigh_bidirectional = np.maximum(neigh_matrix, neigh_matrix.T) # two-way unidirectional connections
         neigh_matrix = np.triu(neigh_bidirectional) # keep only one connection per pair (upper triangle)
 
-    print(f"connections: {np.count_nonzero(neigh_matrix)}")
     if common_neighbors: # if i and j are my neighs, then i and j are neighs of each other
         adj_bool = neigh_matrix > 0
         common_neigh = adj_bool.astype(int) @ adj_bool.astype(int).T
@@ -114,7 +113,6 @@ def k_neigh(data, n_neighbors, bidirectional=False, common_neighbors=False):
                     shortest_path = min(shortest_path, neigh_matrix[i,k] + neigh_matrix[j,k])
             neigh_matrix[i,j] = shortest_path
             neigh_matrix[j,i] = shortest_path
-    print(f"connections: {np.count_nonzero(neigh_matrix)}")
     return neigh_matrix
 
 def k_graph(neigh_matrix:np.ndarray):
@@ -173,7 +171,7 @@ def  one_NN(Y, labels) -> float:
 
 
 
-def get_measures(X, Y, labels, n_neigh) -> tuple[float, float, float]:
+def compute_measures(X, Y, labels, n_neigh) -> tuple[float, float, float]:
     
     stamp.set()
     One_nn = one_NN(Y, labels)
@@ -181,23 +179,30 @@ def get_measures(X, Y, labels, n_neigh) -> tuple[float, float, float]:
     stamp.print_set(f"*\t 1_NN, T, C \t {One_nn}, {T}, {C}")
 
     return One_nn, T, C
+def get_json(dataname:str, model:str, n_neighs:int=None, best:bool=False):
+    try:
+        if best:
+            with open("measures.best.json", "r") as f:
+                measures = json.loads(f.read())
+        else:
+            with open("measures.all.json", "r") as f:
+                measures = json.loads(f.read())
+    except (FileNotFoundError, json.JSONDecodeError):
+        measures = {}
+    measures[dataname] = measures.get(dataname, {})
+    measures[dataname][model] = measures[dataname].get(model, {})
+    if not best and n_neighs is not None:
+        measures[dataname][model][str(n_neighs)] = measures[dataname][model].get(str(n_neighs), {})
+    return measures
+
+def get_measures(dataname:str, model:str, n_neighs:int=None, best:bool=False):
+    measures = get_json(dataname, model, n_neighs, best)
+    if n_neighs is None:
+        return measures[dataname][model]
+    else:
+        return measures[dataname][model][str(n_neighs)]
 
 def store_measure(model_args:dict, One_nn:float=None, T:float=None, C:float=None, fail=None, best=False):
-    def get_json(dataname:str, model:str, n_neighs:int, best:bool=False):
-        try:
-            if best:
-                with open("measures.best.json", "r") as f:
-                    measures = json.loads(f.read())
-            else:
-                with open("measures.all.json", "r") as f:
-                    measures = json.loads(f.read())
-        except (FileNotFoundError, json.JSONDecodeError):
-            measures = {}
-        measures[dataname] = measures.get(dataname, {})
-        measures[dataname][model] = measures[dataname].get(model, {})
-        if not best:
-            measures[dataname][model][str(n_neighs)] = measures[dataname][model].get(str(n_neighs), {})
-        return measures
 
     dataname = model_args['dataname']
     model = model_args['model']
@@ -213,7 +218,17 @@ def store_measure(model_args:dict, One_nn:float=None, T:float=None, C:float=None
             f.write(json.dumps(measures, indent=4) + "\n")
     else:
         measures = get_json(dataname, model, n_neighs, best)
-        measures[dataname][model][str(n_neighs)] = {'#points': points, '1-NN': One_nn, 'T': T, 'C': C, 'status': model_args['status']}
+
+        measures[dataname][model][str(n_neighs)] = {'#points': points, '1-NN': One_nn, 'T': T, 'C': C}
+        measures[dataname][model][str(n_neighs)]['date'] = stamp.timestamp.strftime("%Y-%m-%d %H:%M:%S")
+        if 'status' in model_args:
+            measures[dataname][model][str(n_neighs)]['status'] = model_args['status']
+        if 'restricted' in model_args:
+            measures[dataname][model][str(n_neighs)]['restricted'] = model_args['restricted']
+        if 'artificial_connected' in model_args:
+            measures[dataname][model][str(n_neighs)]['artificial_connected'] = model_args['artificial_connected']
+
+        
         with open("measures.all.json", "w") as f:
             f.write(json.dumps(measures, indent=4) + "\n")
 
@@ -221,8 +236,11 @@ def store_measure(model_args:dict, One_nn:float=None, T:float=None, C:float=None
     json_to_csv(best=False)
 
 def json_to_csv(best:bool):
-    with open(f"measures.{'best' if best else 'all'}.json", "r") as f:
-        data = json.load(f)
+    try:
+        with open(f"measures.{'best' if best else 'all'}.json", "r") as f:
+            data = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        data = {}
     
     with open(f"measures.{'best' if best else 'all'}.csv", "w") as f:
         f.write(f"dataname,model,n_neighs,points,1-NN,T,C\n")
@@ -244,10 +262,33 @@ def json_to_csv(best:bool):
     
 
 
-def intra_dist_matrix(data: np.ndarray):
+def intra_dist_matrix(data: np.ndarray, k_neighbors: int = None):
+    """
+    Compute distance matrix efficiently for k-nearest neighbors.
+    If k_neighbors is None, computes all pairwise distances (memory intensive).
+    If k_neighbors is specified, only computes distances for k-nearest neighbors.
+    """
     n_samples = data.shape[0]
-    dist, indices = NearestNeighbors(n_neighbors=n_samples).fit(data).kneighbors(data)
-    dist_matrix = np.zeros((n_samples, n_samples))
-    for i in range(n_samples):
-        dist_matrix[i][indices[i]] = dist[i]
-    return dist_matrix
+    
+    if k_neighbors is None or k_neighbors >= n_samples:
+        # Original behavior - compute all pairwise distances
+        dist, indices = NearestNeighbors(n_neighbors=n_samples).fit(data).kneighbors(data)
+        dist_matrix = np.zeros((n_samples, n_samples))
+        for i in range(n_samples):
+            dist_matrix[i][indices[i]] = dist[i]
+            # print(i, list(indices[i][:10]))
+            # if i == 3:
+            #     breakpoint()
+        return dist_matrix
+    else:
+        # Memory-efficient: only compute k-nearest neighbors
+        dist, indices = NearestNeighbors(n_neighbors=k_neighbors + 1).fit(data).kneighbors(data)
+        dist_matrix = np.zeros((n_samples, n_samples))
+        for i in range(n_samples):
+            # Skip the first neighbor (which is the point itself)
+            for j in range(1, k_neighbors + 1):
+                dist_matrix[i][indices[i][j]] = dist[i][j]
+            # print(i, list(indices[i][1:k_neighbors+1]))
+            # if i == 3:
+            #     breakpoint()
+        return dist_matrix

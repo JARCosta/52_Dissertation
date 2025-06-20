@@ -23,6 +23,7 @@ class Isomap(models.Neighbourhood):
         cc, labels = csgraph.connected_components(self.NM, directed=False)
         if cc > 1:
             utils.warning(f"{cc} components found. Adding shortest connections possible to merge components.")
+            self.model_args['artificial_connected'] = True
             while cc > 1:
                 largest_component = np.argmax(np.bincount(labels))
                 largest_component_idx = np.where(labels == largest_component)[0]

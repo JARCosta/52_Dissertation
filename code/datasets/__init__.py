@@ -1,3 +1,6 @@
+import numpy as np
+
+
 # Dataset modules
 from . import swiss
 from . import s_curve
@@ -8,19 +11,6 @@ from . import sklearn_datasets
 
 from utils import stamp
 
-__all__ = [
-    'swiss',
-    's_curve', 
-    'moons',
-    'artificial',
-    'natural',
-    'sklearn_datasets'
-]
-from .s_curve import *
-from .moons import *
-
-from .artificial import *
-from .natural import *
 
 datasets = {
     "swiss": {
@@ -30,8 +20,8 @@ datasets = {
     },
     "helix": {
         "func": artificial.helix,
-        "#components": 1,
-        "eps": 1e-2,
+        "#components": 2,
+        "eps": 1e-6,
     },
     "twinpeaks": {
         "func": artificial.twinpeaks,
@@ -135,12 +125,19 @@ datasets = {
 }
 
 def get_dataset(dataname:str, n_points:int, noise:float, random_state:int=None) -> tuple[np.ndarray, np.ndarray, np.ndarray | None]:
+    if random_state is not None:
+        np.random.seed(random_state)
+    
     if "natural" in datasets[dataname]:
         X, labels, t = datasets[dataname]['func']()
         stamp.print_set(f"* {dataname} dataset loaded ({X.shape[0]} points).")
     else:
-        X, labels, t = datasets[dataname]['func'](n_points, noise, random_state=random_state)
-        stamp.print_set(f"* {dataname} dataset generated ({X.shape[0]} points).")
+        X, labels, t = datasets[dataname]['func'](n_points, noise)
+        stamp.print_set(f"* {dataname} dataset generated ({X.shape[0]} points, noise={noise}, random_state={random_state}).")
+
+    # from plot import plot
+    # plot(X, c=labels, block=True, title=f"{dataname} {n_points} points")
+    # breakpoint()
 
     X = X - X.mean(0)
     return X, labels, t

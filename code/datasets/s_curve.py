@@ -1,7 +1,6 @@
 import numpy as np
 
-def default(n_points, noise, random_state=None):
-    np.random.seed(random_state) if random_state is not None else None
+def default(n_points, noise):
 
     t = (3 * np.pi) * (np.random.rand(n_points, 1)) - 3/2 * np.pi
 
@@ -20,10 +19,7 @@ def default(n_points, noise, random_state=None):
     return X, labels, t
 
 
-def broken(n_points, noise, class_splits=2, random_state=None):
-    np.random.seed(random_state) if random_state is not None else None
-
-
+def broken(n_points, noise, class_splits=2):
 
     t0 = (0.4 * np.pi) * (np.random.rand(n_points% 4, 1)) - 3/2 * np.pi
     t1 = (0.4 * np.pi) * (np.random.rand(n_points//4, 1)) - 3/2 * np.pi

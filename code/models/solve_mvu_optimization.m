@@ -13,19 +13,23 @@ function [G, cvx_status] = solve_mvu_optimization(X, N, eps)
     % inner_prod = inner_prod * ratio;
     
     % D = pdist2(X, X).^2; % squared pairwise distances
+    % disp(eps)
 
     % ==== Step 3: Solve MVU via CVX ====
     cvx_begin sdp
         cvx_solver mosek
 
-        cvx_solver_settings('MSK_DPAR_INTPNT_CO_TOL_PFEAS', eps)
-        cvx_solver_settings('MSK_DPAR_INTPNT_CO_TOL_DFEAS', eps)
+        % cvx_solver_settings('MSK_DPAR_INTPNT_CO_TOL_PFEAS', eps)
+        % cvx_solver_settings('MSK_DPAR_INTPNT_CO_TOL_DFEAS', eps)
+        % cvx_solver_settings('MSK_DPAR_INTPNT_CO_TOL_NEAR_REL', 1/eps)
 
         variable G(n, n) symmetric
         maximize( trace(G) )
         subject to
             G >= 0;
             sum(G(:)) == 0;
+            % trace(G) <= n;
+            % norm(G, 'fro') <= sqrt(n);
 
             % Extract indices for vectorized operations
             i_indices = N(:, 1);
@@ -40,4 +44,8 @@ function [G, cvx_status] = solve_mvu_optimization(X, N, eps)
             % gram_distances == D(sub2ind([n,n], i_indices, j_indices));
         
             cvx_end
+        disp(trace(G))
+    % if ratio ~= 1
+    %     G = G / ratio;
+    % end
 end 

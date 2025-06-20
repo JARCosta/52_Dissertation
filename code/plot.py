@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 import random
 
-def plot_data(ax, data, NM:np.ndarray=np.zeros((1,1)), c="blue", title=""):
+def _plot_data(ax:plt.Axes, data:np.ndarray, NM:np.ndarray=np.zeros((1,1)), c="blue", title=""):
     connections = [[a_idx, b_idx] for a_idx in range(NM.shape[0]) for b_idx in range(NM.shape[1]) if NM[a_idx][b_idx] != 0]
 
     x = data.T[0]
@@ -18,30 +18,34 @@ def plot_data(ax, data, NM:np.ndarray=np.zeros((1,1)), c="blue", title=""):
     ax.set_xlabel(f"D1")
     ax.set_ylabel(f"D2")
     ax.set_zlabel(f"D3")
-    ax.set_title(title)
+    # ax.set_title(title)
+    # axs.tick_params(color="white", labelcolor="white")
+
 
 
 def plot_scales(data:np.ndarray, NM:np.ndarray=np.zeros((1,1)), block=True, c="blue", title="", legend=""):
     data = data.real
     fig, axs = plt.subplots(1, 2, figsize=(12, 5), subplot_kw={'projection': '3d'})
-    fig.text(.1, .1, str(legend))
+    fig.text(.1, .1, str(legend).replace(", ", "\n"))
+    fig.suptitle(title)
 
-    plot_data(axs[0], data, NM, c)
+    _plot_data(axs[0], data, NM, c)
     axs[0].set_aspect("equal", adjustable="box")
     
-    plot_data(axs[1], data, NM, c)
+    _plot_data(axs[1], data, NM, c)
     
     plt.show(block=block)
 
 def plot_two(data:np.ndarray, data2:np.ndarray, NM:np.ndarray=np.zeros((1,1)), NM2:np.ndarray=np.zeros((1,1)), scale=True, scale2=True, block=True, c="blue", title="", legend=""):
     data, data2 = data.real, data2.real
     fig, axs = plt.subplots(1, 2, figsize=(12, 5), subplot_kw={'projection': '3d'})
-    fig.text(.1, .1, str(legend))
+    fig.text(.1, .1, str(legend).replace(", ", "\n"))
+    fig.suptitle(title)
     
-    plot_data(axs[0], data, NM, c)
+    _plot_data(axs[0], data, NM, c)
     axs[0].set_aspect("equal", adjustable="box") if scale else None
     
-    plot_data(axs[1], data2, NM2, c)
+    _plot_data(axs[1], data2, NM2, c)
     axs[1].set_aspect("equal", adjustable="box") if scale2 else None
     
     plt.show(block=block)
@@ -51,11 +55,11 @@ def plot_two(data:np.ndarray, data2:np.ndarray, NM:np.ndarray=np.zeros((1,1)), N
 def plot(data:np.ndarray, NM:np.ndarray=np.zeros((1,1)), block=True, c="blue", title="", legend="", scale=True):
     data = data.real
     fig, axs = plt.subplots(1, 1, figsize=(5, 5), subplot_kw={'projection': '3d'})
-    fig.text(.1, .1, str(legend))
-    plot_data(axs, data, NM, c)
-    axs.set_aspect("equal", adjustable="box")
-    # axs.tick_params(color="white", labelcolor="white")
-    axs.set_title(title)
+    fig.text(.1, .1, str(legend).replace(", ", "\n"))
+    fig.suptitle(title)
+
+    _plot_data(axs, data, NM, c)
+    axs.set_aspect("equal", adjustable="box") if scale else None
 
     plt.show(block=block)
     
@@ -65,7 +69,9 @@ def plot_array(data:list[np.ndarray], NM:list[np.ndarray], block=True, c="blue",
     import random
 
     fig = plt.figure()
-    fig.text(.1, .1, str(legend))
+    fig.text(.1, .1, str(legend).replace(", ", "\n"))
+    fig.suptitle(title)
+    
     ax = fig.add_subplot(111, projection='3d')
     for i in range(len(data)):
         data[i] = data[i].real

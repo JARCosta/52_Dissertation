@@ -1,7 +1,6 @@
 import numpy as np
 
-def default(n_points, noise, random_state=None):
-    np.random.seed(random_state) if random_state is not None else None
+def default(n_points, noise):
 
     t = (3 * np.pi / 2) * (1 + 2 * np.random.rand(n_points, 1))
     height = 30 * np.random.rand(n_points, 1)
@@ -16,8 +15,7 @@ def default(n_points, noise, random_state=None):
 
     return X, labels, t
 
-def broken(n_points, noise, random_state=None):
-    np.random.seed(random_state) if random_state is not None else None
+def broken(n_points, noise):
     
     # t1 = (3 * np.pi / 2) * (1 + 2 * np.random.rand(int(np.ceil(n_points / 2)), 1) * 0.4)
     # t2 = (3 * np.pi / 2) * (1 + 2 * (np.random.rand(int(np.floor(n_points / 2)), 1) * 0.4 + 0.6))
@@ -36,9 +34,9 @@ def broken(n_points, noise, random_state=None):
 
     return X, labels, t
 
-def parallel(n_points, noise, random_state=None):
-    X1, labels1, t1 = default(n_points, noise, random_state)
-    X2, labels2, t2 = default(n_points, noise, random_state)
+def parallel(n_points, noise):
+    X1, labels1, t1 = default(n_points, noise)
+    X2, labels2, t2 = default(n_points, noise)
     X2[:, 1] += 60
     
     X = np.vstack([X1, X2])
@@ -48,11 +46,10 @@ def parallel(n_points, noise, random_state=None):
 
     return X, labels, t
 
-def two(n_points, noise, random_state=None):
-    np.random.seed(random_state) if random_state is not None else None
+def two(n_points, noise):
 
-    X1, labels1, t1 = default(n_points, noise, random_state)
-    X2, labels2, t2 = default(n_points, noise, random_state)
+    X1, labels1, t1 = default(n_points, noise)
+    X2, labels2, t2 = default(n_points, noise)
     
     angle_radians = - np.pi / 4
     rotation_matrix = np.array([
@@ -77,8 +74,7 @@ def two(n_points, noise, random_state=None):
 
     return X, labels, t
 
-def changing(n_points, noise, random_state=None):
-    np.random.seed(random_state) if random_state is not None else None
+def changing(n_points, noise):
 
     r = np.zeros(n_points)
     for i in range(n_points):
@@ -94,8 +90,7 @@ def changing(n_points, noise, random_state=None):
 
     return X, labels, t
 
-def toro(n, noise, random_state=None):
-    np.random.seed(random_state) if random_state is not None else None
+def toro(n, noise):
 
     divisions = 3
     division_width = 0.25

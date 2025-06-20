@@ -4,6 +4,7 @@ from scipy.linalg import pinv
 from scipy.sparse import csgraph, csr_matrix
 
 from utils import stamp
+import utils
 from plot import plot
 
 class Our:
@@ -42,7 +43,7 @@ class Our:
                 with np.errstate(divide='ignore'):
                     A += np.log(np.diag((S_list[i] - S_list[i][r_idx]) @ (S_list[i] - S_list[i][r_idx]).T))
                 R[i].append(r_idx)
-        return R
+        return np.array(R).astype(int)
 
     def get_reference_points(self, X:np.ndarray, S:np.ndarray, C_global_index_list:list[list[int]]):
         """Get the reference dataset and its neighbourhood graph.
@@ -69,9 +70,9 @@ class Our:
         C_reference_list = []
         for c in range(n_components):
             component_indexes = np.unique(np.concatenate([C[c], R[c]]))
-            component_indexes = component_indexes[component_indexes != -1]
+            component_indexes = component_indexes[component_indexes != -1] # remove -1 from C, inter connection between i and itself
             component_global_indexes = C_global_index_list[c][component_indexes]
-            
+
             reference_global_indexes_list.append(component_global_indexes.tolist())
             X_reference_list.append(X[reference_global_indexes_list[c]])
             C_reference_list.append([c,] * len(component_global_indexes))
@@ -130,14 +131,18 @@ class Our:
     def fit_transform(self, X: np.ndarray):
         """Fits the model and computes embeddings."""
         
-        temp, self.model_args['plotation'] = self.model_args['plotation'], False
+        temp = [self.model_args['plotation'], self.model_args['verbose'], self.model_args['#components']]
+        self.model_args['plotation'] = False
+        # self.model_args['verbose'] = False
+        self.model_args['#components'] = None
         
         stamp.set()
         NM = super()._neigh_matrix(X)
         cc = csgraph.connected_components(NM)
         if cc[0] == 1:
+            utils.warning("The data is already connected.")
             return NM
-        stamp.print(f"*\t {self.model_args['dataname']}\t connected_components: {cc[0]}")
+        stamp.print(f"*\t {self.model_args['dataname']}\t disjoint components: {cc[0]}")
 
         
         C_global_index_list = [[] for _ in range(cc[0])] # [indexes of points corresponding to component i, for i in n_components]
@@ -148,6 +153,8 @@ class Our:
             super().fit_transform(X[C_global_index_list[i]])
             
             S_list[i] = self.embedding_
+            if temp[0]:
+                plot(S_list[i], title=f"Component {i} local linearization", block=False)
 
         d = np.max([S_i.shape[1] for S_i in S_list])
         S = np.zeros((len(X), d))
@@ -177,16 +184,18 @@ class Our:
                 # reference_index = list(reference_global_indexes).index(reference_global_indexes[C_reference == c_i][i])
                 reference_mask[reference_i_local_index] = 1
             
-            plot(S_i, c=~reference_mask.astype(bool), block=False, title=f"Component {c_i} local linearization")
+            if temp[0]:
+                plot(S_i, c=~reference_mask.astype(bool), block=False, title=f"Component {c_i} local linearization")
 
             transformation = pinv(S_local_reference_i) @ S_global_reference_i # transformation matrix from LOCAL to GLOBAL linearization
             S_i = S_i @ transformation # apply the transformation to the LOCAL linearization of the component
             S[C_global_index_list[c_i]] = S_i # update the global linearization with the transformed component
 
-            plot(S_i, c=~reference_mask.astype(bool), block=False, title=f"Component {c_i} local linearization transformed")
+            if temp[0]:
+                plot(S_i, c=~reference_mask.astype(bool), block=False, title=f"Component {c_i} local linearization transformed")
         self.embedding_ = S
         
-        self.model_args['plotation'] = temp
+        self.model_args['plotation'], self.model_args['verbose'], self.model_args['#components'] = temp
         if self.model_args['plotation']:
             reference_mask = np.zeros((len(X),))
             reference_mask[reference_global_indexes] = 1

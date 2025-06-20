@@ -3,7 +3,8 @@ import numpy as np
 from scipy.sparse.linalg import eigsh
 
 import plot
-from utils import stamp, warning
+from utils import stamp
+import utils
 
 class Spectral(ABC):
     def __init__(self, model_args:dict, n_components:int=None):
@@ -26,17 +27,10 @@ class Spectral(ABC):
         stamp.print(f"*\t {self.model_args['model']}\t fit")
         return ret
 
-    def _transform(self) -> np.ndarray | None:
-        if self.kernel_ is None:
-            warning("Kernel matrix is not initialized. Run fit(X) first.")
-            return
+    def _restrict_components(self, eigenvalues:np.ndarray, eigenvectors:np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+        """Restrict the number of components to the top `n_components`."""
         
-        if self.n_components is None:
-            eigenvalues, eigenvectors = np.linalg.eigh(self.kernel_)
-        else:
-            eigenvalues, eigenvectors = eigsh(self.kernel_, k=self.n_components, which='LM')
-        
-        # Sort eigenvalues and eigenvectors in descending order
+        # Sort eigenvalues and eigenvectors in descending eigenvalue order
         idx = np.argsort(eigenvalues)[::-1]
         eigenvalues, eigenvectors = eigenvalues[idx], eigenvectors[:, idx]
         if self.model_args['verbose']:
@@ -44,37 +38,41 @@ class Spectral(ABC):
 
         if self.n_components is None:
             # Compute the top components
-            if self.model_args['verbose']:
-                print("std:", np.std(eigenvalues))
-                print("median:", np.median(eigenvalues))
 
-            eigenvalues_idx, representation = [], 0
-            for eig_idx in range(len(eigenvalues)):
-                eigenvalues_idx.append(eig_idx)
-                representation += eigenvalues[eig_idx] / np.sum(eigenvalues)
+            for idx in range(len(eigenvalues)): # Possible because eigenvalues are sorted
+                representation = np.sum(eigenvalues[:idx]) / np.sum(eigenvalues)
                 if representation > 0.98:
                     break
             
-            stamp.print(f"*\t Smart selected {len(eigenvalues_idx)} components ({representation*100:.2f}%)")
+            stamp.print(f"*\t Smart selected {idx} components ({representation*100:.2f}%)")
+            
+            if self.model_args['#components'] is None:
+                utils.warning("There is no information for the intrinsic dimensionality of the data.")
 
-            if len(eigenvalues_idx) != self.model_args['#components']:
-                warning(f"Smart eigenvalue selection found {len(eigenvalues_idx)} components, but {self.model_args['#components']} components were requested. Forcing the selection of {self.model_args['#components']} components.")
-                eigenvalues = eigenvalues[eigenvalues_idx]
-                eigenvectors = eigenvectors[:, eigenvalues_idx]
-                embedding = eigenvectors @ np.diag(eigenvalues)  # Project data
+            if idx != self.model_args['#components']:
                 
-                eigenvalues_idx = range(self.model_args['#components'])
-
-                eigenvalues = eigenvalues[eigenvalues_idx]
-                eigenvectors = eigenvectors[:, eigenvalues_idx]
-                embedding_restricted = eigenvectors @ np.diag(eigenvalues)  # Project data
+                eigenvalues_selected = eigenvalues[:idx]
+                eigenvectors_selected = eigenvectors[:, :idx]
                 
-                plot.plot_two(embedding, embedding_restricted, title=f"{self.model_args['model']} Eigenvalues")
+                idx_restricted = self.model_args['#components']
+                eigenvalues_restricted = eigenvalues[:idx_restricted]
+                eigenvectors_restricted = eigenvectors[:, :idx_restricted]
 
-            eigenvalues = eigenvalues[eigenvalues_idx]
-            eigenvectors = eigenvectors[:, eigenvalues_idx]
+                restricted_representation = np.sum(eigenvalues_restricted) / np.sum(eigenvalues)
+                utils.warning(f"The theoretical number of components is {idx_restricted}, but {idx} components were selected ({representation*100:.2f}%). Reducing representation to {restricted_representation*100:.2f}%.")
+                
+                if self.model_args['plotation']:
+                    embedding_selected = eigenvectors_selected @ np.diag(eigenvalues_selected)  # Project data
+                    embedding_restricted = eigenvectors_restricted @ np.diag(eigenvalues_restricted)  # Project data
+                    plot.plot_two(embedding_selected, embedding_restricted, title=f"{self.model_args['model']} output, and restricted output")
+                
+                idx = idx_restricted
+                self.model_args['restricted'] = True
+
+            eigenvalues = eigenvalues[:idx]
+            eigenvectors = eigenvectors[:, :idx]
             if self.model_args['verbose']:
-                print(f"Eigenvalues (selected {len(eigenvalues_idx)}):", eigenvalues)
+                print(f"Eigenvalues (selected {idx}):", eigenvalues)
         else:
             # Take only the top `n_components`
             eigenvalues = eigenvalues[:self.n_components]
@@ -82,6 +80,22 @@ class Spectral(ABC):
             
             if self.model_args['verbose']:
                 print(f"Eigenvalues (top {self.n_components}):", eigenvalues)
+
+        return eigenvalues, eigenvectors
+
+    def _transform(self) -> np.ndarray | None:
+        if self.kernel_ is None:
+            utils.warning("Kernel matrix is not initialized. Run fit(X) first.")
+            return
+        if np.isnan(self.kernel_).any():
+            utils.warning("Kernel matrix contains NaNs. Skipping.")
+            return
+
+        if not np.allclose(self.kernel_, self.kernel_.T):
+            raise ValueError(f"Kernel matrix is not symmetric. {len(np.where(~np.isclose(self.kernel_, self.kernel_.T, atol=1e-8))[0])} values differ")
+        eigenvalues, eigenvectors = np.linalg.eigh(self.kernel_)
+        
+        eigenvalues, eigenvectors = self._restrict_components(eigenvalues, eigenvectors)
 
         # eigenvalues = np.sqrt(np.maximum(eigenvalues, 0))  # Ensure non-negative eigenvalues
 

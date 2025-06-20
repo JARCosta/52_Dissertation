@@ -1,13 +1,9 @@
 import datetime
-import json
 import multiprocessing
 import multiprocessing.managers
 import os
-import threading
 import matplotlib.pyplot as plt
 import numpy as np
-import sklearn.manifold
-from scipy.sparse.csgraph import connected_components
 
 import models
 import utils
@@ -19,7 +15,6 @@ os.environ['LOKY_MAX_CPU_COUNT'] = str(os.cpu_count())
 os.environ['OMP_NUM_THREADS'] = str(os.cpu_count())
 
 def model_func(threads_return:multiprocessing.managers.SyncManager, X:np.ndarray, labels:np.ndarray, model_args:dict, measure_bool:bool) -> tuple[dict, np.ndarray, np.ndarray, np.ndarray, np.ndarray] | None:
-    model_args['start'] = datetime.datetime.now().strftime("%d-%H:%M:%S")
     utils.important(f"Running {model_args['model']} on {model_args['dataname']} with {model_args['#neighs']} neighbors")
     Y = models.run(X, model_args)
 
@@ -31,9 +26,12 @@ def model_func(threads_return:multiprocessing.managers.SyncManager, X:np.ndarray
 
     if model_args['plotation']:
         plot.plot_scales(X, c=labels, block=False, title=f"{model_args['dataname']} {model_args['#neighs']} neighbors")
-        plot.plot_scales(Y, c=labels, block=True, title=f"{model_args['model']} {model_args['dataname']} {model_args['#neighs']} neighbors")
+        plot.plot_scales(Y, c=labels, block=True, title=f"{model_args['model']} {model_args['dataname']} {model_args['#neighs']} neighbors", legend=model_args)
     
-    One_nn, T, C = utils.get_measures(X, Y, labels, model_args["#neighs"])
+    if np.any(np.isnan(Y)):
+        utils.warning(f"Y has NaNs for {model_args['model']} on {model_args['dataname']}")
+        return None
+    One_nn, T, C = utils.compute_measures(X, Y, labels, model_args["#neighs"])
     if measure_bool:
         utils.store_measure(model_args, One_nn, T, C)
     threads_return[model_args['#neighs']] = (model_args, Y, One_nn, T, C)
@@ -67,15 +65,13 @@ def plot_args(results:np.ndarray, model_args:dict, k_best:int) -> None:
     if model_args['plotation']:
         plt.show(block=False)
 
-def best_args(threads_return:multiprocessing.managers.DictProxy, labels:np.ndarray) -> tuple[int, dict]:
-    if len(threads_return) == 0:
-        print("No results")
-        return
-    results = []
-    for model_args, _, One_nn, T, C in threads_return.values():
-        results.append([model_args['#neighs'], One_nn, T, C])
+def best_args(results:np.ndarray, model_args:dict, labels:np.ndarray) -> tuple[int, dict]:
     results.sort(key=lambda x: x[0])
     results = np.array(results).T
+
+    if len(results) == 0:
+        print("No results")
+        return
 
     results[2:] = np.round(np.log10(1 - results[2:].astype(float) + 1e-10), 3)
 
@@ -98,15 +94,16 @@ def best_args(threads_return:multiprocessing.managers.DictProxy, labels:np.ndarr
             best_k = int(k[0])
             best_measure_sum = k_sum
             best_1_NN, best_T, best_C = float(k[1]), float(k[2]), float(k[3])
-    plot_args(results, model_args, best_k) # Warning: model_args defined inside the loop (last thread computed)
+    if model_args['plotation']:
+        plot_args(results, model_args, best_k) # Warning: model_args defined inside the loop (last thread computed)
     
     print(f"Best {model_args['dataname']} {model_args['model']} {best_1_NN}, {best_T}, {best_C}, k={best_k}")
     model_args['#neighs'] = best_k
     utils.store_measure(model_args, best_1_NN, best_T, best_C, best=True)
 
-    if model_args['plotation']:
-        plot.plot(threads_return[best_k][1], c=labels, block=True, title=f"Best {model_args['dataname']} {model_args['model']} {best_1_NN}, {best_T}, {best_C}")
-
+    if model_args['plotation']: # The best model might not have been computed in this execution (can't get Y)
+        # plot.plot(threads_return[best_k][1], c=labels, block=True, title=f"Best {model_args['dataname']} {model_args['model']} {best_1_NN}, {best_T}, {best_C}")
+        pass
 
 def model_launcher(model_args:dict, models:list, X:np.ndarray, labels:np.ndarray, t:np.ndarray, threaded:bool, plotation:bool, verbose:bool, measure:bool, pause:bool):
     
@@ -116,16 +113,13 @@ def model_launcher(model_args:dict, models:list, X:np.ndarray, labels:np.ndarray
         threads:list[multiprocessing.Process] = []
         manager = multiprocessing.Manager()
         threads_return = manager.dict()
-        for n_neighbors in range(5, 6):
+        for n_neighbors in range(5, 16):
             model_args['#neighs'] = n_neighbors
-
-            # try:
-            model_args['eps'] = datasets[model_args['dataname']]['eps']
             model_args['#components'] = datasets[model_args['dataname']]['#components']
-            # except KeyError:
-            #     raise KeyError(f"Unknown dataset {model_args['dataname']} for model {model}")
+            
+            if np.any([i in model for i in ["mvu", "mvu.ineq", "eng", "adaptative", "adaptative2"]]):
+                model_args['eps'] = datasets[model_args['dataname']]['eps']
 
-            model_args['eps'] = 1e-3 if np.any([i in model for i in ["mvu", "mvu.ineq", "eng", "adaptative", "adaptative2"]]) else None
             model_args['plotation'] = plotation
             model_args['verbose'] = verbose
             model_args = {k: v for k, v in model_args.items() if v is not None}
@@ -143,22 +137,31 @@ def model_launcher(model_args:dict, models:list, X:np.ndarray, labels:np.ndarray
             [t.join() for t in threads]
             print("joined")
         
-        best_args(threads_return, labels)
+        measures = utils.get_measures(model_args['dataname'], model_args['model'])
+        results = []
+        for k_neigh in measures.keys():
+            results.append([int(k_neigh), measures[k_neigh]['1-NN'], measures[k_neigh]['T'], measures[k_neigh]['C']])
+        # results[:] = [k_neigh, One_nn, T, C]
+
+        if "plotation" not in model_args:
+            model_args['plotation'] = plotation
+        if "verbose" not in model_args:
+            model_args['verbose'] = verbose
+        best_args(results, model_args, labels)
 
         if threaded and pause:
             input("Press Enter to continue...")
 
 
-def main(paper:str, model_list:list, dataset_list:list, n_points:int, threaded:bool, plotation:bool, verbose:bool, measure:bool, pause:bool) -> None:
+def main(paper:str, model_list:list, dataset_list:list, n_points:int, threaded:bool, plotation:bool, verbose:bool, measure:bool, pause:bool, seed:int, noise:float) -> None:
     model_args = {}
     model_args["paper"] = paper
-    model_args['status'] = None
 
     threads:list[multiprocessing.Process] = []
 
     for dataname in dataset_list:
         model_args['dataname'] = dataname
-        X, labels, t = get_dataset(dataname, n_points, 0.05, random_state=11)
+        X, labels, t = get_dataset(dataname, n_points, noise, random_state=seed)
         # X, labels, t = generate_data.get_dataset({'model': "set", 'dataname': dataname, "#points": n_points}, random_state=11)
         model_args["#points"] = X.shape[0]
         # plot(X, c=t[:, 0], block=True, title=f"{dataname} {n_points} points")

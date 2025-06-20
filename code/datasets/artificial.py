@@ -1,8 +1,7 @@
 import numpy as np
 
 
-def helix(n, noise, random_state=None):
-    np.random.seed(random_state) if random_state is not None else None
+def helix(n, noise):
 
     t = np.linspace(1, n, n)[:, None] / n
     t = (t ** 1.0) * 2 * np.pi
@@ -11,8 +10,7 @@ def helix(n, noise, random_state=None):
 
     return X, labels, t
 
-def twinpeaks(n, noise, random_state=None):
-    np.random.seed(random_state) if random_state is not None else None
+def twinpeaks(n, noise):
 
     inc = 1.5 / np.sqrt(n)
     # xx, yy = np.meshgrid(np.arange(-1, 1 + inc, inc), np.arange(-1, 1 + inc, inc))
@@ -23,8 +21,7 @@ def twinpeaks(n, noise, random_state=None):
 
     return X, labels, None
 
-def difficult(n, noise, random_state=None):
-    np.random.seed(random_state) if random_state is not None else None
+def difficult(n, noise):
 
     no_dims = 5
     no_points_per_dim = round(n ** (1 / no_dims))
@@ -39,8 +36,7 @@ def difficult(n, noise, random_state=None):
 
     return X, labels, None
 
-def clusters_3d(n, noise, random_state=None):
-    np.random.seed(random_state) if random_state is not None else None
+def clusters_3d(n, noise):
 
     num_clusters = 5
     centers = 10 * np.random.rand(num_clusters, 3)
@@ -60,8 +56,7 @@ def clusters_3d(n, noise, random_state=None):
 
     return X, labels, None
 
-def intersect(n, noise, random_state=None):
-    np.random.seed(random_state) if random_state is not None else None
+def intersect(n, noise):
 
     t = np.linspace(1, n, n)[:, None] / n * (2 * np.pi)
     x = np.cos(t)

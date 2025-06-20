@@ -14,16 +14,19 @@ if __name__ == "__main__":
     parser.add_argument("--verbose", action='store_true', default=False, help="Verbose output.")
     parser.add_argument("--measure", action='store_true', default=False, help="Store the measure's results.")
     parser.add_argument("--pause", action='store_true', default=False, help="Pause for every model execution.")
+    parser.add_argument("--seed", type=int, default=27, help="Random seed.")
+    parser.add_argument("--noise", type=float, default=0.05, help="Noise level for the dataset.")
+
+
     args = parser.parse_args()
 
     if args.paper == "comparative":
         models = [
-            "pca", 
-            "isomap",
-            # "mvu",
-            "lle",
-            "le",
-            "hlle",
+            # "pca", 
+            # "isomap",
+            # "lle",
+            # "le",
+            # "hlle",
 
             # Sub
             "isomap.skl",
@@ -31,6 +34,8 @@ if __name__ == "__main__":
             "le.skl",
             "hlle.skl",
             "ltsa.skl",
+            
+            # "mvu",
         ]
         dataset_list = [
             'swiss',
@@ -39,20 +44,20 @@ if __name__ == "__main__":
             'broken.swiss',
             'difficult',
 
-            # 'mnist', # TODO: memory issues
+            # 'mnist', # TODO: memory overload
             'coil20',
             'orl',
-            # 'nisis',
-            # 'hiva',
+            # 'nisis', # Does not exist
+            # 'hiva', # TODO: problems on the import
         ]
 
     elif args.paper == "eng":
         models = [
-            "isomap",
-            "isomap.eng",
-            "lle",
-            "lle.eng",
-            "le",
+            # "isomap",
+            # "isomap.eng",
+            # "lle",
+            # "lle.eng",
+            # "le",
             "le.eng",
             "hlle",
             "hlle.eng",
@@ -68,31 +73,33 @@ if __name__ == "__main__":
             # 'parallel.swiss',
             # 'broken.s_curve',
             'four.moons',
-            'two.swiss',
-            'coil20', 
+            # 'two.swiss',
+            # 'coil20', 
             # 'mit-cbcl', # TODO: import
         ]
 
     elif args.paper == "mvu":
         models = [
-            "mvu",
+            # "mvu",
             # "mvu.eng",
+            "mvu.our",
         ]
         dataset_list = [
             # 'swiss',
-            'helix',
-            'twinpeaks',
-            'broken.swiss',
-            'difficult',
+            # 'helix',
+            # 'twinpeaks', # Mostly NaNs
+            # 'broken.swiss',
+            # 'difficult',
 
-            # 'mnist', # TODO: memory issues, ada1 can't load dataset
-            # 'coil20', # TODO: 1440 points 1430 components found
+            # 'mnist', # TODO: memory overload
+            'coil20', # TODO: 1440 points 1396 components found
             'orl',
             # 'nisis', # Does not exist
-            'hiva',
+            # 'hiva', # TODO: problems on the import
+
 
             'parallel.swiss',
-            'broken.s_curve',
+            'broken.s_curve', # full NaNs
             'four.moons',
             'two.swiss',
             # 'mit-cbcl', # TODO: import
@@ -101,7 +108,7 @@ if __name__ == "__main__":
         models = [
             # # Comparitive
             # "pca", 
-            # "isomap",
+            "isomap",
             # "lle",
             # "le",
             # "hlle",
@@ -121,27 +128,27 @@ if __name__ == "__main__":
             # "hlle.eng",
             # # "jme",
             
-            'mvu',
+            # 'mvu',
         ]
         dataset_list = [
-            'swiss',
+            # 'swiss',
             # 'helix',
             # 'twinpeaks',
             # 'broken.swiss',
             # 'difficult',
 
-            # 'mnist', # TODO: memory issues, ada1 can't load dataset
+            # # 'mnist', # TODO: memory issues, ada1 can't load dataset
             # 'coil20',
-            # 'orl',
+            'orl',
             # 'nisis',
             # 'hiva',
 
-            # 'parallel.swiss',
+            'parallel.swiss',
             # 'broken.s_curve.4', # easiest
-            # 'broken.s_curve', # default
+            'broken.s_curve', # default
             # 'broken.s_curve.1', # most class changes
-            # 'four.moons',
-            # 'two.swiss',
+            'four.moons',
+            'two.swiss',
             # 'mit-cbcl', # TODO: import
             
             # 'teapots',
@@ -158,13 +165,18 @@ if __name__ == "__main__":
             # 'mit-cbcl', # TODO: import
         ]
         for dataname in dataset_list:
-            X, labels, t = get_dataset(dataname, args.n_points, 0.05, random_state=11)
-            print(f"loaded")
+            X, labels, t = get_dataset(dataname, args.n_points, args.noise, random_state=args.seed)
             None_1_NN = utils.one_NN(X, labels)
-            with open("measures.best.csv", "a") as f:
-                f.write(f"none,{dataname},none,{args.n_points},None,{None_1_NN},None,None\n")
-            with open("measures.all.csv", "a") as f:
-                f.write(f"none,{dataname},none,{args.n_points},None,{None_1_NN},None,None\n")
+            print(f"loaded {dataname} {None_1_NN}")
+            utils.store_measure({'dataname': dataname, 'model': 'none', '#neighs': None, '#points': X.shape[0]}, None_1_NN, best=True)
+            utils.store_measure({'dataname': dataname, 'model': 'none', '#neighs': None, '#points': X.shape[0]}, None_1_NN)
+            
+            # with open("measures.best.csv", "a") as f:
+            #     f.write(f"none,{dataname},none,{args.n_points},None,{None_1_NN},None,None\n")
+            # with open("measures.all.csv", "a") as f:
+            #     f.write(f"none,{dataname},none,{args.n_points},None,{None_1_NN},None,None\n")
+        
+        exit()
 
     else:
         raise ValueError("Paper not found. Please use 'comparative' or 'eng'.")
@@ -187,6 +199,8 @@ if __name__ == "__main__":
             verbose=args.verbose if not args.threaded else False,
             measure=args.measure,
             pause=args.pause if not args.threaded else False,
+            seed=args.seed,
+            noise=args.noise,
         )
     finally:
         utils.stamp.print("* Killing process")

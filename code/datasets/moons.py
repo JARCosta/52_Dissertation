@@ -1,9 +1,7 @@
 import numpy as np
 
 
-def default(n_points, noise, random_state=None):
-    np.random.seed(random_state) if random_state is not None else None
-
+def default(n_points, noise):
     t1 = np.pi * np.random.rand(n_points // 2, 1)
     t2 = np.pi * np.random.rand(n_points // 2 + n_points % 2, 1)
 
@@ -23,9 +21,9 @@ def default(n_points, noise, random_state=None):
     return X, labels, t
 
 
-def four(n_points, noise, random_state=None):
-    X1, labels1, t1 = default(n_points, noise, random_state)
-    X2, labels2, t2 = default(n_points, noise, random_state)
+def four(n_points, noise):
+    X1, labels1, t1 = default(n_points, noise)
+    X2, labels2, t2 = default(n_points, noise)
     X1 = np.hstack([noise * np.random.randn(X1.shape[0], 1), X1])
     X2 = np.hstack([noise * np.random.randn(X1.shape[0], 1), X2])
     X2[:, 0] += 1
