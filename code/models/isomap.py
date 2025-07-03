@@ -11,7 +11,7 @@ class Isomap(models.Neighbourhood):
         super().__init__(model_args, n_neighbors, n_components)
 
     def _neigh_matrix(self, X:np.ndarray):
-        return self.k_neigh(X, bidirectional=True, common_neighbors=False)
+        return utils.neigh_matrix(X, self.n_neighbors, bidirectional=True)
 
     def _fit(self, X):
         """Fit the Isomap model and compute the low-dimensional embeddings."""

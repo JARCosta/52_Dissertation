@@ -66,7 +66,7 @@ datasets = {
     },
     "mit-cbcl": {
         "func": natural.mit_cbcl,
-        "#components": 0, # TODO
+        "#components": 6, # TODO: confirm
         "eps": 1e-7,
         "natural": True,
     },
@@ -130,10 +130,10 @@ def get_dataset(dataname:str, n_points:int, noise:float, random_state:int=None) 
     
     if "natural" in datasets[dataname]:
         X, labels, t = datasets[dataname]['func']()
-        stamp.print_set(f"* {dataname} dataset loaded ({X.shape[0]} points).")
+        stamp.print_set(f"*\t {dataname} dataset loaded {X.shape}.")
     else:
         X, labels, t = datasets[dataname]['func'](n_points, noise)
-        stamp.print_set(f"* {dataname} dataset generated ({X.shape[0]} points, noise={noise}, random_state={random_state}).")
+        stamp.print_set(f"*\t {dataname} dataset generated ({X.shape}, noise={noise}, random_state={random_state}).")
 
     # from plot import plot
     # plot(X, c=labels, block=True, title=f"{dataname} {n_points} points")

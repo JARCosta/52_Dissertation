@@ -18,32 +18,31 @@ import heapq
 
 class ENG:
     def _neigh_matrix(self, X):
-        def get_eta_d(Y:np.ndarray, d:int):
+        def get_eta_d(X:np.ndarray, d:int):
             """
             Compute the eta_d value for the given dataset Y and intrinsic dimension d.
             """
             k = self.n_neighbors
 
-            Y_neighs = self.k_neigh(Y)
-            Y_neighs[np.where(Y_neighs == 0)] = np.inf
-            
-            eta_d = np.zeros((Y.shape[0]))
-            for i in range(Y.shape[0]):
-                Y_i = Y[np.argsort(Y_neighs[i])[:k]]
-                sigma_i = np.linalg.svd(Y_i - Y[i] @ np.ones((Y.shape[1], 1)), compute_uv=False)
+            NG = utils.neigh_graph(X, self.n_neighbors)
 
-                eta_d[i] = np.sum(sigma_i[range(d)]) / np.sum(sigma_i[range(min(X.shape[1], k))])
+            eta_d = np.zeros((X.shape[0]))
+            utils.warning(f"d({d}) is smaller then k({k}), eta_d might not be correctly computed")
+            for i in range(X.shape[0]):
+                Xi_neighs = X[NG[i].indices]
+                sigma_i = np.linalg.svd(Xi_neighs - X[i] @ np.ones((X.shape[1], 1)), compute_uv=False)
+                eta_d[i] = np.sum(sigma_i[:d]) / np.sum(sigma_i[range(min(X.shape[1], k))])
                 # print(sigma_i, eta_d[i])
                 # print(f"eta_d:\t {i}/{Y.shape[0]}", end="\r")
-            print()
+            # print()
             
             return np.mean(eta_d)
 
         def connections(comp1:np.ndarray, comp2:np.ndarray, d:int, xi=0.95):
-            Yp, Yq = X[comp1], X[comp2]
-            s = min(Yp.shape[0], Yq.shape[0])
+            Xp, Xq = X[comp1], X[comp2]
+            s = min(Xp.shape[0], Xq.shape[0])
             
-            dist_matrix = cdist(Yp, Yq)  # Compute distances
+            dist_matrix = cdist(Xp, Xq)  # Compute distances
 
             connections = np.zeros((s, 2)).astype(int)
             for u in range(s):
@@ -52,10 +51,11 @@ class ENG:
                 # print(dist_matrix[a][b])
                 dist_matrix[a][b] = np.inf
 
+            l_max = d+1-1
             for l in range(d+1, (s)+1):
                 a, b = connections[:l].T # 2xl, closest l connections between p and q
                 # print(Yp[a], Yq[b])
-                delta_pq_l = Yp[a] - Yq[b]
+                delta_pq_l = Xp[a] - Xq[b]
                 # print(delta_l)
                 
                 sigma_l = np.linalg.svd(delta_pq_l, compute_uv=False)

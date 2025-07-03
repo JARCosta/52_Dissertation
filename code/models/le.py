@@ -8,6 +8,7 @@ from scipy.linalg import eigh, pinv
 import models
 from utils import stamp
 from plot import plot
+import utils
 
 class LaplacianEigenmaps(models.Neighbourhood):
     """
@@ -35,7 +36,7 @@ class LaplacianEigenmaps(models.Neighbourhood):
         Computes the k-nearest neighbor graph and returns the distance matrix.
         Uses bidirectional connections.
         """
-        neigh_matrix = self.k_neigh(X, bidirectional=True, common_neighbors=False)
+        neigh_matrix = utils.neigh_matrix(X, self.n_neighbors, bidirectional=True)
         # neigh_matrix = neigh_matrix + neigh_matrix.T # no need for symmetry here?, Weight matrix will be made symmetric
         return neigh_matrix
 

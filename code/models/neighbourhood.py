@@ -7,15 +7,13 @@ import warnings
 
 from models.spectral import Spectral
 from plot import plot
-from utils import stamp, k_neigh
+from utils import stamp
+import utils
 
 class Neighbourhood(Spectral):
     def __init__(self, model_args:dict, n_neighbors:int, n_components:int=None):
         super().__init__(model_args, n_components)
         self.n_neighbors = n_neighbors
-
-    def k_neigh(self, X:np.ndarray, bidirectional:bool=False, common_neighbors:bool=False):
-        return k_neigh(X, self.n_neighbors, bidirectional, common_neighbors)
 
     def neigh_matrix(self, X):
         stamp.set()
@@ -25,7 +23,7 @@ class Neighbourhood(Spectral):
 
     @abstractmethod
     def _neigh_matrix(self, X:np.ndarray):
-        return self.k_neigh(X)
+        return utils.neigh_matrix(X, self.n_neighbors)
     
     def fit_transform(self, X: np.ndarray):
         """Fits the model and computes embeddings."""

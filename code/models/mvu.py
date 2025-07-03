@@ -17,9 +17,8 @@ eng = None
 
 class MVU(models.Neighbourhood):
 
-    def __init__(self, model_args:dict, n_neighbors:int, eps:float=1e-3):
+    def __init__(self, model_args:dict, n_neighbors:int):
         super().__init__(model_args, n_neighbors)
-        self.eps = eps
         self._mode = 0
         
         global eng
@@ -31,10 +30,19 @@ class MVU(models.Neighbourhood):
             utils.stamp.print(f"*\t {self.model_args['model']}\t MATLAB started")
 
     def _neigh_matrix(self, X:np.ndarray):
-        return self.k_neigh(X, bidirectional=True, common_neighbors=False)
+        return utils.neigh_matrix(X, self.n_neighbors, bidirectional=True)
 
     def _fit(self, X:np.ndarray):
         """Fit the MVU model and compute the low-dimensional embeddings using MATLAB."""
+
+        global eng
+        if eng is None:
+            eng = matlab.engine.start_matlab()
+            # Add the directory containing the MATLAB function to the MATLAB path
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            eng.addpath(current_dir, nargout=0)
+            utils.stamp.print(f"*\t {self.model_args['model']}\t MATLAB started")
+        
 
         cc, labels = csgraph.connected_components(self.NM, directed=False)
         if cc > 1:
@@ -62,16 +70,20 @@ class MVU(models.Neighbourhood):
         
         # Extract index pairs from sparse matrix
         # neigh_graph.nonzero() returns (row_indices, col_indices) of non-zero elements
-        rows, cols = utils.k_graph(self.NM).nonzero()
+        np.set_printoptions(threshold=200)
         
-        # Convert to list of index pairs and add 1 for MATLAB's 1-based indexing
-        neighbor_pairs = [[int(i) + 1, int(j) + 1] for i, j in zip(rows, cols)]
 
-        N_matlab = matlab.double(neighbor_pairs)
+        ratio = round(np.log10(np.max(self.NM))) - 2
+        ratio = 10**(-ratio)
+        self.NM = self.NM * ratio
+        
+        self.NM[self.NM > 0] = self.NM[self.NM > 0]**2
+        
+        N_matlab = matlab.double(self.NM.tolist())
         
         utils.stamp.print(f"*\t {self.model_args['model']}\t calling MATLAB")
         start = datetime.datetime.now()
-        K_matlab, cvx_status = eng.solve_mvu_optimization(X_matlab, N_matlab, self.model_args['eps'], nargout=2)
+        K_matlab, cvx_status = eng.solve_mvu_optimization(X_matlab, N_matlab, nargout=2)
         end = datetime.datetime.now()
         print(f"Time taken: {datetime.timedelta(seconds=(end - start).total_seconds())}")
         self.model_args['status'] = cvx_status
@@ -82,32 +94,35 @@ class MVU(models.Neighbourhood):
         return self
 
 class Ineq(MVU):
-    def __init__(self, model_args:dict, n_neighbors:int, eps:float=1e-3):
-        super().__init__(model_args, n_neighbors, eps)
+    def __init__(self, model_args:dict, n_neighbors:int):
+        super().__init__(model_args, n_neighbors)
         self._mode = 1
 
 class Nystrom(models.extensions.Nystrom, MVU):
-    def __init__(self, model_args:dict, n_neighbors:int, eps:float=1e-3, ratio:int=None, subset_indices:list=None):
-        MVU.__init__(self, model_args, n_neighbors, eps)
+    def __init__(self, model_args:dict, n_neighbors:int, ratio:int=None, subset_indices:list=None):
+        MVU.__init__(self, model_args, n_neighbors)
         super().__init__(ratio=ratio, subset_indices=subset_indices)
 
 class ENG(models.extensions.ENG, MVU):
     pass
 
 class Adaptative(models.extensions.Adaptative, MVU):
-    def __init__(self, model_args:dict, n_neighbors:int, eps:float=1e-3, k_max:int=10, eta:float=0.95):
-        MVU.__init__(self, model_args, n_neighbors, eps)
+    def __init__(self, model_args:dict, n_neighbors:int, k_max:int=10, eta:float=0.95):
+        MVU.__init__(self, model_args, n_neighbors)
         super().__init__(k_max, eta)
 
 class Adaptative2(models.extensions.Adaptative2, MVU):
-    def __init__(self, model_args:dict, n_neighbors:int, eps:float=1e-3, k_max:int=10, eta:float=0.95):
-        MVU.__init__(self, model_args, n_neighbors, eps)
+    def __init__(self, model_args:dict, n_neighbors:int, k_max:int=10, eta:float=0.95):
+        MVU.__init__(self, model_args, n_neighbors)
         super().__init__(k_max, eta)
-
+    
 class Our(models.extensions.Our, MVU):
-    def __init__(self, model_args:dict, n_neighbors:int, n_components:int):
-        MVU.__init__(self, model_args, n_neighbors, n_components)
+    def __init__(self, model_args:dict, n_neighbors:int):
+        MVU.__init__(self, model_args, n_neighbors)
         super().__init__(bidirectional=True)
 
-
+class Based(models.extensions.Based, MVU):
+    def __init__(self, model_args:dict, k1:int, k2:int):
+        MVU.__init__(self, model_args, n_neighbors=k1)
+        super().__init__(k1, k2)
 

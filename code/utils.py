@@ -1,7 +1,8 @@
-import datetime
-import json
+from datetime import datetime
+from json import loads, dumps, JSONDecodeError
 import numpy as np
 from scipy.sparse import csr_matrix
+import scipy.sparse as sp
 from sklearn.neighbors import NearestNeighbors
 
 
@@ -31,14 +32,14 @@ class bcolors:
 
 class Stamp:
     def __init__(self):
-        self.timestamp = datetime.datetime.now()
+        self.timestamp = datetime.now()
         self.color = bcolors.GREEN
 
     def set(self):
-        self.timestamp = datetime.datetime.now()
+        self.timestamp = datetime.now()
 
     def print(self, text:str="*"):
-        time_diff = datetime.datetime.now() - self.timestamp
+        time_diff = datetime.now() - self.timestamp
         if time_diff.total_seconds() > 1:
             self.color = bcolors.RED
         else:
@@ -66,42 +67,50 @@ def important(text:str):
 ############################################################
 
 
-def k_neigh(data, n_neighbors, bidirectional=False, common_neighbors=False):
-    """
-    Builds a k-nearest neighbor (k-NN) neighborhood matrix.
+def neigh_matrix(data, n_neighbors, bidirectional=False, common_neighbors=False):
+    return neigh_graph(data, n_neighbors, bidirectional, common_neighbors).toarray()
 
-    Args:
-        data (numpy.ndarray): The dataset (n_samples, n_features).
-        bidirectional (bool, optional): If True, the connections are bidirectional, neighbourhood matrix is upper triangular.
-            Defaults to False, neighbourhood matrix is directly computed from the k-nn graph.
-        common_neighbors (bool, optional): If True, considers nodes with common neighbours to be neighbours as well.
-            Defaults to False.
-
-    Returns:
-        numpy.ndarray: The neighborhood matrix (n_samples, n_samples).
-    """
+def neigh_graph(data, n_neighbors, bidirectional=False, common_neighbors=False):
     k = n_neighbors
     n_samples = data.shape[0]
-    dist_matrix = intra_dist_matrix(data) # TODO: I don't get how can sklearn.neighbors.NearestNeighbors be so much faster than scipy.spatial.distance.cdist, it knows its cdist between the same data?
-    # print(list(dist_matrix[0]))
-    neigh_matrix = np.zeros((n_samples, n_samples))
 
-    for i in range(n_samples):
-        # Find indices of k nearest neighbors (excluding itself)
-        nearest_indices = np.argsort(dist_matrix[i])[0:k + 1]
-        
-        # Remove itself from the list of nearest neighbors
-        nearest_indices = np.delete(nearest_indices, np.where(nearest_indices == i))
-        nearest_indices = nearest_indices[0:k]
+    neigh = NearestNeighbors(n_neighbors=k)
+    neigh.fit(data)
+    neigh_matrix:csr_matrix = neigh.kneighbors_graph(mode="distance")
+    # print(type(neigh_matrix))
 
-        for j in nearest_indices:
-            neigh_matrix[i, j] = dist_matrix[i, j] if dist_matrix[i, j] > 0 else 1e-10
+    # print(neigh_matrix)
+    # print(neigh_matrix[0])
+    # print(neigh_matrix[0].indices)
+    # print(neigh_matrix[0][neigh_matrix[0].indices])
+    # print(neigh_matrix[0, neigh_matrix[0].indices])
+    # print(np.where(neigh_matrix))
+
+    n_nodes = neigh_matrix.shape[0]
+    n_links = neigh_matrix.nnz
+
+    # print(neigh_matrix.indptr)
+
+    i = 2
+    # print(f"connections of {i}: {neigh_matrix[i]}")
+
+    i_start = neigh_matrix.indptr[i]
+    # print(f"starting node {i} ptr: {i_start}")
+    i_end = neigh_matrix.indptr[i+1]
+    # print(f"ending node {i} ptr: {i_end}")
+    # print(f"neighbors of {i}: {neigh_matrix.indices[i_start:i_end]}")
+    # print(f"distances of {i}: {neigh_matrix.data[i_start:i_end]}") # TODO: why are the distances not the same as the ones in the csr matrix?
+
+    neighs_of_i = neigh_matrix.indices[i_start:i_end]
+    # print(f"distance between {i} and neighs: {neigh_matrix[i, neighs_of_i]}")
 
     if bidirectional:
-        neigh_bidirectional = np.maximum(neigh_matrix, neigh_matrix.T) # two-way unidirectional connections
-        neigh_matrix = np.triu(neigh_bidirectional) # keep only one connection per pair (upper triangle)
+        neigh_bidirectional = neigh_matrix.maximum(neigh_matrix.T)
+        neigh_matrix = sp.triu(neigh_bidirectional)
+
 
     if common_neighbors: # if i and j are my neighs, then i and j are neighs of each other
+        raise NotImplementedError("Common neighbors not implemented for csr matrix")
         adj_bool = neigh_matrix > 0
         common_neigh = adj_bool.astype(int) @ adj_bool.astype(int).T
         common_neigh = (common_neigh > 0) & (~adj_bool) # selection of common neighbors that are not already connected
@@ -115,9 +124,6 @@ def k_neigh(data, n_neighbors, bidirectional=False, common_neighbors=False):
             neigh_matrix[j,i] = shortest_path
     return neigh_matrix
 
-def k_graph(neigh_matrix:np.ndarray):
-    return csr_matrix(neigh_matrix != 0)
-
 ############################################################
 # MEASURES #################################################
 ############################################################
@@ -126,8 +132,8 @@ def TC(X, Y, n_neighbors) -> tuple[float, float]:
     
     n_samples = X.shape[0]
     
-    NM_X = k_neigh(X, n_neighbors) # need symetrix
-    NM_Y = k_neigh(Y, n_neighbors) # need symetrix
+    NM_X = neigh_matrix(X, n_neighbors) # need symetrix
+    NM_Y = neigh_matrix(Y, n_neighbors) # need symetrix
 
     NM_X = np.where(NM_X != 0, 1, 0)
     NM_Y = np.where(NM_Y != 0, 1, 0)
@@ -158,14 +164,12 @@ def  one_NN(Y, labels) -> float:
         warning("labels is None")
         return None
     
-    NM = k_neigh(Y, 1) # need symetrix
+    NG = neigh_graph(Y, 1)
+    nearest_neigh_idx = [NG[i].indices[0] for i in range(Y.shape[0])]
+    Y_labels = labels[nearest_neigh_idx]
 
-    Y_labels = np.zeros(labels.shape)
-    for i in range(Y.shape[0]):
-        Y_labels[i] = labels[np.where(NM[i] != 0)]
-    
     one_NN = np.count_nonzero(Y_labels - labels) / labels.shape[0]
-    return round(float(one_NN), 3)
+    return round(float(one_NN), 5)
 
 
 
@@ -183,11 +187,11 @@ def get_json(dataname:str, model:str, n_neighs:int=None, best:bool=False):
     try:
         if best:
             with open("measures.best.json", "r") as f:
-                measures = json.loads(f.read())
+                measures = loads(f.read())
         else:
             with open("measures.all.json", "r") as f:
-                measures = json.loads(f.read())
-    except (FileNotFoundError, json.JSONDecodeError):
+                measures = loads(f.read())
+    except (FileNotFoundError, JSONDecodeError):
         measures = {}
     measures[dataname] = measures.get(dataname, {})
     measures[dataname][model] = measures[dataname].get(model, {})
@@ -215,7 +219,7 @@ def store_measure(model_args:dict, One_nn:float=None, T:float=None, C:float=None
         measures = get_json(dataname, model, n_neighs, best)
         measures[dataname][model] = {'#neighs': n_neighs, '#points': points, '1-NN': One_nn, 'T': T, 'C': C}
         with open("measures.best.json", "w") as f:
-            f.write(json.dumps(measures, indent=4) + "\n")
+            f.write(dumps(measures, indent=4) + "\n")
     else:
         measures = get_json(dataname, model, n_neighs, best)
 
@@ -230,7 +234,7 @@ def store_measure(model_args:dict, One_nn:float=None, T:float=None, C:float=None
 
         
         with open("measures.all.json", "w") as f:
-            f.write(json.dumps(measures, indent=4) + "\n")
+            f.write(dumps(measures, indent=4) + "\n")
 
     json_to_csv(best=True)
     json_to_csv(best=False)
@@ -238,21 +242,27 @@ def store_measure(model_args:dict, One_nn:float=None, T:float=None, C:float=None
 def json_to_csv(best:bool):
     try:
         with open(f"measures.{'best' if best else 'all'}.json", "r") as f:
-            data = json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
+            data = loads(f.read())
+    except (FileNotFoundError, JSONDecodeError):
         data = {}
     
     with open(f"measures.{'best' if best else 'all'}.csv", "w") as f:
-        f.write(f"dataname,model,n_neighs,points,1-NN,T,C\n")
+        f.write(f"dataname,model,n_neighs,points,1-NN,T,C,status,restricted,artificial_connected\n")
         if best:
             for dataname, model in data.items():
                 for model, data in model.items():
-                    f.write(f"{dataname},{model},{data['#neighs']},{data['#points']},{data['1-NN']},{data['T']},{data['C']}\n")
+                    status = data['status'] if 'status' in data else None
+                    restricted = data['restricted'] if 'restricted' in data else None
+                    artificial_connected = data['artificial_connected'] if 'artificial_connected' in data else None
+                    f.write(f"{dataname},{model},{data['#neighs']},{data['#points']},{data['1-NN']},{data['T']},{data['C']},{status},{restricted},{artificial_connected}\n")
         else:
             for dataname, model in data.items():    
                 for model, n_neighs in model.items():
                     for n_neighs, data in n_neighs.items():
-                        f.write(f"{dataname},{model},{n_neighs},{data['#points']},{data['1-NN']},{data['T']},{data['C']}\n")
+                        status = data['status'] if 'status' in data else None
+                        restricted = data['restricted'] if 'restricted' in data else None
+                        artificial_connected = data['artificial_connected'] if 'artificial_connected' in data else None
+                        f.write(f"{dataname},{model},{n_neighs},{data['#points']},{data['1-NN']},{data['T']},{data['C']},{status},{restricted},{artificial_connected}\n")
 
 
 
@@ -273,22 +283,14 @@ def intra_dist_matrix(data: np.ndarray, k_neighbors: int = None):
     if k_neighbors is None or k_neighbors >= n_samples:
         # Original behavior - compute all pairwise distances
         dist, indices = NearestNeighbors(n_neighbors=n_samples).fit(data).kneighbors(data)
-        dist_matrix = np.zeros((n_samples, n_samples))
-        for i in range(n_samples):
-            dist_matrix[i][indices[i]] = dist[i]
-            # print(i, list(indices[i][:10]))
-            # if i == 3:
-            #     breakpoint()
-        return dist_matrix
     else:
         # Memory-efficient: only compute k-nearest neighbors
         dist, indices = NearestNeighbors(n_neighbors=k_neighbors + 1).fit(data).kneighbors(data)
-        dist_matrix = np.zeros((n_samples, n_samples))
-        for i in range(n_samples):
-            # Skip the first neighbor (which is the point itself)
-            for j in range(1, k_neighbors + 1):
-                dist_matrix[i][indices[i][j]] = dist[i][j]
-            # print(i, list(indices[i][1:k_neighbors+1]))
-            # if i == 3:
-            #     breakpoint()
-        return dist_matrix
+    
+    dist_matrix = np.zeros((n_samples, n_samples))
+    for i in range(n_samples):
+        dist_matrix[i][indices[i]] = dist[i]
+        # print(i, list(indices[i][:10]))
+        # if i == 3:
+        #     breakpoint()
+    return dist_matrix

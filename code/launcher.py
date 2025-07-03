@@ -1,8 +1,16 @@
+import os
+from utils import stamp
+stamp.print(f"*\t {os.path.basename(__file__)}")
+
+
 import argparse
+# stamp.print("*\t imported external libs")
 
 from main import main
 from datasets import get_dataset
 import utils
+
+stamp.print_set(f"*\t initialization\t {os.path.basename(__file__)}")
 
 if __name__ == "__main__":
 
@@ -23,30 +31,30 @@ if __name__ == "__main__":
     if args.paper == "comparative":
         models = [
             # "pca", 
-            # "isomap",
+            "isomap",
             # "lle",
             # "le",
             # "hlle",
 
             # Sub
-            "isomap.skl",
-            "lle.skl",
-            "le.skl",
-            "hlle.skl",
-            "ltsa.skl",
+            # "isomap.skl",
+            # "lle.skl",
+            # "le.skl",
+            # "hlle.skl",
+            # "ltsa.skl",
             
             # "mvu",
         ]
         dataset_list = [
-            'swiss',
-            'helix',
-            'twinpeaks',
-            'broken.swiss',
-            'difficult',
+            # 'swiss',
+            # 'helix',
+            # 'twinpeaks',
+            # 'broken.swiss',
+            # 'difficult',
 
             # 'mnist', # TODO: memory overload
-            'coil20',
-            'orl',
+            # 'coil20',
+            # 'orl',
             # 'nisis', # Does not exist
             # 'hiva', # TODO: problems on the import
         ]
@@ -58,31 +66,32 @@ if __name__ == "__main__":
             # "lle",
             # "lle.eng",
             # "le",
-            "le.eng",
-            "hlle",
-            "hlle.eng",
+            # "le.eng",
+            # "hlle",
+            # "hlle.eng",
             # "jme",
             
-            # Sub
-            "lle.skl",
-            "le.skl",
-            "hlle.skl",    
+            # # Sub
+            # "lle.skl",
+            # "le.skl",
+            # "hlle.skl",    
         ]
         dataset_list = [
             # 'broken.swiss',
             # 'parallel.swiss',
             # 'broken.s_curve',
-            'four.moons',
+            # 'four.moons',
             # 'two.swiss',
             # 'coil20', 
-            # 'mit-cbcl', # TODO: import
+            'mit-cbcl', # TODO: import
         ]
 
     elif args.paper == "mvu":
         models = [
             # "mvu",
             # "mvu.eng",
-            "mvu.our",
+            # "mvu.our",
+            "mvu.based",
         ]
         dataset_list = [
             # 'swiss',
@@ -98,11 +107,11 @@ if __name__ == "__main__":
             # 'hiva', # TODO: problems on the import
 
 
-            'parallel.swiss',
-            'broken.s_curve', # full NaNs
-            'four.moons',
-            'two.swiss',
-            # 'mit-cbcl', # TODO: import
+            # 'parallel.swiss',
+            # 'broken.s_curve', # full NaNs
+            # 'four.moons',
+            # 'two.swiss',
+            # 'mit-cbcl',
             ]
     elif args.paper == "dev":
         models = [
@@ -179,14 +188,7 @@ if __name__ == "__main__":
         exit()
 
     else:
-        raise ValueError("Paper not found. Please use 'comparative' or 'eng'.")
-        datasets = [
-            'teapots', # TODO: needs smaller n_neighbors
-            'swiss_toro',
-
-            'changing.swiss',
-            '3d_clusters',
-        ]
+        raise ValueError("Paper preset not found.")
     
     try:
         main(

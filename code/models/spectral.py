@@ -47,9 +47,9 @@ class Spectral(ABC):
             stamp.print(f"*\t Smart selected {idx} components ({representation*100:.2f}%)")
             
             if self.model_args['#components'] is None:
-                utils.warning("There is no information for the intrinsic dimensionality of the data.")
+                utils.warning(f"There is no information for the intrinsic dimensionality of the data. Selected {idx} components ({representation*100:.2f}%).")
 
-            if idx != self.model_args['#components']:
+            if idx != self.model_args['#components'] and self.model_args['#components'] is not None:
                 
                 eigenvalues_selected = eigenvalues[:idx]
                 eigenvectors_selected = eigenvectors[:, :idx]
@@ -64,7 +64,7 @@ class Spectral(ABC):
                 if self.model_args['plotation']:
                     embedding_selected = eigenvectors_selected @ np.diag(eigenvalues_selected)  # Project data
                     embedding_restricted = eigenvectors_restricted @ np.diag(eigenvalues_restricted)  # Project data
-                    plot.plot_two(embedding_selected, embedding_restricted, title=f"{self.model_args['model']} output, and restricted output")
+                    plot.plot_two(embedding_selected, embedding_restricted, self.NM, self.NM, block=False, title=f"{self.model_args['model']} output, and restricted output")
                 
                 idx = idx_restricted
                 self.model_args['restricted'] = True
@@ -79,6 +79,7 @@ class Spectral(ABC):
             eigenvectors = eigenvectors[:, :self.n_components]
             
             if self.model_args['verbose']:
+                print(f"Restricted to {self.n_components} components")
                 print(f"Eigenvalues (top {self.n_components}):", eigenvalues)
 
         return eigenvalues, eigenvectors
@@ -99,15 +100,13 @@ class Spectral(ABC):
 
         # eigenvalues = np.sqrt(np.maximum(eigenvalues, 0))  # Ensure non-negative eigenvalues
 
-        self.embedding_ = eigenvectors @ np.diag(eigenvalues)  # Project data
-
-        return self.embedding_
+        return eigenvectors @ np.diag(eigenvalues)  # Project data
 
     def transform(self):
         """Performs spectral embedding using the top eigenvectors."""
         stamp.set()
 
-        self._transform()
+        self.embedding_ = self._transform()
         stamp.print(f"*\t {self.model_args['model']}\t transform")
         
         return self.embedding_

@@ -19,7 +19,9 @@ class Our:
             for j in range(len(X_list)):
                 if i != j:
                     r = X_list[j].mean(0)
+                    stamp2 = utils.Stamp()
                     closest_to_j_mean_coords = X_list[i][np.argmin(np.diag((X_list[i] - r) @ (X_list[i] - r).T))]
+                    stamp2.print(f"*\t {self.model_args['dataname']}\t inter_connections: {stamp2.time()}")
                     C[i][j] = np.where(np.all(X_list[i] == closest_to_j_mean_coords, axis=1))[0]
         return C.astype(int)
 
@@ -187,7 +189,7 @@ class Our:
             if temp[0]:
                 plot(S_i, c=~reference_mask.astype(bool), block=False, title=f"Component {c_i} local linearization")
 
-            transformation = pinv(S_local_reference_i) @ S_global_reference_i # transformation matrix from LOCAL to GLOBAL linearization
+            transformation = pinv(np.hstack((S_local_reference_i, np.ones((len(S_local_reference_i), 1))))) @ S_global_reference_i # transformation matrix from LOCAL to GLOBAL linearization
             S_i = S_i @ transformation # apply the transformation to the LOCAL linearization of the component
             S[C_global_index_list[c_i]] = S_i # update the global linearization with the transformed component
 

@@ -70,22 +70,22 @@ def run(X, model_args):
 
     elif model_args['model'].lower() == "mvu":
 
-        model = models.mvu.MVU(model_args, model_args['#neighs'], model_args['eps'])
+        model = models.mvu.MVU(model_args, model_args['#neighs'])
         Y = model.fit_transform(X)
     
     elif model_args['model'].lower() == "mvu.ineq":
 
-        model = models.mvu.Ineq(model_args['#neighs'], model_args['eps'])
+        model = models.mvu.Ineq(model_args, model_args['#neighs'])
         Y = model.fit_transform(X)
 
     elif model_args['model'].lower() == "mvu.nystrom":
 
-        model = models.mvu.Nystrom(model_args, model_args['#neighs'], model_args['eps'], 0.1)
+        model = models.mvu.Nystrom(model_args, model_args['#neighs'], 0.1)
         Y = model.fit_transform(X)
 
     elif model_args['model'].lower() == "mvu.eng":
 
-        model = models.mvu.ENG(model_args, model_args['#neighs'], model_args['eps'])
+        model = models.mvu.ENG(model_args, model_args['#neighs'])
         Y = model.fit_transform(X)
     
     elif model_args['model'].lower() == "mvu.adaptative":
@@ -95,7 +95,12 @@ def run(X, model_args):
     
     elif model_args['model'].lower() == "mvu.our":
 
-        model = models.mvu.Our(model_args, model_args['#neighs'], model_args['eps'])
+        model = models.mvu.Our(model_args, model_args['#neighs'])
+        Y = model.fit_transform(X)
+    
+    elif model_args['model'].lower() == "mvu.based":
+
+        model = models.mvu.Based(model_args, k1=model_args['#neighs'], k2=model_args['#neighs'])
         Y = model.fit_transform(X)
 
 

@@ -8,6 +8,7 @@ from scipy.spatial.distance import cdist
 from plot import plot
 import models
 from utils import stamp
+import utils
 
 
 
@@ -28,7 +29,7 @@ class Nystrom:
         self.X = X
         self.X_subset = X[self.subset_indices]
 
-        self.neigh_matrix(self.X_subset) # TODO: handle non NG methods
+        utils.neigh_matrix(self.X_subset, self.n_neighbors) # TODO: handle non NG methods
         super()._fit(self.X_subset)
 
         if self.model_args['plotation']:

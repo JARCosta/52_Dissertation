@@ -8,6 +8,7 @@ from scipy.sparse import csr_matrix, eye as sparse_eye
 import models
 from utils import stamp
 from plot import plot
+import utils
 
 class LocallyLinearEmbedding(models.Neighbourhood):
     """
@@ -35,8 +36,8 @@ class LocallyLinearEmbedding(models.Neighbourhood):
         Computes the k-nearest neighbor graph (non-symmetric).
         LLE uses the direct neighbors for reconstruction.
         """
-        # Use the default k_neigh which finds k closest neighbors for each point
-        neigh_matrix = self.k_neigh(X, bidirectional=False, common_neighbors=False)
+        # Use the default neigh_matrix which finds k closest neighbors for each point
+        neigh_matrix = utils.neigh_matrix(X, self.n_neighbors)
         return neigh_matrix # Returns distances, we only need indices later
 
     def _fit(self, X: np.ndarray):

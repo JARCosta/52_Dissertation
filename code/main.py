@@ -1,15 +1,18 @@
+from utils import stamp
+
 import datetime
 import multiprocessing
 import multiprocessing.managers
 import os
 import matplotlib.pyplot as plt
 import numpy as np
+stamp.print_set(f"*\t initialization\t {os.path.basename(__file__)}.libs")
 
 import models
 import utils
 from datasets import get_dataset, datasets
-from utils import stamp
 import plot
+stamp.print_set(f"*\t initialization\t {os.path.basename(__file__)}.files")
 
 os.environ['LOKY_MAX_CPU_COUNT'] = str(os.cpu_count())
 os.environ['OMP_NUM_THREADS'] = str(os.cpu_count())
@@ -19,18 +22,15 @@ def model_func(threads_return:multiprocessing.managers.SyncManager, X:np.ndarray
     Y = models.run(X, model_args)
 
     if Y is None:
-        utils.warning(f"could not compute Y for {model_args['model']} on {model_args['dataname']}")
+        utils.warning(f"could not compute Y for {model_args['model']} on {model_args['dataname']}(k={model_args['#neighs']})")
         return None
-    if Y.shape[1] != model_args['#components']:
+    if Y.shape[1] != model_args['#components'] and model_args["#components"] is not None:
         raise ValueError(f"Y has {Y.shape[1]} dimensions, intrinsic is {model_args['#components']}.")
 
     if model_args['plotation']:
-        plot.plot_scales(X, c=labels, block=False, title=f"{model_args['dataname']} {model_args['#neighs']} neighbors")
-        plot.plot_scales(Y, c=labels, block=True, title=f"{model_args['model']} {model_args['dataname']} {model_args['#neighs']} neighbors", legend=model_args)
+        plot.plot_scales(X, c=labels, block=False, title=f"{model_args['model']} {model_args['dataname']}({model_args['#neighs']}) Original data")
+        plot.plot_scales(Y, c=labels, block=False, title=f"{model_args['model']} {model_args['dataname']}({model_args['#neighs']}) Embedding", legend=model_args)
     
-    if np.any(np.isnan(Y)):
-        utils.warning(f"Y has NaNs for {model_args['model']} on {model_args['dataname']}")
-        return None
     One_nn, T, C = utils.compute_measures(X, Y, labels, model_args["#neighs"])
     if measure_bool:
         utils.store_measure(model_args, One_nn, T, C)
@@ -129,7 +129,7 @@ def model_launcher(model_args:dict, models:list, X:np.ndarray, labels:np.ndarray
                 t.start()
             else:
                 model_func(threads_return, X, labels, model_args, measure)
-                if pause:
+                if pause or model_args['plotation']:
                     input("Press Enter to continue...")
         if threaded:
             [t.join() for t in threads]
@@ -153,6 +153,7 @@ def model_launcher(model_args:dict, models:list, X:np.ndarray, labels:np.ndarray
 
 def main(paper:str, model_list:list, dataset_list:list, n_points:int, threaded:bool, plotation:bool, verbose:bool, measure:bool, pause:bool, seed:int, noise:float) -> None:
     model_args = {}
+    model_args["threaded"] = threaded
     model_args["paper"] = paper
 
     threads:list[multiprocessing.Process] = []

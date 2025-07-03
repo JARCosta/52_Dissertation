@@ -8,6 +8,7 @@ from scipy.sparse.linalg import eigsh
 import models
 from utils import stamp
 from plot import plot
+import utils
 
 class LTSA(models.Neighbourhood):
     """
@@ -31,8 +32,8 @@ class LTSA(models.Neighbourhood):
         Computes the k-nearest neighbor graph (non-symmetric).
         LTSA uses the direct neighbors for tangent space estimation.
         """
-        # Use the default k_neigh which finds k closest neighbors for each point
-        neigh_matrix = self.k_neigh(X, bidirectional=False, common_neighbors=False)
+        # Use the default neigh_matrix which finds k closest neighbors for each point
+        neigh_matrix = utils.neigh_matrix(X, self.n_neighbors)
         return neigh_matrix # We only need indices later
 
     def _fit(self, X: np.ndarray):
