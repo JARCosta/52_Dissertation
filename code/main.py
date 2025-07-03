@@ -74,26 +74,24 @@ def best_args(results:np.ndarray, model_args:dict, labels:np.ndarray) -> tuple[i
         return
 
     results[2:] = np.round(np.log10(1 - results[2:].astype(float) + 1e-10), 3)
-
     TC = results[2]
     if len(np.where(TC != -np.inf)[0]) > 0:
         best = np.min(TC[np.where(TC != -np.inf)])
     else:
         best = -4
     TC[np.where(TC == -np.inf)] = best - 1
-
-
-    
     results[2:] = np.round((1 - 10**(results[2:])).astype(float), 3)
 
-    best_k, best_measure_sum = None, -np.inf
-    best_1_NN, best_T, best_C = None, None, None
+
+
+    best_measure_sum = -np.inf
+    best_k, best_1_NN, best_T, best_C = None, None, None, None
     for k in results.T:
-        k_sum = np.sum(1 - k[1] + k[2] + k[3]) if k[1] is not None else np.sum(k[2] + k[3])
+        # k_sum = np.sum(1 - k[1] + k[2] + k[3]) if k[1] is not None else np.sum(k[2] + k[3])
+        k_sum = 1 - k[1]
         if k_sum > best_measure_sum:
-            best_k = int(k[0])
             best_measure_sum = k_sum
-            best_1_NN, best_T, best_C = float(k[1]), float(k[2]), float(k[3])
+            best_k, best_1_NN, best_T, best_C = int(k[0]), float(k[1]), float(k[2]), float(k[3])
     if model_args['plotation']:
         plot_args(results, model_args, best_k) # Warning: model_args defined inside the loop (last thread computed)
     
