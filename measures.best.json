@@ -1,5 +1,15 @@
 {
     "swiss": {
+        "mvu.based": {
+            "#neighs": 7,
+            "#points": 1000,
+            "1-NN": 0.098,
+            "T": 0.998,
+            "C": 0.998,
+            "status": "Inaccurate/Unbounded",
+            "restricted": null,
+            "artificial_connected": false
+        },
         "pca": {
             "#neighs": 5,
             "#points": 1000,
@@ -22,11 +32,11 @@
             "C": 0.994
         },
         "le": {
-            "#neighs": 5,
+            "#neighs": 13,
             "#points": 1000,
-            "1-NN": 0.22,
-            "T": 0.945,
-            "C": 0.991
+            "1-NN": 0.204,
+            "T": 0.921,
+            "C": 0.986
         },
         "hlle": {
             "#neighs": 7,
@@ -47,7 +57,8 @@
             "#points": 1000,
             "1-NN": 0.098,
             "T": 0.998,
-            "C": 0.998
+            "C": 0.998,
+            "status": "Inaccurate/Unbounded"
         }
     },
     "helix": {
@@ -73,11 +84,11 @@
             "C": 1.0
         },
         "le": {
-            "#neighs": 15,
+            "#neighs": 13,
             "#points": 1000,
-            "1-NN": 0.016,
+            "1-NN": 0.015,
             "T": 0.999,
-            "C": 0.996
+            "C": 0.993
         },
         "hlle": {
             "#neighs": 8,
@@ -98,7 +109,20 @@
             "#points": 1000,
             "1-NN": 0.012,
             "T": 1.0,
-            "C": 1.0
+            "C": 1.0,
+            "status": "Unbounded",
+            "restricted": true
+        },
+        "mvu.based": {
+            "#neighs": 6,
+            "#points": 1000,
+            "1-NN": 0.012,
+            "T": 1.0,
+            "C": 1.0,
+            "date": "2025-07-03 14:47:09",
+            "status": "Unbounded",
+            "restricted": null,
+            "artificial_connected": false
         }
     },
     "twinpeaks": {
@@ -117,39 +141,51 @@
             "C": 0.994
         },
         "lle": {
-            "#neighs": 13,
+            "#neighs": 9,
             "#points": 1000,
-            "1-NN": 0.019,
-            "T": 0.986,
-            "C": 0.987
+            "1-NN": 0.018,
+            "T": 0.973,
+            "C": 0.98
         },
         "le": {
-            "#neighs": 10,
+            "#neighs": 5,
             "#points": 1000,
-            "1-NN": 0.017,
-            "T": 0.994,
-            "C": 0.99
-        },
-        "hlle": {
-            "#neighs": 13,
-            "#points": 1000,
-            "1-NN": 0.019,
-            "T": 0.986,
+            "1-NN": 0.012,
+            "T": 0.991,
             "C": 0.987
         },
-        "ltsa.skl": {
-            "#neighs": 15,
+        "hlle": {
+            "#neighs": 9,
             "#points": 1000,
-            "1-NN": 0.006,
-            "T": 0.977,
-            "C": 0.991
+            "1-NN": 0.018,
+            "T": 0.973,
+            "C": 0.98
+        },
+        "ltsa.skl": {
+            "#neighs": 14,
+            "#points": 1000,
+            "1-NN": 0.005,
+            "T": 0.973,
+            "C": 0.99
         },
         "mvu": {
             "#neighs": 13,
             "#points": 1000,
             "1-NN": 0.003,
             "T": 0.971,
-            "C": 0.988
+            "C": 0.988,
+            "status": "Failed"
+        },
+        "mvu.based": {
+            "#neighs": 9,
+            "#points": 1000,
+            "1-NN": 0.003,
+            "T": 0.975,
+            "C": 0.989,
+            "date": "2025-07-03 15:17:31",
+            "status": "Inaccurate/Unbounded",
+            "restricted": null,
+            "artificial_connected": false
         }
     },
     "broken.swiss": {
@@ -161,32 +197,40 @@
             "C": 0.998
         },
         "isomap": {
-            "#neighs": 8,
-            "#points": 2000,
-            "1-NN": 0.161,
-            "T": 0.929,
-            "C": 0.991
-        },
-        "lle": {
             "#neighs": 9,
             "#points": 2000,
-            "1-NN": 0.42,
-            "T": 0.812,
-            "C": 0.983
+            "1-NN": 0.16,
+            "T": 0.928,
+            "C": 0.991,
+            "date": "2025-06-20 16:29:30",
+            "artificial_connected": true
+        },
+        "lle": {
+            "#neighs": 5,
+            "#points": 2000,
+            "1-NN": 0.391,
+            "T": 0.755,
+            "C": 0.971,
+            "date": "2025-06-20 16:33:15",
+            "artificial_connected": true
         },
         "le": {
-            "#neighs": 6,
+            "#neighs": 5,
             "#points": 2000,
-            "1-NN": 0.447,
-            "T": 0.726,
-            "C": 0.872
+            "1-NN": 0.445,
+            "T": 0.72,
+            "C": 0.871,
+            "date": "2025-06-20 13:43:45",
+            "artificial_connected": true
         },
         "hlle": {
-            "#neighs": 7,
+            "#neighs": 5,
             "#points": 2000,
-            "1-NN": 0.408,
-            "T": 0.806,
-            "C": 0.984
+            "1-NN": 0.389,
+            "T": 0.745,
+            "C": 0.97,
+            "date": "2025-06-20 13:48:19",
+            "artificial_connected": true
         },
         "ltsa.skl": {
             "#neighs": 6,
@@ -200,49 +244,65 @@
             "#points": 2000,
             "1-NN": 0.114,
             "T": 0.981,
-            "C": 0.991
+            "C": 0.991,
+            "date": "2025-06-18 18:10:12",
+            "status": "Inaccurate/Unbounded",
+            "restricted": true,
+            "artificial_connected": true
         },
         "isomap.eng": {
             "#neighs": 5,
             "#points": 2000,
             "1-NN": 0.228,
             "T": 0.967,
-            "C": 0.999
+            "C": 0.999,
+            "date": "2025-06-20 16:30:44",
+            "artificial_connected": true
         },
         "lle.eng": {
-            "#neighs": 12,
+            "#neighs": 7,
             "#points": 2000,
-            "1-NN": 0.203,
-            "T": 0.963,
-            "C": 0.997
+            "1-NN": 0.2,
+            "T": 0.875,
+            "C": 0.992,
+            "date": "2025-06-20 16:35:21",
+            "artificial_connected": true
         },
         "le.eng": {
             "#neighs": 14,
             "#points": 2000,
             "1-NN": 0.216,
             "T": 0.98,
-            "C": 0.996
+            "C": 0.996,
+            "date": "2025-06-20 13:47:03",
+            "artificial_connected": true
         },
         "hlle.eng": {
-            "#neighs": 12,
+            "#neighs": 7,
             "#points": 2000,
-            "1-NN": 0.203,
-            "T": 0.963,
-            "C": 0.997
+            "1-NN": 0.2,
+            "T": 0.875,
+            "C": 0.992,
+            "date": "2025-06-20 14:10:24",
+            "artificial_connected": true
         },
         "none": {
-            "#neighs": null,
+            "#neighs": 1,
             "#points": 2000,
             "1-NN": 0.035,
             "T": null,
-            "C": null
+            "C": null,
+            "date": "2025-06-20 15:37:04"
         },
         "mvu.based": {
-            "#neighs": 12,
+            "#neighs": 6,
             "#points": 2000,
-            "1-NN": 0.1175,
-            "T": 0.893,
-            "C": 0.982
+            "1-NN": 0.088,
+            "T": 0.991,
+            "C": 0.994,
+            "status": "Solved",
+            "restricted": true,
+            "artificial_connected": null
         }
     },
     "difficult": {
@@ -258,49 +318,60 @@
             "#points": 1024,
             "1-NN": 0.348,
             "T": 0.984,
-            "C": 0.988
+            "C": 0.988,
+            "artificial_connected": true
         },
         "lle": {
-            "#neighs": 15,
+            "#neighs": 14,
             "#points": 1024,
-            "1-NN": 0.459,
-            "T": 0.968,
-            "C": 0.978
+            "1-NN": 0.418,
+            "T": 0.928,
+            "C": 0.966,
+            "artificial_connected": true
         },
         "le": {
-            "#neighs": 5,
+            "#neighs": 6,
             "#points": 1024,
-            "1-NN": 0.354,
-            "T": 0.923,
-            "C": 0.896
+            "1-NN": 0.349,
+            "T": 0.9,
+            "C": 0.891,
+            "artificial_connected": true
         },
         "hlle": {
-            "#neighs": 15,
+            "#neighs": 14,
             "#points": 1024,
-            "1-NN": 0.459,
-            "T": 0.968,
-            "C": 0.978
+            "1-NN": 0.418,
+            "T": 0.928,
+            "C": 0.966,
+            "artificial_connected": true
         },
         "ltsa.skl": {
-            "#neighs": 15,
+            "#neighs": 14,
             "#points": 1024,
-            "1-NN": 0.459,
-            "T": 0.965,
-            "C": 0.989
+            "1-NN": 0.457,
+            "T": 0.948,
+            "C": 0.977
         },
         "mvu": {
             "#neighs": 12,
             "#points": 1024,
             "1-NN": 0.385,
             "T": 0.979,
-            "C": 0.975
+            "C": 0.975,
+            "date": "2025-06-18 19:43:41",
+            "status": "Solved",
+            "restricted": true,
+            "artificial_connected": true
         },
         "mvu.based": {
-            "#neighs": 15,
+            "#neighs": 12,
             "#points": 1024,
-            "1-NN": 0.39551,
-            "T": 0.984,
-            "C": 0.988
+            "1-NN": 0.38477,
+            "T": 0.979,
+            "C": 0.975,
+            "status": "Solved",
+            "restricted": true,
+            "artificial_connected": false
         }
     },
     "coil20": {
@@ -316,84 +387,107 @@
             "#points": 1440,
             "1-NN": 0.083,
             "T": 0.974,
-            "C": 0.995
+            "C": 0.995,
+            "date": "2025-06-20 19:43:07",
+            "artificial_connected": true
         },
         "lle": {
             "#neighs": 7,
             "#points": 1440,
             "1-NN": 0.088,
             "T": 0.934,
-            "C": 0.978
+            "C": 0.978,
+            "date": "2025-06-20 19:54:46",
+            "artificial_connected": true
         },
         "le": {
             "#neighs": 15,
             "#points": 1440,
             "1-NN": 0.155,
             "T": 0.963,
-            "C": 0.99
+            "C": 0.99,
+            "artificial_connected": true
         },
         "hlle": {
             "#neighs": 6,
             "#points": 1440,
             "1-NN": 0.104,
             "T": 0.915,
-            "C": 0.981
+            "C": 0.981,
+            "date": "2025-06-20 20:25:41",
+            "artificial_connected": true
         },
         "ltsa.skl": {
-            "#neighs": 14,
+            "#neighs": 7,
             "#points": 1440,
-            "1-NN": 0.093,
-            "T": 0.928,
-            "C": 0.975
+            "1-NN": 0.069,
+            "T": 0.911,
+            "C": 0.966
         },
         "mvu": {
             "#neighs": 15,
             "#points": 1440,
             "1-NN": 0.088,
             "T": 0.968,
-            "C": 0.993
+            "C": 0.993,
+            "date": "2025-06-19 00:17:58",
+            "status": "Unbounded",
+            "restricted": true,
+            "artificial_connected": true
         },
         "none": {
-            "#neighs": null,
+            "#neighs": 1,
             "#points": 1440,
             "1-NN": 0.001,
             "T": null,
-            "C": null
+            "C": null,
+            "date": "2025-06-20 15:37:27"
         },
         "isomap.eng": {
             "#neighs": 8,
             "#points": 1440,
             "1-NN": 0.084,
             "T": 0.974,
-            "C": 0.995
+            "C": 0.995,
+            "date": "2025-06-20 19:47:11",
+            "artificial_connected": true
         },
         "lle.eng": {
             "#neighs": 15,
             "#points": 1440,
             "1-NN": 0.178,
             "T": 0.944,
-            "C": 0.974
+            "C": 0.974,
+            "date": "2025-06-20 20:08:37",
+            "artificial_connected": true
         },
         "le.eng": {
             "#neighs": 5,
             "#points": 1440,
             "1-NN": 0.128,
             "T": 0.969,
-            "C": 0.996
+            "C": 0.996,
+            "date": "2025-06-20 20:10:27",
+            "artificial_connected": true
         },
         "hlle.eng": {
             "#neighs": 15,
             "#points": 1440,
             "1-NN": 0.217,
             "T": 0.941,
-            "C": 0.972
+            "C": 0.972,
+            "date": "2025-06-20 22:04:18",
+            "artificial_connected": true
         },
         "mvu.based": {
-            "#neighs": 5,
+            "#neighs": 6,
             "#points": 1440,
-            "1-NN": 0.20208,
-            "T": 0.837,
-            "C": 0.945
+            "1-NN": 0.20278,
+            "T": 0.839,
+            "C": 0.941,
+            "status": "Solved",
+            "restricted": null,
+            "artificial_connected": null
         }
     },
     "orl": {
@@ -405,46 +499,58 @@
             "C": 0.989
         },
         "isomap": {
-            "#neighs": 5,
+            "#neighs": 12,
             "#points": 400,
-            "1-NN": 0.145,
-            "T": 0.981,
-            "C": 0.996
+            "1-NN": 0.14,
+            "T": 0.964,
+            "C": 0.982,
+            "artificial_connected": true
         },
         "lle": {
             "#neighs": 13,
             "#points": 400,
             "1-NN": 0.102,
             "T": 0.95,
-            "C": 0.946
+            "C": 0.946,
+            "artificial_connected": true
         },
         "le": {
             "#neighs": 5,
             "#points": 400,
             "1-NN": 0.133,
             "T": 0.982,
-            "C": 0.992
+            "C": 0.992,
+            "artificial_connected": true
         },
         "hlle": {
             "#neighs": 13,
             "#points": 400,
             "1-NN": 0.102,
             "T": 0.95,
-            "C": 0.946
+            "C": 0.946,
+            "artificial_connected": true
         },
         "mvu": {
-            "#neighs": 8,
+            "#neighs": 15,
             "#points": 400,
-            "1-NN": 0.21,
-            "T": 0.946,
-            "C": 0.98
+            "1-NN": 0.207,
+            "T": 0.934,
+            "C": 0.965,
+            "date": "2025-06-19 00:19:42",
+            "status": "Unbounded",
+            "restricted": true,
+            "artificial_connected": true
         },
         "mvu.based": {
             "#neighs": 15,
             "#points": 400,
             "1-NN": 0.21,
             "T": 0.934,
-            "C": 0.965
+            "C": 0.965,
+            "date": "2025-07-03 17:26:01",
+            "status": "Solved",
+            "restricted": true,
+            "artificial_connected": false
         }
     },
     "parallel.swiss": {
@@ -453,77 +559,102 @@
             "#points": 2000,
             "1-NN": 0.224,
             "T": 0.948,
-            "C": 0.992
+            "C": 0.992,
+            "date": "2025-06-19 01:28:06",
+            "status": "Inaccurate/Unbounded",
+            "restricted": true,
+            "artificial_connected": true
         },
         "isomap": {
             "#neighs": 8,
             "#points": 2000,
             "1-NN": 0.104,
             "T": 0.993,
-            "C": 0.997
+            "C": 0.997,
+            "date": "2025-06-20 14:24:17",
+            "artificial_connected": true
         },
         "isomap.eng": {
             "#neighs": 6,
             "#points": 2000,
             "1-NN": 0.09,
             "T": 0.999,
-            "C": 0.999
+            "C": 0.999,
+            "date": "2025-06-20 14:26:18",
+            "artificial_connected": true
         },
         "lle": {
             "#neighs": 6,
             "#points": 2000,
             "1-NN": 0.417,
             "T": 0.889,
-            "C": 0.985
+            "C": 0.985,
+            "date": "2025-06-20 14:33:04",
+            "artificial_connected": true
         },
         "lle.eng": {
             "#neighs": 7,
             "#points": 2000,
             "1-NN": 0.172,
             "T": 0.962,
-            "C": 0.998
+            "C": 0.998,
+            "date": "2025-06-20 14:36:52",
+            "artificial_connected": true
         },
         "le": {
-            "#neighs": 9,
+            "#neighs": 8,
             "#points": 2000,
-            "1-NN": 0.463,
-            "T": 0.843,
-            "C": 0.872
+            "1-NN": 0.457,
+            "T": 0.826,
+            "C": 0.872,
+            "date": "2025-06-20 14:40:52",
+            "artificial_connected": true
         },
         "le.eng": {
             "#neighs": 10,
             "#points": 2000,
             "1-NN": 0.113,
             "T": 0.994,
-            "C": 0.998
+            "C": 0.998,
+            "date": "2025-06-20 14:43:05",
+            "artificial_connected": true
         },
         "hlle": {
             "#neighs": 5,
             "#points": 2000,
             "1-NN": 0.409,
             "T": 0.866,
-            "C": 0.983
+            "C": 0.983,
+            "date": "2025-06-20 14:45:00",
+            "artificial_connected": true
         },
         "hlle.eng": {
             "#neighs": 7,
             "#points": 2000,
             "1-NN": 0.172,
             "T": 0.962,
-            "C": 0.998
+            "C": 0.998,
+            "date": "2025-06-20 14:54:54",
+            "artificial_connected": true
         },
         "none": {
-            "#neighs": null,
+            "#neighs": 1,
             "#points": 2000,
             "1-NN": 0.071,
             "T": null,
-            "C": null
+            "C": null,
+            "date": "2025-06-20 15:37:04"
         },
         "mvu.based": {
-            "#neighs": 5,
+            "#neighs": 8,
             "#points": 2000,
-            "1-NN": 0.2745,
-            "T": 0.947,
-            "C": 0.996
+            "1-NN": 0.2145,
+            "T": 0.954,
+            "C": 0.992,
+            "date": "2025-07-03 17:45:20",
+            "status": "Solved",
+            "restricted": true,
+            "artificial_connected": null
         }
     },
     "broken.s_curve": {
@@ -532,77 +663,100 @@
             "#points": 1000,
             "1-NN": 0.196,
             "T": 0.952,
-            "C": 0.985
+            "C": 0.985,
+            "date": "2025-06-19 14:38:15",
+            "status": "Failed",
+            "restricted": true,
+            "artificial_connected": true
         },
         "isomap": {
             "#neighs": 9,
             "#points": 1000,
             "1-NN": 0.197,
             "T": 0.955,
-            "C": 0.986
+            "C": 0.986,
+            "date": "2025-06-20 15:01:23",
+            "artificial_connected": true
         },
         "isomap.eng": {
-            "#neighs": 8,
+            "#neighs": 11,
             "#points": 1000,
-            "1-NN": 0.082,
-            "T": 0.992,
-            "C": 0.995
+            "1-NN": 0.081,
+            "T": 0.99,
+            "C": 0.993,
+            "date": "2025-06-20 15:01:55",
+            "artificial_connected": true
         },
         "lle": {
-            "#neighs": 15,
+            "#neighs": 5,
             "#points": 1000,
-            "1-NN": 0.501,
-            "T": 0.882,
-            "C": 0.912
+            "1-NN": 0.486,
+            "T": 0.776,
+            "C": 0.815,
+            "date": "2025-06-20 15:02:09",
+            "artificial_connected": true
         },
         "lle.eng": {
-            "#neighs": 9,
+            "#neighs": 14,
             "#points": 1000,
-            "1-NN": 0.084,
-            "T": 0.991,
-            "C": 0.993
+            "1-NN": 0.071,
+            "T": 0.973,
+            "C": 0.987,
+            "date": "2025-06-20 15:02:51",
+            "artificial_connected": true
         },
         "le": {
-            "#neighs": 15,
+            "#neighs": 5,
             "#points": 1000,
-            "1-NN": 0.407,
-            "T": 0.889,
-            "C": 0.9
+            "1-NN": 0.296,
+            "T": 0.734,
+            "C": 0.829,
+            "date": "2025-06-20 15:02:58",
+            "artificial_connected": true
         },
         "le.eng": {
             "#neighs": 15,
             "#points": 1000,
             "1-NN": 0.251,
             "T": 0.956,
-            "C": 0.984
+            "C": 0.984,
+            "date": "2025-06-20 15:03:51",
+            "artificial_connected": true
         },
         "hlle": {
             "#neighs": 15,
             "#points": 1000,
             "1-NN": 0.48,
             "T": 0.908,
-            "C": 0.934
+            "C": 0.934,
+            "date": "2025-06-20 15:07:43",
+            "artificial_connected": true
         },
         "hlle.eng": {
-            "#neighs": 9,
+            "#neighs": 14,
             "#points": 1000,
-            "1-NN": 0.084,
-            "T": 0.991,
-            "C": 0.993
+            "1-NN": 0.071,
+            "T": 0.973,
+            "C": 0.987,
+            "date": "2025-06-20 15:11:28",
+            "artificial_connected": true
         },
         "none": {
-            "#neighs": null,
+            "#neighs": 1,
             "#points": 1000,
             "1-NN": 0.065,
             "T": null,
-            "C": null
+            "C": null,
+            "date": "2025-06-20 15:37:05"
         },
         "mvu.based": {
             "#neighs": 5,
             "#points": 1000,
             "1-NN": 0.084,
             "T": 0.99,
-            "C": 0.996
+            "C": 0.996,
+            "date": "2025-07-01 05:04:34",
+            "status": "Solved"
         }
     },
     "two.swiss": {
@@ -611,156 +765,195 @@
             "#points": 2000,
             "1-NN": 0.2,
             "T": 0.946,
-            "C": 0.989
+            "C": 0.989,
+            "date": "2025-06-20 00:43:19",
+            "status": "Inaccurate/Unbounded",
+            "restricted": true,
+            "artificial_connected": true
         },
         "none": {
-            "#neighs": null,
+            "#neighs": 1,
             "#points": 2000,
             "1-NN": 0.071,
             "T": null,
-            "C": null
+            "C": null,
+            "date": "2025-06-20 15:37:06"
         },
         "isomap": {
             "#neighs": 8,
             "#points": 2000,
             "1-NN": 0.197,
             "T": 0.957,
-            "C": 0.994
+            "C": 0.994,
+            "date": "2025-06-20 18:54:27",
+            "artificial_connected": true
         },
         "isomap.eng": {
             "#neighs": 9,
             "#points": 2000,
             "1-NN": 0.18,
             "T": 0.964,
-            "C": 0.992
+            "C": 0.992,
+            "date": "2025-06-20 19:00:32",
+            "artificial_connected": true
         },
         "lle": {
-            "#neighs": 8,
+            "#neighs": 5,
             "#points": 2000,
-            "1-NN": 0.455,
-            "T": 0.838,
-            "C": 0.979
+            "1-NN": 0.436,
+            "T": 0.809,
+            "C": 0.869,
+            "date": "2025-06-20 19:04:22",
+            "artificial_connected": true
         },
         "lle.eng": {
             "#neighs": 7,
             "#points": 2000,
             "1-NN": 0.204,
             "T": 0.965,
-            "C": 0.992
+            "C": 0.992,
+            "date": "2025-06-20 19:08:48",
+            "artificial_connected": true
         },
         "le.eng": {
-            "#neighs": 6,
+            "#neighs": 15,
             "#points": 2000,
-            "1-NN": 0.199,
-            "T": 0.965,
-            "C": 0.995
+            "1-NN": 0.189,
+            "T": 0.947,
+            "C": 0.991,
+            "date": "2025-06-20 19:15:07",
+            "artificial_connected": true
         },
         "hlle": {
-            "#neighs": 13,
+            "#neighs": 5,
             "#points": 2000,
-            "1-NN": 0.466,
-            "T": 0.862,
-            "C": 0.959
+            "1-NN": 0.45,
+            "T": 0.809,
+            "C": 0.869,
+            "date": "2025-06-20 19:16:20",
+            "artificial_connected": true
         },
         "hlle.eng": {
             "#neighs": 7,
             "#points": 2000,
             "1-NN": 0.204,
             "T": 0.965,
-            "C": 0.992
+            "C": 0.992,
+            "date": "2025-06-20 19:30:59",
+            "artificial_connected": true
         },
         "mvu.based": {
             "#neighs": 7,
             "#points": 2000,
             "1-NN": 0.2405,
             "T": 0.952,
-            "C": 0.995
+            "C": 0.995,
+            "date": "2025-07-01 16:57:19",
+            "status": "Solved",
+            "restricted": true
         }
     },
     "four.moons": {
         "isomap": {
-            "#neighs": 15,
+            "#neighs": 5,
             "#points": 2000,
             "1-NN": 0.001,
-            "T": 0.986,
-            "C": 0.994
+            "T": 0.984,
+            "C": 0.993,
+            "date": "2025-06-20 15:11:58",
+            "artificial_connected": true
         },
         "isomap.eng": {
             "#neighs": 11,
             "#points": 2000,
             "1-NN": 0.018,
             "T": 0.985,
-            "C": 0.997
+            "C": 0.997,
+            "date": "2025-06-20 15:13:59",
+            "artificial_connected": true
         },
         "lle": {
-            "#neighs": 10,
+            "#neighs": 7,
             "#points": 2000,
             "1-NN": 0.0,
-            "T": 0.686,
-            "C": 0.817
+            "T": 0.666,
+            "C": 0.815,
+            "date": "2025-06-20 15:14:49",
+            "artificial_connected": true
         },
         "lle.eng": {
-            "#neighs": 11,
+            "#neighs": 5,
             "#points": 2000,
             "1-NN": 0.0,
-            "T": 0.992,
-            "C": 0.995
+            "T": 0.977,
+            "C": 0.992,
+            "date": "2025-06-20 15:15:38",
+            "artificial_connected": true
         },
         "none": {
-            "#neighs": null,
+            "#neighs": 1,
             "#points": 2000,
             "1-NN": 0.0,
             "T": null,
-            "C": null
+            "C": null,
+            "date": "2025-06-20 15:37:05"
         },
         "le.eng": {
             "#neighs": 6,
             "#points": 2000,
             "1-NN": 0.0,
             "T": 0.831,
-            "C": 0.925
+            "C": 0.925,
+            "date": "2025-06-20 22:59:57"
         },
         "hlle": {
             "#neighs": 9,
             "#points": 2000,
             "1-NN": 0.0,
             "T": 0.675,
-            "C": 0.817
+            "C": 0.817,
+            "date": "2025-06-20 23:05:05"
         },
         "hlle.eng": {
-            "#neighs": 11,
-            "#points": 2000,
-            "1-NN": 0.0,
-            "T": 0.992,
-            "C": 0.995
-        },
-        "lle.skl": {
             "#neighs": 5,
             "#points": 2000,
-            "1-NN": 0.001,
-            "T": 0.94,
-            "C": 0.968
+            "1-NN": 0.0,
+            "T": 0.977,
+            "C": 0.992,
+            "date": "2025-06-20 23:10:12"
         },
-        "le.skl": {
-            "#neighs": 14,
+        "lle.skl": {
+            "#neighs": 6,
             "#points": 2000,
             "1-NN": 0.0,
-            "T": 0.848,
-            "C": 0.91
+            "T": 0.902,
+            "C": 0.957,
+            "date": "2025-06-20 23:18:39"
+        },
+        "le.skl": {
+            "#neighs": 5,
+            "#points": 2000,
+            "1-NN": 0.0,
+            "T": 0.754,
+            "C": 0.882,
+            "date": "2025-06-20 23:19:14"
         },
         "hlle.skl": {
             "#neighs": 13,
             "#points": 2000,
             "1-NN": 0.001,
             "T": 0.654,
-            "C": 0.817
+            "C": 0.817,
+            "date": "2025-06-20 23:20:34"
         },
         "mvu.based": {
-            "#neighs": 15,
+            "#neighs": 10,
             "#points": 2000,
             "1-NN": 0.0,
-            "T": 0.987,
-            "C": 0.992
+            "T": 0.986,
+            "C": 0.992,
+            "date": "2025-07-01 16:17:52",
+            "status": "Solved"
         }
     },
     "mit-cbcl": {
@@ -769,70 +962,84 @@
             "#points": 2059,
             "1-NN": 0.021,
             "T": 0.987,
-            "C": 0.995
+            "C": 0.995,
+            "date": "2025-06-22 15:22:46",
+            "artificial_connected": true
         },
         "isomap.eng": {
             "#neighs": 5,
             "#points": 2059,
             "1-NN": 0.019,
             "T": 0.991,
-            "C": 0.998
+            "C": 0.998,
+            "date": "2025-06-22 17:30:06"
         },
         "lle": {
-            "#neighs": 6,
+            "#neighs": 13,
             "#points": 2059,
-            "1-NN": 0.021,
-            "T": 0.988,
-            "C": 0.989
+            "1-NN": 0.019,
+            "T": 0.98,
+            "C": 0.99,
+            "date": "2025-06-22 16:19:51"
         },
         "lle.eng": {
-            "#neighs": 5,
+            "#neighs": 13,
             "#points": 2059,
-            "1-NN": 0.02,
-            "T": 0.987,
-            "C": 0.989
+            "1-NN": 0.018,
+            "T": 0.981,
+            "C": 0.989,
+            "date": "2025-06-22 16:23:36"
         },
         "le": {
             "#neighs": 13,
             "#points": 2059,
             "1-NN": 0.028,
             "T": 0.988,
-            "C": 0.994
+            "C": 0.994,
+            "date": "2025-06-22 16:25:49"
         },
         "le.eng": {
             "#neighs": 8,
             "#points": 2059,
             "1-NN": 0.017,
             "T": 0.99,
-            "C": 0.997
+            "C": 0.997,
+            "date": "2025-06-22 16:29:29"
         },
         "hlle": {
+            "#neighs": 13,
+            "#points": 2059,
+            "1-NN": 0.016,
+            "T": 0.98,
+            "C": 0.988,
+            "date": "2025-06-22 16:42:03"
+        },
+        "hlle.eng": {
+            "#neighs": 7,
+            "#points": 2059,
+            "1-NN": 0.018,
+            "T": 0.987,
+            "C": 0.991,
+            "date": "2025-06-22 16:49:15"
+        },
+        "le.skl": {
             "#neighs": 6,
             "#points": 2059,
             "1-NN": 0.017,
-            "T": 0.986,
-            "C": 0.99
-        },
-        "hlle.eng": {
-            "#neighs": 5,
-            "#points": 2059,
-            "1-NN": 0.019,
-            "T": 0.989,
-            "C": 0.991
-        },
-        "le.skl": {
-            "#neighs": 8,
-            "#points": 2059,
-            "1-NN": 0.02,
-            "T": 0.993,
-            "C": 0.996
+            "T": 0.994,
+            "C": 0.949,
+            "date": "2025-06-22 19:39:02"
         },
         "mvu.based": {
             "#neighs": 14,
             "#points": 2059,
             "1-NN": 0.12725,
             "T": 0.848,
-            "C": 0.894
+            "C": 0.894,
+            "date": "2025-07-02 02:03:14",
+            "status": "Unbounded",
+            "restricted": true,
+            "artificial_connected": true
         }
     }
 }

@@ -493,6 +493,107 @@
                 "status": "Solved",
                 "restricted": true
             }
+        },
+        "mvu.based": {
+            "5": {
+                "#points": 1000,
+                "1-NN": 0.109,
+                "T": 0.996,
+                "C": 0.997,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": false
+            },
+            "6": {
+                "#points": 1000,
+                "1-NN": 0.105,
+                "T": 0.998,
+                "C": 0.998,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": false
+            },
+            "7": {
+                "#points": 1000,
+                "1-NN": 0.098,
+                "T": 0.998,
+                "C": 0.998,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": false
+            },
+            "8": {
+                "#points": 1000,
+                "1-NN": 0.113,
+                "T": 0.998,
+                "C": 0.999,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": false
+            },
+            "9": {
+                "#points": 1000,
+                "1-NN": 0.309,
+                "T": 0.876,
+                "C": 0.993,
+                "status": "Inaccurate/Unbounded",
+                "restricted": true,
+                "artificial_connected": false
+            },
+            "10": {
+                "#points": 1000,
+                "1-NN": 0.309,
+                "T": 0.877,
+                "C": 0.992,
+                "status": "Solved",
+                "restricted": true,
+                "artificial_connected": false
+            },
+            "11": {
+                "#points": 1000,
+                "1-NN": 0.309,
+                "T": 0.878,
+                "C": 0.991,
+                "status": "Solved",
+                "restricted": true,
+                "artificial_connected": false
+            },
+            "12": {
+                "#points": 1000,
+                "1-NN": 0.31,
+                "T": 0.878,
+                "C": 0.991,
+                "status": "Inaccurate/Unbounded",
+                "restricted": true,
+                "artificial_connected": false
+            },
+            "13": {
+                "#points": 1000,
+                "1-NN": 0.309,
+                "T": 0.879,
+                "C": 0.99,
+                "status": "Inaccurate/Unbounded",
+                "restricted": true,
+                "artificial_connected": false
+            },
+            "14": {
+                "#points": 1000,
+                "1-NN": 0.309,
+                "T": 0.879,
+                "C": 0.99,
+                "status": "Solved",
+                "restricted": true,
+                "artificial_connected": false
+            },
+            "15": {
+                "#points": 1000,
+                "1-NN": 0.309,
+                "T": 0.879,
+                "C": 0.989,
+                "status": "Solved",
+                "restricted": true,
+                "artificial_connected": false
+            }
         }
     },
     "helix": {
@@ -953,6 +1054,118 @@
                 "status": "Unbounded",
                 "restricted": true
             }
+        },
+        "mvu.based": {
+            "5": {
+                "#points": 1000,
+                "1-NN": 0.013,
+                "T": 1.0,
+                "C": 1.0,
+                "date": "2025-07-03 14:45:57",
+                "status": "Unbounded",
+                "restricted": true,
+                "artificial_connected": false
+            },
+            "6": {
+                "#points": 1000,
+                "1-NN": 0.012,
+                "T": 1.0,
+                "C": 1.0,
+                "date": "2025-07-03 14:47:09",
+                "status": "Unbounded",
+                "restricted": null,
+                "artificial_connected": false
+            },
+            "7": {
+                "#points": 1000,
+                "1-NN": 0.016,
+                "T": 1.0,
+                "C": 1.0,
+                "date": "2025-07-03 14:48:35",
+                "status": "Unbounded",
+                "restricted": null,
+                "artificial_connected": false
+            },
+            "8": {
+                "#points": 1000,
+                "1-NN": 0.016,
+                "T": 1.0,
+                "C": 1.0,
+                "date": "2025-07-03 14:50:11",
+                "status": "Unbounded",
+                "restricted": null,
+                "artificial_connected": false
+            },
+            "9": {
+                "#points": 1000,
+                "1-NN": 0.013,
+                "T": 1.0,
+                "C": 1.0,
+                "date": "2025-07-03 14:52:03",
+                "status": "Unbounded",
+                "restricted": null,
+                "artificial_connected": false
+            },
+            "10": {
+                "#points": 1000,
+                "1-NN": 0.016,
+                "T": 0.999,
+                "C": 0.999,
+                "date": "2025-07-03 14:54:04",
+                "status": "Unbounded",
+                "restricted": true,
+                "artificial_connected": false
+            },
+            "11": {
+                "#points": 1000,
+                "1-NN": 0.028,
+                "T": 0.997,
+                "C": 0.999,
+                "date": "2025-07-03 14:56:48",
+                "status": "Inaccurate/Unbounded",
+                "restricted": true,
+                "artificial_connected": false
+            },
+            "12": {
+                "#points": 1000,
+                "1-NN": 0.029,
+                "T": 0.997,
+                "C": 0.999,
+                "date": "2025-07-03 14:59:50",
+                "status": "Inaccurate/Unbounded",
+                "restricted": true,
+                "artificial_connected": false
+            },
+            "13": {
+                "#points": 1000,
+                "1-NN": 0.028,
+                "T": 0.996,
+                "C": 0.999,
+                "date": "2025-07-03 15:02:16",
+                "status": "Inaccurate/Unbounded",
+                "restricted": true,
+                "artificial_connected": false
+            },
+            "14": {
+                "#points": 1000,
+                "1-NN": 0.028,
+                "T": 0.996,
+                "C": 0.999,
+                "date": "2025-07-03 15:04:36",
+                "status": "Inaccurate/Unbounded",
+                "restricted": true,
+                "artificial_connected": false
+            },
+            "15": {
+                "#points": 1000,
+                "1-NN": 0.028,
+                "T": 0.995,
+                "C": 0.999,
+                "date": "2025-07-03 15:06:45",
+                "status": "Inaccurate/Unbounded",
+                "restricted": true,
+                "artificial_connected": false
+            }
         }
     },
     "twinpeaks": {
@@ -1378,6 +1591,118 @@
                 "T": 0.97,
                 "C": 0.988,
                 "status": "Inaccurate/Solved"
+            }
+        },
+        "mvu.based": {
+            "5": {
+                "#points": 1000,
+                "1-NN": 0.017,
+                "T": 0.985,
+                "C": 0.995,
+                "date": "2025-07-03 15:08:50",
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": false
+            },
+            "6": {
+                "#points": 1000,
+                "1-NN": 0.015,
+                "T": 0.98,
+                "C": 0.991,
+                "date": "2025-07-03 15:10:40",
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": false
+            },
+            "7": {
+                "#points": 1000,
+                "1-NN": 0.007,
+                "T": 0.98,
+                "C": 0.99,
+                "date": "2025-07-03 15:12:45",
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": false
+            },
+            "8": {
+                "#points": 1000,
+                "1-NN": 0.005,
+                "T": 0.978,
+                "C": 0.989,
+                "date": "2025-07-03 15:15:15",
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": false
+            },
+            "9": {
+                "#points": 1000,
+                "1-NN": 0.003,
+                "T": 0.975,
+                "C": 0.989,
+                "date": "2025-07-03 15:17:31",
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": false
+            },
+            "10": {
+                "#points": 1000,
+                "1-NN": 0.003,
+                "T": 0.973,
+                "C": 0.988,
+                "date": "2025-07-03 15:19:48",
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": false
+            },
+            "11": {
+                "#points": 1000,
+                "1-NN": 0.003,
+                "T": 0.972,
+                "C": 0.988,
+                "date": "2025-07-03 15:22:03",
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": false
+            },
+            "12": {
+                "#points": 1000,
+                "1-NN": 0.003,
+                "T": 0.971,
+                "C": 0.988,
+                "date": "2025-07-03 15:24:22",
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": false
+            },
+            "13": {
+                "#points": 1000,
+                "1-NN": 0.003,
+                "T": 0.971,
+                "C": 0.988,
+                "date": "2025-07-03 15:27:06",
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": false
+            },
+            "14": {
+                "#points": 1000,
+                "1-NN": 0.003,
+                "T": 0.97,
+                "C": 0.988,
+                "date": "2025-07-03 15:30:21",
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": false
+            },
+            "15": {
+                "#points": 1000,
+                "1-NN": 0.003,
+                "T": 0.97,
+                "C": 0.988,
+                "date": "2025-07-03 15:33:09",
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": false
             }
         }
     },
@@ -2350,7 +2675,7 @@
             }
         },
         "none": {
-            "None": {
+            "1": {
                 "#points": 2000,
                 "1-NN": 0.035,
                 "T": null,
@@ -2361,102 +2686,103 @@
         "mvu.based": {
             "5": {
                 "#points": 2000,
-                "1-NN": 0.183,
-                "T": 0.879,
-                "C": 0.99,
-                "date": "2025-06-24 23:54:02",
+                "1-NN": 0.128,
+                "T": 0.977,
+                "C": 0.993,
                 "status": "Solved",
-                "restricted": true
+                "restricted": true,
+                "artificial_connected": null
             },
             "6": {
                 "#points": 2000,
-                "1-NN": 0.191,
-                "T": 0.904,
-                "C": 0.991,
-                "date": "2025-06-24 23:56:13",
+                "1-NN": 0.088,
+                "T": 0.991,
+                "C": 0.994,
                 "status": "Solved",
-                "restricted": true
+                "restricted": true,
+                "artificial_connected": null
             },
             "7": {
                 "#points": 2000,
-                "1-NN": 0.1985,
-                "T": 0.905,
+                "1-NN": 0.152,
+                "T": 0.955,
                 "C": 0.991,
-                "date": "2025-06-24 23:58:31",
                 "status": "Solved",
-                "restricted": true
+                "restricted": true,
+                "artificial_connected": null
             },
             "8": {
                 "#points": 2000,
-                "1-NN": 0.1655,
-                "T": 0.883,
-                "C": 0.987,
-                "date": "2025-06-25 00:00:58",
+                "1-NN": 0.1815,
+                "T": 0.927,
+                "C": 0.99,
                 "status": "Solved",
-                "restricted": true
+                "restricted": true,
+                "artificial_connected": null
             },
             "9": {
                 "#points": 2000,
-                "1-NN": 0.1285,
-                "T": 0.893,
-                "C": 0.986,
-                "date": "2025-06-25 00:03:31",
+                "1-NN": 0.2705,
+                "T": 0.928,
+                "C": 0.99,
                 "status": "Solved",
-                "restricted": true
+                "restricted": true,
+                "artificial_connected": null
             },
             "10": {
                 "#points": 2000,
-                "1-NN": 0.123,
-                "T": 0.89,
-                "C": 0.984,
-                "date": "2025-06-25 00:06:19",
+                "1-NN": 0.11,
+                "T": 0.973,
+                "C": 0.994,
                 "status": "Solved",
-                "restricted": true
+                "restricted": true,
+                "artificial_connected": null
             },
             "11": {
                 "#points": 2000,
-                "1-NN": 0.125,
-                "T": 0.897,
-                "C": 0.983,
-                "date": "2025-06-25 00:09:42",
+                "1-NN": 0.1095,
+                "T": 0.972,
+                "C": 0.994,
                 "status": "Solved",
-                "restricted": true
+                "restricted": true,
+                "artificial_connected": null
             },
             "12": {
                 "#points": 2000,
-                "1-NN": 0.1175,
-                "T": 0.893,
-                "C": 0.982,
-                "date": "2025-06-25 00:12:39",
+                "1-NN": 0.1095,
+                "T": 0.971,
+                "C": 0.993,
                 "status": "Solved",
-                "restricted": true
+                "restricted": true,
+                "artificial_connected": null
             },
             "13": {
                 "#points": 2000,
-                "1-NN": 0.1205,
-                "T": 0.888,
-                "C": 0.981,
-                "date": "2025-06-25 00:16:13",
+                "1-NN": 0.11,
+                "T": 0.971,
+                "C": 0.993,
                 "status": "Solved",
-                "restricted": true
+                "restricted": true,
+                "artificial_connected": null
             },
             "14": {
                 "#points": 2000,
-                "1-NN": 0.1245,
-                "T": 0.884,
-                "C": 0.98,
-                "date": "2025-06-25 00:20:19",
+                "1-NN": 0.1095,
+                "T": 0.97,
+                "C": 0.993,
                 "status": "Solved",
-                "restricted": true
+                "restricted": true,
+                "artificial_connected": null
             },
             "15": {
                 "#points": 2000,
-                "1-NN": 0.138,
-                "T": 0.874,
-                "C": 0.979,
-                "date": "2025-06-25 00:24:40",
+                "1-NN": 0.271,
+                "T": 0.927,
+                "C": 0.988,
+                "date": "2025-07-03 16:36:16",
                 "status": "Solved",
-                "restricted": true
+                "restricted": null,
+                "artificial_connected": null
             }
         }
     },
@@ -3028,102 +3354,102 @@
         "mvu.based": {
             "5": {
                 "#points": 1024,
-                "1-NN": 0.52051,
-                "T": 0.649,
-                "C": 0.599,
-                "date": "2025-06-25 00:34:48",
+                "1-NN": 0.51367,
+                "T": 0.679,
+                "C": 0.721,
                 "status": "Solved",
-                "restricted": true
+                "restricted": true,
+                "artificial_connected": null
             },
             "6": {
                 "#points": 1024,
-                "1-NN": 0.52832,
-                "T": 0.618,
-                "C": 0.654,
-                "date": "2025-06-25 00:35:16",
+                "1-NN": 0.49609,
+                "T": 0.681,
+                "C": 0.659,
                 "status": "Solved",
-                "restricted": true
+                "restricted": true,
+                "artificial_connected": null
             },
             "7": {
                 "#points": 1024,
-                "1-NN": 0.52344,
-                "T": 0.582,
-                "C": 0.598,
-                "date": "2025-06-25 00:35:42",
+                "1-NN": 0.52734,
+                "T": 0.704,
+                "C": 0.7,
                 "status": "Solved",
-                "restricted": true
+                "restricted": null,
+                "artificial_connected": null
             },
             "8": {
                 "#points": 1024,
-                "1-NN": 0.53809,
-                "T": 0.596,
-                "C": 0.59,
-                "date": "2025-06-25 00:36:13",
+                "1-NN": 0.50293,
+                "T": 0.705,
+                "C": 0.704,
                 "status": "Solved",
-                "restricted": true
+                "restricted": null,
+                "artificial_connected": null
             },
             "9": {
                 "#points": 1024,
-                "1-NN": 0.53418,
-                "T": 0.641,
-                "C": 0.614,
-                "date": "2025-06-25 00:36:50",
+                "1-NN": 0.49414,
+                "T": 0.649,
+                "C": 0.683,
                 "status": "Solved",
-                "restricted": true
+                "restricted": true,
+                "artificial_connected": null
             },
             "10": {
                 "#points": 1024,
-                "1-NN": 0.49512,
-                "T": 0.599,
-                "C": 0.581,
-                "date": "2025-06-25 00:37:27",
+                "1-NN": 0.52539,
+                "T": 0.636,
+                "C": 0.708,
                 "status": "Solved",
-                "restricted": true
+                "restricted": true,
+                "artificial_connected": null
             },
             "11": {
                 "#points": 1024,
-                "1-NN": 0.51367,
-                "T": 0.577,
-                "C": 0.556,
-                "date": "2025-06-25 00:38:09",
+                "1-NN": 0.44629,
+                "T": 0.67,
+                "C": 0.724,
                 "status": "Solved",
-                "restricted": true
+                "restricted": true,
+                "artificial_connected": null
             },
             "12": {
                 "#points": 1024,
-                "1-NN": 0.43652,
-                "T": 0.973,
-                "C": 0.973,
-                "date": "2025-06-25 00:40:10",
+                "1-NN": 0.38477,
+                "T": 0.979,
+                "C": 0.975,
                 "status": "Solved",
-                "restricted": true
+                "restricted": true,
+                "artificial_connected": false
             },
             "13": {
                 "#points": 1024,
-                "1-NN": 0.41309,
-                "T": 0.972,
-                "C": 0.973,
-                "date": "2025-06-25 00:42:15",
-                "status": "Solved",
-                "restricted": true
+                "1-NN": 0.39551,
+                "T": 0.98,
+                "C": 0.976,
+                "status": "Inaccurate/Unbounded",
+                "restricted": true,
+                "artificial_connected": false
             },
             "14": {
                 "#points": 1024,
-                "1-NN": 0.39062,
-                "T": 0.98,
-                "C": 0.982,
-                "date": "2025-06-25 00:44:33",
-                "status": "Inaccurate/Solved",
-                "restricted": true
+                "1-NN": 0.41699,
+                "T": 0.985,
+                "C": 0.984,
+                "status": "Inaccurate/Unbounded",
+                "restricted": true,
+                "artificial_connected": false
             },
             "15": {
                 "#points": 1024,
-                "1-NN": 0.39551,
-                "T": 0.984,
-                "C": 0.988,
-                "date": "2025-06-25 00:47:19",
+                "1-NN": 0.41211,
+                "T": 0.988,
+                "C": 0.991,
                 "status": "Solved",
-                "restricted": true
+                "restricted": true,
+                "artificial_connected": false
             }
         }
     },
@@ -3726,7 +4052,7 @@
             }
         },
         "none": {
-            "None": {
+            "1": {
                 "#points": 1440,
                 "1-NN": 0.001,
                 "T": null,
@@ -4095,86 +4421,23 @@
             }
         },
         "mvu.based": {
-            "5": {
-                "#points": 1440,
-                "1-NN": 0.20208,
-                "T": 0.837,
-                "C": 0.945,
-                "date": "2025-07-03 02:13:56",
-                "status": "Inaccurate/Unbounded",
-                "restricted": true
-            },
-            "6": {
-                "#points": 1440,
-                "1-NN": 0.51319,
-                "T": 0.709,
-                "C": 0.829,
-                "date": "2025-06-25 10:34:16",
-                "status": "Unbounded",
-                "restricted": true
-            },
-            "7": {
-                "#points": 1440,
-                "1-NN": 0.53889,
-                "T": 0.664,
-                "C": 0.765,
-                "date": "2025-06-25 10:35:34",
-                "status": "Unbounded",
-                "restricted": true
-            },
-            "8": {
-                "#points": 1440,
-                "1-NN": 0.22014,
-                "T": 0.81,
-                "C": 0.929,
-                "date": "2025-07-03 02:17:49",
-                "status": "Inaccurate/Unbounded",
-                "restricted": true
-            },
-            "9": {
-                "#points": 1440,
-                "1-NN": 0.47778,
-                "T": 0.74,
-                "C": 0.927,
-                "date": "2025-07-03 02:19:43",
-                "status": "Inaccurate/Unbounded",
-                "restricted": true
-            },
-            "10": {
-                "#points": 1440,
-                "1-NN": 0.62153,
-                "T": 0.623,
-                "C": 0.764,
-                "date": "2025-06-25 10:46:16",
-                "status": "Unbounded",
-                "restricted": true
-            },
             "11": {
                 "#points": 1440,
-                "1-NN": 0.61806,
-                "T": 0.65,
-                "C": 0.757,
-                "date": "2025-06-25 10:49:53",
-                "status": "Unbounded",
-                "restricted": true
+                "1-NN": 0.24375,
+                "T": 0.802,
+                "C": 0.937,
+                "status": "Solved",
+                "restricted": true,
+                "artificial_connected": null
             },
             "12": {
                 "#points": 1440,
-                "1-NN": 0.64653,
-                "T": 0.626,
-                "C": 0.78,
-                "date": "2025-06-25 10:55:58",
-                "status": "Unbounded",
-                "restricted": true
-            },
-            "13": {
-                "#points": 1440,
-                "1-NN": 0.25833,
-                "T": 0.798,
-                "C": 0.926,
-                "date": "2025-07-03 02:33:12",
-                "status": "Inaccurate/Unbounded",
-                "restricted": true
+                "1-NN": 0.21944,
+                "T": 0.829,
+                "C": 0.941,
+                "status": "Solved",
+                "restricted": true,
+                "artificial_connected": null
             },
             "14": {
                 "#points": 1440,
@@ -4190,9 +4453,19 @@
                 "1-NN": 0.26458,
                 "T": 0.889,
                 "C": 0.947,
-                "date": "2025-07-03 02:45:34",
-                "status": "Inaccurate/Unbounded",
-                "restricted": true
+                "date": "2025-07-03 17:23:15",
+                "status": "Solved",
+                "restricted": true,
+                "artificial_connected": null
+            },
+            "6": {
+                "#points": 1440,
+                "1-NN": 0.20278,
+                "T": 0.839,
+                "C": 0.941,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
             }
         }
     },
@@ -4699,53 +4972,58 @@
                 "1-NN": 0.4425,
                 "T": 0.727,
                 "C": 0.872,
-                "date": "2025-07-03 02:45:59",
-                "status": "Inaccurate/Unbounded",
-                "restricted": true
+                "date": "2025-07-03 17:23:41",
+                "status": "Solved",
+                "restricted": true,
+                "artificial_connected": null
             },
             "6": {
                 "#points": 400,
                 "1-NN": 0.3475,
                 "T": 0.729,
                 "C": 0.867,
-                "date": "2025-07-03 02:46:13",
-                "status": "Inaccurate/Unbounded",
-                "restricted": true
+                "date": "2025-07-03 17:23:58",
+                "status": "Solved",
+                "restricted": true,
+                "artificial_connected": null
             },
             "7": {
                 "#points": 400,
                 "1-NN": 0.4025,
                 "T": 0.714,
                 "C": 0.844,
-                "date": "2025-07-03 02:46:26",
-                "status": "Inaccurate/Unbounded",
-                "restricted": true
+                "date": "2025-07-03 17:24:14",
+                "status": "Solved",
+                "restricted": true,
+                "artificial_connected": null
             },
             "8": {
                 "#points": 400,
                 "1-NN": 0.425,
                 "T": 0.705,
                 "C": 0.81,
-                "date": "2025-07-03 02:46:41",
-                "status": "Inaccurate/Unbounded",
-                "restricted": true
+                "date": "2025-07-03 17:24:26",
+                "status": "Solved",
+                "restricted": true,
+                "artificial_connected": null
             },
             "9": {
                 "#points": 400,
                 "1-NN": 0.555,
                 "T": 0.642,
                 "C": 0.792,
-                "date": "2025-07-03 02:46:55",
-                "status": "Inaccurate/Unbounded",
-                "restricted": true
+                "date": "2025-07-03 17:24:41",
+                "status": "Solved",
+                "restricted": true,
+                "artificial_connected": null
             },
             "10": {
                 "#points": 400,
                 "1-NN": 0.3175,
                 "T": 0.923,
                 "C": 0.971,
-                "date": "2025-07-03 02:47:07",
-                "status": "Inaccurate/Unbounded",
+                "date": "2025-07-03 17:24:51",
+                "status": "Solved",
                 "restricted": true,
                 "artificial_connected": false
             },
@@ -4754,7 +5032,7 @@
                 "1-NN": 0.3225,
                 "T": 0.927,
                 "C": 0.97,
-                "date": "2025-07-03 02:47:18",
+                "date": "2025-07-03 17:25:04",
                 "status": "Inaccurate/Unbounded",
                 "restricted": true,
                 "artificial_connected": false
@@ -4764,8 +5042,8 @@
                 "1-NN": 0.26,
                 "T": 0.93,
                 "C": 0.966,
-                "date": "2025-07-03 02:47:33",
-                "status": "Inaccurate/Unbounded",
+                "date": "2025-07-03 17:25:17",
+                "status": "Solved",
                 "restricted": true,
                 "artificial_connected": false
             },
@@ -4774,7 +5052,7 @@
                 "1-NN": 0.2625,
                 "T": 0.93,
                 "C": 0.966,
-                "date": "2025-07-03 02:47:47",
+                "date": "2025-07-03 17:25:30",
                 "status": "Inaccurate/Unbounded",
                 "restricted": true,
                 "artificial_connected": false
@@ -4784,8 +5062,8 @@
                 "1-NN": 0.2675,
                 "T": 0.931,
                 "C": 0.966,
-                "date": "2025-07-03 02:48:04",
-                "status": "Inaccurate/Unbounded",
+                "date": "2025-07-03 17:25:44",
+                "status": "Solved",
                 "restricted": true,
                 "artificial_connected": false
             },
@@ -4794,8 +5072,8 @@
                 "1-NN": 0.21,
                 "T": 0.934,
                 "C": 0.965,
-                "date": "2025-07-03 02:48:21",
-                "status": "Inaccurate/Unbounded",
+                "date": "2025-07-03 17:26:01",
+                "status": "Solved",
                 "restricted": true,
                 "artificial_connected": false
             }
@@ -5635,7 +5913,7 @@
             }
         },
         "none": {
-            "None": {
+            "1": {
                 "#points": 2000,
                 "1-NN": 0.071,
                 "T": null,
@@ -5646,101 +5924,113 @@
         "mvu.based": {
             "15": {
                 "#points": 2000,
-                "1-NN": 0.413,
+                "1-NN": 0.3895,
                 "T": 0.898,
-                "C": 0.975,
-                "date": "2025-07-01 05:04:08",
+                "C": 0.977,
+                "date": "2025-07-03 18:24:21",
                 "status": "Solved",
-                "restricted": true
+                "restricted": true,
+                "artificial_connected": null
             },
             "5": {
                 "#points": 2000,
-                "1-NN": 0.2745,
+                "1-NN": 0.277,
                 "T": 0.947,
                 "C": 0.996,
-                "date": "2025-07-01 03:46:43",
-                "status": "Solved"
+                "date": "2025-07-03 17:29:52",
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
             },
             "6": {
                 "#points": 2000,
-                "1-NN": 0.2795,
-                "T": 0.942,
+                "1-NN": 0.3275,
+                "T": 0.928,
                 "C": 0.991,
-                "date": "2025-07-01 03:53:08",
+                "date": "2025-07-03 17:34:55",
                 "status": "Solved",
-                "restricted": true
+                "restricted": true,
+                "artificial_connected": null
             },
             "7": {
                 "#points": 2000,
-                "1-NN": 0.2815,
+                "1-NN": 0.285,
                 "T": 0.945,
                 "C": 0.995,
-                "date": "2025-07-01 04:00:28",
+                "date": "2025-07-03 17:39:47",
                 "status": "Solved",
-                "restricted": true
+                "restricted": null,
+                "artificial_connected": null
             },
             "8": {
                 "#points": 2000,
-                "1-NN": 0.386,
-                "T": 0.907,
-                "C": 0.99,
-                "date": "2025-07-01 04:08:21",
+                "1-NN": 0.2145,
+                "T": 0.954,
+                "C": 0.992,
+                "date": "2025-07-03 17:45:20",
                 "status": "Solved",
-                "restricted": true
+                "restricted": true,
+                "artificial_connected": null
             },
             "9": {
                 "#points": 2000,
-                "1-NN": 0.3805,
+                "1-NN": 0.408,
                 "T": 0.894,
                 "C": 0.976,
-                "date": "2025-07-01 04:18:20",
+                "date": "2025-07-03 17:51:16",
                 "status": "Solved",
-                "restricted": true
+                "restricted": true,
+                "artificial_connected": null
             },
             "10": {
                 "#points": 2000,
-                "1-NN": 0.411,
-                "T": 0.894,
-                "C": 0.974,
-                "date": "2025-07-01 04:26:41",
+                "1-NN": 0.401,
+                "T": 0.895,
+                "C": 0.977,
+                "date": "2025-07-03 17:56:40",
                 "status": "Solved",
-                "restricted": true
+                "restricted": true,
+                "artificial_connected": null
             },
             "11": {
                 "#points": 2000,
-                "1-NN": 0.413,
+                "1-NN": 0.3895,
                 "T": 0.897,
-                "C": 0.978,
-                "date": "2025-07-01 04:35:57",
+                "C": 0.98,
+                "date": "2025-07-03 18:02:15",
                 "status": "Solved",
-                "restricted": true
+                "restricted": true,
+                "artificial_connected": null
             },
             "12": {
                 "#points": 2000,
-                "1-NN": 0.4215,
+                "1-NN": 0.3885,
                 "T": 0.897,
-                "C": 0.977,
-                "date": "2025-07-01 04:45:52",
+                "C": 0.979,
+                "date": "2025-07-03 18:07:49",
                 "status": "Solved",
-                "restricted": true
+                "restricted": true,
+                "artificial_connected": null
             },
             "13": {
                 "#points": 2000,
-                "1-NN": 0.403,
-                "T": 0.898,
-                "C": 0.977,
-                "date": "2025-07-01 04:51:52",
+                "1-NN": 0.3875,
+                "T": 0.89,
+                "C": 0.976,
+                "date": "2025-07-03 18:13:51",
                 "status": "Solved",
-                "restricted": true
+                "restricted": null,
+                "artificial_connected": null
             },
             "14": {
                 "#points": 2000,
-                "1-NN": 0.4125,
-                "T": 0.897,
-                "C": 0.976,
-                "date": "2025-07-01 04:58:34",
+                "1-NN": 0.3785,
+                "T": 0.899,
+                "C": 0.977,
+                "date": "2025-07-03 18:18:34",
                 "status": "Solved",
-                "restricted": true
+                "restricted": null,
+                "artificial_connected": null
             }
         }
     },
@@ -6478,7 +6768,7 @@
             }
         },
         "none": {
-            "None": {
+            "1": {
                 "#points": 1000,
                 "1-NN": 0.065,
                 "T": null,
@@ -6698,7 +6988,7 @@
             }
         },
         "none": {
-            "None": {
+            "1": {
                 "#points": 2000,
                 "1-NN": 0.071,
                 "T": null,
@@ -7799,7 +8089,7 @@
             }
         },
         "none": {
-            "None": {
+            "1": {
                 "#points": 2000,
                 "1-NN": 0.0,
                 "T": null,

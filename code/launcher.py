@@ -94,24 +94,25 @@ if __name__ == "__main__":
             "mvu.based",
         ]
         dataset_list = [
-            # 'swiss',
-            # 'helix',
-            # 'twinpeaks', # Mostly NaNs
+            # # 'swiss',
+            # # 'helix',
+            # # 'twinpeaks', # Mostly NaNs
             # 'broken.swiss',
             # 'difficult',
-
-            # 'mnist', # TODO: memory overload
-            'coil20', # TODO: 1440 points 1396 components found
-            'orl',
-            # 'nisis', # Does not exist
-            # 'hiva', # TODO: problems on the import
-
 
             # 'parallel.swiss',
             # 'broken.s_curve', # full NaNs
             # 'four.moons',
             # 'two.swiss',
-            # 'mit-cbcl',
+            
+            
+            # 'mnist', # TODO: memory overload
+            'coil20',
+            'orl',
+            # 'nisis', # Does not exist
+            # 'hiva', # TODO: problems on the import
+
+            'mit-cbcl',
             ]
     elif args.paper == "dev":
         models = [
@@ -177,14 +178,7 @@ if __name__ == "__main__":
             X, labels, t = get_dataset(dataname, args.n_points, args.noise, random_state=args.seed)
             None_1_NN = utils.one_NN(X, labels)
             print(f"loaded {dataname} {None_1_NN}")
-            utils.store_measure({'dataname': dataname, 'model': 'none', '#neighs': None, '#points': X.shape[0]}, None_1_NN, best=True)
-            utils.store_measure({'dataname': dataname, 'model': 'none', '#neighs': None, '#points': X.shape[0]}, None_1_NN)
-            
-            # with open("measures.best.csv", "a") as f:
-            #     f.write(f"none,{dataname},none,{args.n_points},None,{None_1_NN},None,None\n")
-            # with open("measures.all.csv", "a") as f:
-            #     f.write(f"none,{dataname},none,{args.n_points},None,{None_1_NN},None,None\n")
-        
+            utils.add_measure({'dataname': dataname, 'model': 'none', '#neighs': 1, '#points': X.shape[0]}, None_1_NN)
         exit()
 
     else:

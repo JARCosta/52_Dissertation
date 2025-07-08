@@ -73,6 +73,7 @@ class MVU(models.Neighbourhood):
         np.set_printoptions(threshold=200)
         
 
+        ratio = 1
         ratio = round(np.log10(np.max(self.NM))) - 2
         ratio = 10**(-ratio)
         self.NM = self.NM * ratio

@@ -171,10 +171,6 @@ def  one_NN(Y, labels) -> float:
     one_NN = np.count_nonzero(Y_labels - labels) / labels.shape[0]
     return round(float(one_NN), 5)
 
-
-
-
-
 def compute_measures(X, Y, labels, n_neigh) -> tuple[float, float, float]:
     
     stamp.set()
@@ -183,7 +179,15 @@ def compute_measures(X, Y, labels, n_neigh) -> tuple[float, float, float]:
     stamp.print_set(f"*\t 1_NN, T, C \t {One_nn}, {T}, {C}")
 
     return One_nn, T, C
-def get_json(dataname:str, model:str, n_neighs:int=None, best:bool=False):
+
+
+
+
+
+
+
+
+def _get_json(best:bool=False):
     try:
         if best:
             with open("measures.best.json", "r") as f:
@@ -193,70 +197,100 @@ def get_json(dataname:str, model:str, n_neighs:int=None, best:bool=False):
                 measures = loads(f.read())
     except (FileNotFoundError, JSONDecodeError):
         measures = {}
-    measures[dataname] = measures.get(dataname, {})
-    measures[dataname][model] = measures[dataname].get(model, {})
-    if not best and n_neighs is not None:
-        measures[dataname][model][str(n_neighs)] = measures[dataname][model].get(str(n_neighs), {})
     return measures
 
-def get_measures(dataname:str, model:str, n_neighs:int=None, best:bool=False):
-    measures = get_json(dataname, model, n_neighs, best)
-    if n_neighs is None:
-        return measures[dataname][model]
-    else:
-        return measures[dataname][model][str(n_neighs)]
+def get_measures(dataname:str, model:str, best:bool=False):
+    measures = _get_json(best)
+    measures[dataname] = measures.get(dataname, {})
+    measures[dataname][model] = measures[dataname].get(model, {})
+    return measures
 
-def store_measure(model_args:dict, One_nn:float=None, T:float=None, C:float=None, fail=None, best=False):
+def save_measures(measures:dict, best:bool=False):
+    with open(f"measures.{'best' if best else 'all'}.json", "w") as f:
+        f.write(dumps(measures, indent=4) + "\n")
+    json_to_csv(best=best)
 
+def pop_measure(model_args:dict):
+    dataname = model_args['dataname']
+    model = model_args['model']
+    n_neighs = model_args['#neighs']
+
+    measures = get_measures(dataname, model)
+    try:
+        measures[dataname][model].pop(str(n_neighs))
+    except KeyError:
+        warning(f"Key {str(n_neighs)} not found in {dataname} {model}")
+    save_measures(measures, best=False)
+    update_best_measures(dataname, model)
+
+
+def update_best_measures(dataname:str, model:str):
+    measures = _get_json(best=False)
+    best_measures = _get_json(best=True)
+
+    for dataname, model in measures.items():
+        measures[dataname] = measures.get(dataname, {})
+        best_measures[dataname] = best_measures.get(dataname, {})
+        for model, _ in model.items():
+            measures[dataname][model] = measures[dataname].get(model, {})
+            best_measures[dataname][model] = best_measures[dataname].get(model, {})
+
+            model_measures = measures[dataname][model]
+
+            best_k = None
+            for n_neighs in model_measures.keys():
+                if best_k is None or model_measures[n_neighs]['1-NN'] < model_measures[best_k]['1-NN']:
+                    best_k = n_neighs
+            
+            best_measures[dataname][model] = {
+                '#neighs': int(best_k),
+                **model_measures[best_k]}
+
+    save_measures(best_measures, best=True)
+
+
+def add_measure(model_args:dict, One_nn:float=None, T:float=None, C:float=None):
     dataname = model_args['dataname']
     model = model_args['model']
     n_neighs = model_args['#neighs']
     points = model_args['#points']
+    
+    data = {
+        '#points': points,
+        '1-NN': One_nn,
+        'T': T,
+        'C': C,
+    }
+    if 'status' in model_args:
+        data['status'] = model_args['status']
+    if 'restricted' in model_args:
+        data['restricted'] = model_args['restricted']
+    if 'artificial_connected' in model_args:
+        data['artificial_connected'] = model_args['artificial_connected']
+    
+    measures = get_measures(dataname, model)
+    measures[dataname][model][str(n_neighs)] = data
+    save_measures(measures, best=False)
+    update_best_measures(dataname, model)
 
 
 
-    if best:
-        measures = get_json(dataname, model, n_neighs, best)
-        measures[dataname][model] = {'#neighs': n_neighs, '#points': points, '1-NN': One_nn, 'T': T, 'C': C}
-        with open("measures.best.json", "w") as f:
-            f.write(dumps(measures, indent=4) + "\n")
-    else:
-        measures = get_json(dataname, model, n_neighs, best)
 
-        measures[dataname][model][str(n_neighs)] = {'#points': points, '1-NN': One_nn, 'T': T, 'C': C}
-        measures[dataname][model][str(n_neighs)]['date'] = stamp.timestamp.strftime("%Y-%m-%d %H:%M:%S")
-        if 'status' in model_args:
-            measures[dataname][model][str(n_neighs)]['status'] = model_args['status']
-        if 'restricted' in model_args:
-            measures[dataname][model][str(n_neighs)]['restricted'] = model_args['restricted']
-        if 'artificial_connected' in model_args:
-            measures[dataname][model][str(n_neighs)]['artificial_connected'] = model_args['artificial_connected']
-
-        
-        with open("measures.all.json", "w") as f:
-            f.write(dumps(measures, indent=4) + "\n")
-
-    json_to_csv(best=True)
-    json_to_csv(best=False)
 
 def json_to_csv(best:bool):
-    try:
-        with open(f"measures.{'best' if best else 'all'}.json", "r") as f:
-            data = loads(f.read())
-    except (FileNotFoundError, JSONDecodeError):
-        data = {}
+    measures = _get_json(best)
     
     with open(f"measures.{'best' if best else 'all'}.csv", "w") as f:
         f.write(f"dataname,model,n_neighs,points,1-NN,T,C,status,restricted,artificial_connected\n")
         if best:
-            for dataname, model in data.items():
+            for dataname, model in measures.items():
                 for model, data in model.items():
                     status = data['status'] if 'status' in data else None
                     restricted = data['restricted'] if 'restricted' in data else None
                     artificial_connected = data['artificial_connected'] if 'artificial_connected' in data else None
                     f.write(f"{dataname},{model},{data['#neighs']},{data['#points']},{data['1-NN']},{data['T']},{data['C']},{status},{restricted},{artificial_connected}\n")
         else:
-            for dataname, model in data.items():    
+            for dataname, model in measures.items():    
                 for model, n_neighs in model.items():
                     for n_neighs, data in n_neighs.items():
                         status = data['status'] if 'status' in data else None
@@ -267,10 +301,57 @@ def json_to_csv(best:bool):
 
 
 
+def plot_measures(dataname:str, model:str, plotation:bool=False):
+    import matplotlib.pyplot as plt
+    import os
+
+    measures = get_measures(dataname, model, best=True)
+    k_best = measures[dataname][model].get('k_best', None)
+    measures = get_measures(dataname, model)
+
+    results = np.array([
+        [int(k) for k in measures.keys()],
+        [float(measures[k]['1-NN']) for k in measures.keys()],
+        [float(measures[k]['T']) for k in measures.keys()],
+        [float(measures[k]['C']) for k in measures.keys()]
+    ])
+    results = results.T
+
+    fig, ax1 = plt.subplots()
+    plt.title(f"{model} applied on {dataname}, selected k={k_best}")
+
+    ax1.set_xlabel('size of k-neighbourhood')
+    ax1.set_ylabel('log10 of T and C')
+    ax1.tick_params(axis='y')
+    ax2 = ax1.twinx()  # instantiate a second Axes that shares the same x-axis
+    ax2.set_ylabel('1-NN')  # we already handled the x-label with ax1
+    ax2.tick_params(axis='y')
+
+    
+    ax1.plot(results[0], results[2], color='tab:red')
+    ax1.plot(results[0], results[3], color='tab:orange')
+    ax2.plot(results[0], results[1], color='tab:blue')
+    fig.legend(["T", "C", "1-NN"])
+    
+    ax1.scatter(results[0], results[2], color='tab:red')
+    ax1.scatter(results[0], results[3], color='tab:orange')
+    ax2.scatter(results[0], results[1], color='tab:blue')
+
+    fig.tight_layout()  # otherwise the right y-label is slightly clipped
+    
+    os.makedirs("cache") if not os.path.exists("cache") else None
+    os.makedirs(f"cache/{model}") if not os.path.exists(f"cache/{model}") else None
+    plt.savefig(f"cache/{model}/{dataname}.png")
+    if plotation:
+        plt.show(block=False)
+
+
 
 
     
-
+############################################################
+# DISTANCE MATRIX ##########################################
+############################################################
 
 def intra_dist_matrix(data: np.ndarray, k_neighbors: int = None):
     """

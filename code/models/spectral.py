@@ -22,7 +22,6 @@ class Spectral(ABC):
         """Computes the kernel matrix."""
         stamp.set()
         
-        print("Fitting Spectral...")
         ret = self._fit(X)
         stamp.print(f"*\t {self.model_args['model']}\t fit")
         return ret

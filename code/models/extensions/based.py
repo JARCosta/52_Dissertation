@@ -173,27 +173,45 @@ class Based:
                 Componentwise representative points.
         """
 
-        def get_next_representative(Yi:np.ndarray, Mi:list[int]):
-            if len(Mi) > 0:
-                dist_matrix = np.ones((Yi.shape[0], )) * np.inf
-                # dist_matrix = np.zeros((Yi.shape[0], ))
+        # def get_next_representative(Yi:np.ndarray, Mi:list[int]):
+        #     if len(Mi) > 0:
+        #         # dist_matrix = np.ones((Yi.shape[0], )) * np.inf
+        #         dist_matrix = np.zeros((Yi.shape[0], ))
                 
-                for ma in Mi:
-                    temp_dist = np.linalg.norm(Yi - Yi[ma], axis=1)
+        #         for ma in Mi:
+        #             temp_dist = np.linalg.norm(Yi - Yi[ma], axis=1)
                     
-                    dist_matrix = np.minimum(dist_matrix, temp_dist)
-                    # dist_matrix = dist_matrix + temp_dist # picking duplicates
-                    # dist_matrix[Mi] = -np.inf
+        #             # dist_matrix = np.minimum(dist_matrix, temp_dist)
+        #             dist_matrix = dist_matrix + temp_dist # picking duplicates
+        #             dist_matrix[Mi] = -np.inf
                 
-                return np.argmax(dist_matrix)
-            else: # TODO: decide if we want to use the closest or the furthest from center
-                return np.argmax(np.linalg.norm(Yi, axis=1))
+        #         return np.argmax(dist_matrix)
+        #     else: # TODO: decide if we want to use the closest or the furthest from center
+        #         return np.argmax(np.linalg.norm(Yi, axis=1))
+
+        # M:list[list[int]] = [[] for _ in range(len(Yl))]
+        # for i, Yi in enumerate(Yl):
+        #     M[i] = []
+        #     for _ in range(2**d[i]):
+        #         M[i].append(get_next_representative(Yi, M[i]))
 
         M:list[list[int]] = [[] for _ in range(len(Yl))]
+
         for i, Yi in enumerate(Yl):
-            M[i] = []
-            for _ in range(d[i]+1):
-                M[i].append(get_next_representative(Yi, M[i]))
+            kernel = Yi @ Yi.T
+            eigenvalues, eigenvectors = np.linalg.eigh(kernel)
+            idx = np.argsort(eigenvalues)[::-1]
+            eigenvalues, eigenvectors = eigenvalues[idx], eigenvectors[:, idx]
+            eigenvalues = eigenvalues[:d[i]]
+            eigenvectors = eigenvectors[:, :d[i]]
+            restricted_embedding = eigenvectors @ np.diag(eigenvalues)
+            
+
+            max_idx = np.argmax(restricted_embedding, axis=0)
+            M[i].extend(max_idx)
+            min_idx = np.argmin(restricted_embedding, axis=0)
+            M[i].extend(min_idx)
+        
         return M
 
 
@@ -289,6 +307,7 @@ class Based:
             print(f"NM.shape: {NM.shape}")
             print(f"NM.max(): {np.max(NM)}")
         
+        utils.stamp.print(f"*\t {self.model_args['model']}\t global MVU")
         self.model_args['verbose'] = True
         YMs = super().fit(XMs).transform()
         if YMs is None:
@@ -396,6 +415,8 @@ class Based:
         Xl:list[np.ndarray] = self.NG(Xs, k1)
         if Xl is None: # might be useless, it runs good without it, computes the global embeddings unnecessarilly
             return super().fit_transform(Xs)
+        # Xl = Xl[:2] # For debugging
+        # Xs = np.vstack(Xl) # For debugging
 
         temp = self.model_args['#components']
         self.model_args['#components'] = None
