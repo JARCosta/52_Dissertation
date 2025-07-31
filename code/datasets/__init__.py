@@ -16,58 +16,48 @@ datasets = {
     "swiss": {
         "func": swiss.default,
         "#components": 2,
-        "eps": 1e-7,
     },
     "helix": {
         "func": artificial.helix,
         "#components": 2,
-        "eps": 1e-6,
     },
     "twinpeaks": {
         "func": artificial.twinpeaks,
         "#components": 2,
-        "eps": 1e-5,
     },
     "broken.swiss": {
         "func": swiss.broken,
         "#components": 2,
-        "eps": 1e-7,
     },
     "difficult": {
         "func": artificial.difficult,
         "#components": 5,
-        "eps": 1e-7,
     },
 
 
     "mnist": {
         "func": natural.mnist,
         "#components": 20,
-        "eps": 1e-7,
         "natural": True,
     },
     "coil20": {
         "func": natural.coil20,
         "#components": 5,
-        "eps": 1e-7,
         "natural": True,
     },
     "orl": {
         "func": natural.orl,
         "#components": 8,
-        "eps": 1e-7,
         "natural": True,
     },
     "hiva": {
         "func": natural.hiva,
         "#components": 15,
-        "eps": 1e-7,
         "natural": True,
     },
     "mit-cbcl": {
         "func": natural.mit_cbcl,
         "#components": 6, # TODO: confirm
-        "eps": 1e-7,
         "natural": True,
     },
 
@@ -75,22 +65,18 @@ datasets = {
     "parallel.swiss": {
         "func": swiss.parallel,
         "#components": 2,
-        "eps": 1e-7,
     },
     "broken.s_curve": {
         "func": s_curve.broken,
         "#components": 2,
-        "eps": 1e-7,
     },
     "four.moons": {
         "func": moons.four,
         "#components": 2, #3 # TODO: confirm
-        "eps": 1e-7,
     },
     "two.swiss": {
         "func": swiss.two,
         "#components": 2, #3 # TODO: confirm
-        "eps": 1e-7,
     },
 
 
@@ -98,29 +84,24 @@ datasets = {
     "parallel.swiss": {
         "func": swiss.parallel,
         "#components": 2,
-        "eps": 1e-7,
     },
 
     "s_curve": {
         "func": s_curve.default,
         "#components": 2,
-        "eps": 1e-7,
     },
     "broken.s_curve": {
         "func": s_curve.broken,
         "#components": 2,
-        "eps": 1e-7,
     },
 
     "moons": {
         "func": moons.default,
         "#components": 2,
-        "eps": 1e-7,
     },
     "four.moons": {
         "func": moons.four,
         "#components": 2,
-        "eps": 1e-7,
     },
 }
 

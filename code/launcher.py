@@ -1,22 +1,19 @@
-import os
-from utils import stamp
-stamp.print(f"*\t {os.path.basename(__file__)}")
-
-
 import argparse
-# stamp.print("*\t imported external libs")
+
+import utils
+utils.stamp = utils.Stamp()
 
 from main import main
 from datasets import get_dataset
-import utils
 
-stamp.print_set(f"*\t initialization\t {os.path.basename(__file__)}")
 
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Run the model launcher.")
     parser.add_argument("--paper", type=str, default=["comparative", "eng"], help="Paper to use for the model launcher.")
     parser.add_argument("--n_points", type=int, default=2000, help="Number of points to use for the model launcher.")
+    parser.add_argument("--k_small", type=int, default=5, help="Number of neighbors to start with.")
+    parser.add_argument("--k_large", type=int, default=15, help="Number of neighbors to end with.")
     parser.add_argument("--threaded", action='store_true', default=False, help="Use threading for the model launcher.")
     parser.add_argument("--plotation", action='store_true', default=False, help="Plot the results.")
     parser.add_argument("--verbose", action='store_true', default=False, help="Verbose output.")
@@ -88,27 +85,27 @@ if __name__ == "__main__":
 
     elif args.paper == "mvu":
         models = [
+            "mvu.based",
             # "mvu",
             # "mvu.eng",
             # "mvu.our",
-            "mvu.based",
         ]
         dataset_list = [
-            # # 'swiss',
-            # # 'helix',
-            # # 'twinpeaks', # Mostly NaNs
+            # 'swiss', # Fully connected
+            # 'helix', # Fully connected
+            # 'twinpeaks', # Fully connected
             # 'broken.swiss',
-            # 'difficult',
+            # 'difficult', # Fully connected (k >= 12)
 
             # 'parallel.swiss',
-            # 'broken.s_curve', # full NaNs
+            # 'broken.s_curve',
             # 'four.moons',
             # 'two.swiss',
             
             
             # 'mnist', # TODO: memory overload
-            'coil20',
-            'orl',
+            # 'coil20',
+            # 'orl',
             # 'nisis', # Does not exist
             # 'hiva', # TODO: problems on the import
 
@@ -190,6 +187,8 @@ if __name__ == "__main__":
             model_list=models,
             dataset_list=dataset_list,
             n_points=args.n_points,
+            k_small=args.k_small,
+            k_large=args.k_large,
             threaded=args.threaded,
             plotation=args.plotation if not args.threaded else False,
             verbose=args.verbose if not args.threaded else False,

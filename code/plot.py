@@ -1,8 +1,11 @@
 import numpy as np
 from matplotlib import pyplot as plt
+from matplotlib.axes import Axes
 import random
 
-def _plot_data(ax:plt.Axes, data:np.ndarray, NM:np.ndarray=np.zeros((1,1)), c="blue"):
+import utils
+
+def _plot_data(ax:Axes, data:np.ndarray, NM:np.ndarray=np.zeros((1,1)), c="blue", c_scale=None):
 
     data = data.copy()
 
@@ -16,7 +19,11 @@ def _plot_data(ax:plt.Axes, data:np.ndarray, NM:np.ndarray=np.zeros((1,1)), c="b
         data = np.hstack((data, np.ones((data.shape[0], 1)) * random.normalvariate(0, 1e-10)))
     z = data.T[2]
 
-    ax.scatter(x, y, z, c=c, label='Original Data', s=20, alpha=0.4)
+    cmap = "rainbow" if type(c) != str else None
+    if c_scale is not None:
+        scatter = ax.scatter(x, y, z, c=c, cmap=cmap, label='Original Data', s=20, alpha=0.4, vmin=c_scale[0], vmax=c_scale[1])
+    else:
+        scatter = ax.scatter(x, y, z, c=c, cmap=cmap, label='Original Data', s=20, alpha=0.4)
     for a_idx, b_idx in connections:
         a, b = data[a_idx], data[b_idx]
         x_line = [a[0], b[0]]
@@ -27,32 +34,45 @@ def _plot_data(ax:plt.Axes, data:np.ndarray, NM:np.ndarray=np.zeros((1,1)), c="b
     ax.set_ylabel(f"D2")
     ax.set_zlabel(f"D3")
     # axs.tick_params(color="white", labelcolor="white")
+    plt.colorbar(scatter, ax=ax)
 
 
 
-def plot_scales(data:np.ndarray, NM:np.ndarray=np.zeros((1,1)), c="blue", block=True, title="", legend=""):
+def plot_scales(data:np.ndarray, NM:np.ndarray=np.zeros((1,1)), c="blue", c_scale=None, block=True, title="", legend=""):
     data = data.real
     fig, axs = plt.subplots(1, 2, figsize=(12, 5), subplot_kw={'projection': '3d'})
     fig.text(.1, .1, str(legend).replace(", ", "\n"))
     fig.suptitle(title)
 
-    _plot_data(axs[0], data, NM, c)
+    try:
+        _plot_data(axs[0], data, NM, c, c_scale)
+    except:
+        utils.warning("Error plotting data")
+        _plot_data(axs[0], data, NM)
+
     axs[0].set_aspect("equal", adjustable="box")
     
-    _plot_data(axs[1], data, NM, c)
-    
+    _plot_data(axs[1], data, NM, c, c_scale)
+
     plt.show(block=block)
 
-def plot_two(data:np.ndarray, data2:np.ndarray, NM:np.ndarray=np.zeros((1,1)), NM2:np.ndarray=np.zeros((1,1)), scale=True, scale2=True, c1="blue", c2="blue", block=True, title="", legend=""):
+def plot_two(
+    data:np.ndarray, data2:np.ndarray,
+    NM:np.ndarray=np.zeros((1,1)), NM2:np.ndarray=np.zeros((1,1)),
+    c1="blue", c2="blue",
+    c1_scale=None, c2_scale=None,
+    scale=True, scale2=True,
+    block=True, title="", legend=""):
+    
     data, data2 = data.real, data2.real
     fig, axs = plt.subplots(1, 2, figsize=(12, 5), subplot_kw={'projection': '3d'})
     fig.text(.1, .1, str(legend).replace(", ", "\n"))
     fig.suptitle(title)
     
-    _plot_data(axs[0], data, NM, c1)
+    _plot_data(axs[0], data, NM, c1, c1_scale)
     axs[0].set_aspect("equal", adjustable="box") if scale else None
     
-    _plot_data(axs[1], data2, NM2, c2)
+    _plot_data(axs[1], data2, NM2, c2, c2_scale)
     axs[1].set_aspect("equal", adjustable="box") if scale2 else None
     
     plt.show(block=block)
@@ -80,13 +100,15 @@ def plot_array(data:list[np.ndarray], NM:list[np.ndarray], c="blue", block=True,
     fig.suptitle(title)
     
     ax = fig.add_subplot(111, projection='3d')
+    scatter_objects = []
     for i in range(len(data)):
         data[i] = data[i].real
         connections = [[a_idx, b_idx] for a_idx in range(NM[i].shape[0]) for b_idx in range(NM[i].shape[1]) if NM[i][a_idx][b_idx] != 0]
         x = data[i].T[0]
         y = data[i].T[1] if data[i].shape[1] > 1 else random.normalvariate(0, 0.001)
         z = data[i].T[2] if data[i].shape[1] > 2 else random.normalvariate(0, 0.001)
-        ax.scatter(x, y, z, c=c, label='Original Data', s=20, alpha=0.4)
+        scatter = ax.scatter(x, y, z, c=c, label='Original Data', s=20, alpha=0.4)
+        scatter_objects.append(scatter)
         for a_idx, b_idx in connections:
             a, b = data[i][a_idx], data[i][b_idx]
             x = [a[0], b[0]]

@@ -128,7 +128,78 @@ def hiva(version:str='prior'):
     return X, labels, None
 
 def mit_cbcl():
-    raise NotImplementedError("MIT-CBCL dataset is not implemented yet.")
+    """
+    Load MIT-CBCL face recognition database.
+    
+    Returns:
+        X: numpy array of flattened images
+        labels: numpy array of subject labels (0-9)
+        None: no additional metadata
+    """
+    X = []
+    labels = []
+    
+    # Target size for all images (64x64 is common for face datasets)
+    target_size = (64, 64)
+    
+    # Load training images (JPG format)
+    training_dir = "code/datasets/MIT-CBCL-facerec-database/training-originals/"
+    if os.path.exists(training_dir):
+        for filename in os.listdir(training_dir):
+            if filename.endswith('.jpg'):
+                # Extract subject ID from filename (e.g., "0001_00000001.jpg" -> 1)
+                subject_id = int(filename.split('_')[0])
+                
+                # Load and process image
+                image_path = os.path.join(training_dir, filename)
+                image = Image.open(image_path)
+                
+                # Convert to grayscale if needed and resize
+                if image.mode != 'L':
+                    image = image.convert('L')
+                image = image.resize(target_size, Image.Resampling.LANCZOS)
+                
+                x = np.array(image)
+                
+                # Flatten the image
+                X.append(x.reshape(-1))
+                labels.append(subject_id)
+    
+    # Load test images (PGM format)
+    test_dir = "code/datasets/MIT-CBCL-facerec-database/test/"
+    if os.path.exists(test_dir):
+        for filename in os.listdir(test_dir):
+            if filename.endswith('.pgm'):
+                # Extract subject ID from filename (e.g., "0009_06042.pgm" -> 9)
+                subject_id = int(filename.split('_')[0])
+                
+                # Load and process image
+                image_path = os.path.join(test_dir, filename)
+                image = Image.open(image_path)
+                
+                # Convert to grayscale if needed and resize
+                if image.mode != 'L':
+                    image = image.convert('L')
+                image = image.resize(target_size, Image.Resampling.LANCZOS)
+                
+                x = np.array(image)
+                
+                # Flatten the image
+                X.append(x.reshape(-1))
+                labels.append(subject_id)
+    
+    if not X:
+        raise ValueError("No images found in MIT-CBCL dataset directories")
+    
+    # Convert to numpy arrays
+    X = np.array(X, dtype=np.float64)
+    labels = np.array(labels).reshape(-1, 1)
+    
+    print(f"MIT-CBCL dataset loaded: {X.shape[0]} images, {X.shape[1]} features")
+    print(f"Number of subjects: {len(np.unique(labels))}")
+    print(f"Image size: {target_size[0]}x{target_size[1]} = {X.shape[1]} features")
+    
+    return X, labels, None
 
 def teapots():
     from scipy.io import loadmat

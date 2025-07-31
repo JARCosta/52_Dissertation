@@ -1,120 +1,110 @@
-dataname,model,n_neighs,points,1-NN,T,C,status,restricted,artificial_connected
-swiss,mvu.based,7,1000,0.098,0.998,0.998,Inaccurate/Unbounded,None,False
-swiss,pca,5,1000,0.309,0.877,0.995,None,None,None
-swiss,isomap,8,1000,0.102,0.997,0.998,None,None,None
-swiss,lle,7,1000,0.133,0.972,0.994,None,None,None
-swiss,le,13,1000,0.204,0.921,0.986,None,None,None
-swiss,hlle,7,1000,0.133,0.972,0.994,None,None,None
-swiss,ltsa.skl,8,1000,0.081,0.998,0.997,None,None,None
-swiss,mvu,7,1000,0.098,0.998,0.998,Inaccurate/Unbounded,None,None
-helix,pca,5,1000,0.028,0.997,0.999,None,None,None
-helix,isomap,5,1000,0.008,1.0,1.0,None,None,None
-helix,lle,8,1000,0.012,1.0,1.0,None,None,None
-helix,le,13,1000,0.015,0.999,0.993,None,None,None
-helix,hlle,8,1000,0.012,1.0,1.0,None,None,None
-helix,ltsa.skl,6,1000,0.013,1.0,1.0,None,None,None
-helix,mvu,5,1000,0.012,1.0,1.0,Unbounded,True,None
-helix,mvu.based,6,1000,0.012,1.0,1.0,Unbounded,None,False
-twinpeaks,pca,5,1000,0.003,0.976,0.99,None,None,None
-twinpeaks,isomap,10,1000,0.008,0.99,0.994,None,None,None
-twinpeaks,lle,9,1000,0.018,0.973,0.98,None,None,None
-twinpeaks,le,5,1000,0.012,0.991,0.987,None,None,None
-twinpeaks,hlle,9,1000,0.018,0.973,0.98,None,None,None
-twinpeaks,ltsa.skl,14,1000,0.005,0.973,0.99,None,None,None
-twinpeaks,mvu,13,1000,0.003,0.971,0.988,Failed,None,None
-twinpeaks,mvu.based,9,1000,0.003,0.975,0.989,Inaccurate/Unbounded,None,False
-broken.swiss,pca,5,2000,0.299,0.962,0.998,None,None,None
-broken.swiss,isomap,9,2000,0.16,0.928,0.991,None,None,True
-broken.swiss,lle,5,2000,0.391,0.755,0.971,None,None,True
-broken.swiss,le,5,2000,0.445,0.72,0.871,None,None,True
-broken.swiss,hlle,5,2000,0.389,0.745,0.97,None,None,True
-broken.swiss,ltsa.skl,6,2000,0.431,0.661,0.873,None,None,None
-broken.swiss,mvu,13,2000,0.114,0.981,0.991,Inaccurate/Unbounded,True,True
-broken.swiss,isomap.eng,5,2000,0.228,0.967,0.999,None,None,True
-broken.swiss,lle.eng,7,2000,0.2,0.875,0.992,None,None,True
-broken.swiss,le.eng,14,2000,0.216,0.98,0.996,None,None,True
-broken.swiss,hlle.eng,7,2000,0.2,0.875,0.992,None,None,True
-broken.swiss,none,1,2000,0.035,None,None,None,None,None
-broken.swiss,mvu.based,6,2000,0.088,0.991,0.994,Solved,True,None
-difficult,pca,5,1024,0.386,0.996,0.998,None,None,None
-difficult,isomap,12,1024,0.348,0.984,0.988,None,None,True
-difficult,lle,14,1024,0.418,0.928,0.966,None,None,True
-difficult,le,6,1024,0.349,0.9,0.891,None,None,True
-difficult,hlle,14,1024,0.418,0.928,0.966,None,None,True
-difficult,ltsa.skl,14,1024,0.457,0.948,0.977,None,None,None
-difficult,mvu,12,1024,0.385,0.979,0.975,Solved,True,True
-difficult,mvu.based,12,1024,0.38477,0.979,0.975,Solved,True,False
-coil20,pca,5,1440,0.051,0.993,0.997,None,None,None
-coil20,isomap,8,1440,0.083,0.974,0.995,None,None,True
-coil20,lle,7,1440,0.088,0.934,0.978,None,None,True
-coil20,le,15,1440,0.155,0.963,0.99,None,None,True
-coil20,hlle,6,1440,0.104,0.915,0.981,None,None,True
-coil20,ltsa.skl,7,1440,0.069,0.911,0.966,None,None,None
-coil20,mvu,15,1440,0.088,0.968,0.993,Unbounded,True,True
-coil20,none,1,1440,0.001,None,None,None,None,None
-coil20,isomap.eng,8,1440,0.084,0.974,0.995,None,None,True
-coil20,lle.eng,15,1440,0.178,0.944,0.974,None,None,True
-coil20,le.eng,5,1440,0.128,0.969,0.996,None,None,True
-coil20,hlle.eng,15,1440,0.217,0.941,0.972,None,None,True
-coil20,mvu.based,6,1440,0.20278,0.839,0.941,Solved,None,None
-orl,pca,5,400,0.052,0.99,0.989,None,None,None
-orl,isomap,12,400,0.14,0.964,0.982,None,None,True
-orl,lle,13,400,0.102,0.95,0.946,None,None,True
-orl,le,5,400,0.133,0.982,0.992,None,None,True
-orl,hlle,13,400,0.102,0.95,0.946,None,None,True
-orl,mvu,15,400,0.207,0.934,0.965,Unbounded,True,True
-orl,mvu.based,15,400,0.21,0.934,0.965,Solved,True,False
-parallel.swiss,mvu,8,2000,0.224,0.948,0.992,Inaccurate/Unbounded,True,True
-parallel.swiss,isomap,8,2000,0.104,0.993,0.997,None,None,True
-parallel.swiss,isomap.eng,6,2000,0.09,0.999,0.999,None,None,True
-parallel.swiss,lle,6,2000,0.417,0.889,0.985,None,None,True
-parallel.swiss,lle.eng,7,2000,0.172,0.962,0.998,None,None,True
-parallel.swiss,le,8,2000,0.457,0.826,0.872,None,None,True
-parallel.swiss,le.eng,10,2000,0.113,0.994,0.998,None,None,True
-parallel.swiss,hlle,5,2000,0.409,0.866,0.983,None,None,True
-parallel.swiss,hlle.eng,7,2000,0.172,0.962,0.998,None,None,True
-parallel.swiss,none,1,2000,0.071,None,None,None,None,None
-parallel.swiss,mvu.based,8,2000,0.2145,0.954,0.992,Solved,True,None
-broken.s_curve,mvu,13,1000,0.196,0.952,0.985,Failed,True,True
-broken.s_curve,isomap,9,1000,0.197,0.955,0.986,None,None,True
-broken.s_curve,isomap.eng,11,1000,0.081,0.99,0.993,None,None,True
-broken.s_curve,lle,5,1000,0.486,0.776,0.815,None,None,True
-broken.s_curve,lle.eng,14,1000,0.071,0.973,0.987,None,None,True
-broken.s_curve,le,5,1000,0.296,0.734,0.829,None,None,True
-broken.s_curve,le.eng,15,1000,0.251,0.956,0.984,None,None,True
-broken.s_curve,hlle,15,1000,0.48,0.908,0.934,None,None,True
-broken.s_curve,hlle.eng,14,1000,0.071,0.973,0.987,None,None,True
-broken.s_curve,none,1,1000,0.065,None,None,None,None,None
-broken.s_curve,mvu.based,5,1000,0.084,0.99,0.996,Solved,None,None
-two.swiss,mvu,7,2000,0.2,0.946,0.989,Inaccurate/Unbounded,True,True
-two.swiss,none,1,2000,0.071,None,None,None,None,None
-two.swiss,isomap,8,2000,0.197,0.957,0.994,None,None,True
-two.swiss,isomap.eng,9,2000,0.18,0.964,0.992,None,None,True
-two.swiss,lle,5,2000,0.436,0.809,0.869,None,None,True
-two.swiss,lle.eng,7,2000,0.204,0.965,0.992,None,None,True
-two.swiss,le.eng,15,2000,0.189,0.947,0.991,None,None,True
-two.swiss,hlle,5,2000,0.45,0.809,0.869,None,None,True
-two.swiss,hlle.eng,7,2000,0.204,0.965,0.992,None,None,True
-two.swiss,mvu.based,7,2000,0.2405,0.952,0.995,Solved,True,None
-four.moons,isomap,5,2000,0.001,0.984,0.993,None,None,True
-four.moons,isomap.eng,11,2000,0.018,0.985,0.997,None,None,True
-four.moons,lle,7,2000,0.0,0.666,0.815,None,None,True
-four.moons,lle.eng,5,2000,0.0,0.977,0.992,None,None,True
-four.moons,none,1,2000,0.0,None,None,None,None,None
-four.moons,le.eng,6,2000,0.0,0.831,0.925,None,None,None
-four.moons,hlle,9,2000,0.0,0.675,0.817,None,None,None
-four.moons,hlle.eng,5,2000,0.0,0.977,0.992,None,None,None
-four.moons,lle.skl,6,2000,0.0,0.902,0.957,None,None,None
-four.moons,le.skl,5,2000,0.0,0.754,0.882,None,None,None
-four.moons,hlle.skl,13,2000,0.001,0.654,0.817,None,None,None
-four.moons,mvu.based,10,2000,0.0,0.986,0.992,Solved,None,None
-mit-cbcl,isomap,13,2059,0.021,0.987,0.995,None,None,True
-mit-cbcl,isomap.eng,5,2059,0.019,0.991,0.998,None,None,None
-mit-cbcl,lle,13,2059,0.019,0.98,0.99,None,None,None
-mit-cbcl,lle.eng,13,2059,0.018,0.981,0.989,None,None,None
-mit-cbcl,le,13,2059,0.028,0.988,0.994,None,None,None
-mit-cbcl,le.eng,8,2059,0.017,0.99,0.997,None,None,None
-mit-cbcl,hlle,13,2059,0.016,0.98,0.988,None,None,None
-mit-cbcl,hlle.eng,7,2059,0.018,0.987,0.991,None,None,None
-mit-cbcl,le.skl,6,2059,0.017,0.994,0.949,None,None,None
-mit-cbcl,mvu.based,14,2059,0.12725,0.848,0.894,Unbounded,True,True
+dataname;model;n_neighs;points;1-NN;T;C;status;restricted;artificial_connected
+swiss;pca;"[5, 13, 5]";1000;0.309;0.879;0.995;None;None;None
+swiss;isomap;"[8, 6, 5]";1000;0.102;0.997;0.998;None;None;None
+swiss;lle;"[7, 7, 10]";1000;0.133;0.972;0.996;None;None;None
+swiss;le;"[13, 5, 5]";1000;0.204;0.945;0.991;None;None;None
+swiss;hlle;"[7, 7, 10]";1000;0.133;0.972;0.996;None;None;None
+swiss;ltsa.skl;"[8, 8, 8]";1000;0.081;0.998;0.997;None;None;None
+helix;pca;"[5, 5, 5]";1000;0.028;0.997;0.999;None;None;None
+helix;isomap;"[5, 5, 5]";1000;0.008;1.0;1.0;None;None;None
+helix;lle;"[8, 6, 6]";1000;0.012;1.0;1.0;None;None;None
+helix;le;"[13, 11, 15]";1000;0.015;0.999;0.996;None;None;None
+helix;hlle;"[8, 6, 6]";1000;0.012;1.0;1.0;None;None;None
+helix;ltsa.skl;"[6, 5, 5]";1000;0.013;1.0;1.0;None;None;None
+twinpeaks;pca;"[5, 5, 5]";1000;0.003;0.976;0.99;None;None;None
+twinpeaks;isomap;"[10, 6, 6]";1000;0.008;0.992;0.996;None;None;None
+twinpeaks;lle;"[9, 13, 8]";1000;0.018;0.986;0.99;None;None;None
+twinpeaks;le;"[5, 8, 15]";1000;0.012;0.994;0.991;None;None;None
+twinpeaks;hlle;"[9, 13, 8]";1000;0.018;0.986;0.99;None;None;None
+twinpeaks;ltsa.skl;"[14, 11, 11]";1000;0.005;0.981;0.991;None;None;None
+broken.swiss;pca;"[5, 5, 5]";2000;0.299;0.962;0.998;None;None;None
+broken.swiss;isomap;"[9, 6, 5]";2000;0.16;0.936;0.993;None;None;None
+broken.swiss;lle;"[5, 9, 9]";2000;0.391;0.812;0.983;None;None;None
+broken.swiss;le;"[5, 6, 6]";2000;0.445;0.726;0.872;None;None;None
+broken.swiss;hlle;"[5, 7, 7]";2000;0.389;0.806;0.984;None;None;None
+broken.swiss;ltsa.skl;"[6, 6, 6]";2000;0.431;0.661;0.873;None;None;None
+broken.swiss;isomap.eng;"[5, 5, 5]";2000;0.228;0.967;0.999;None;None;None
+broken.swiss;lle.eng;"[7, 9, 8]";2000;0.2;0.966;0.998;None;None;None
+broken.swiss;le.eng;"[14, 5, 5]";2000;0.216;0.981;0.998;None;None;None
+broken.swiss;hlle.eng;"[7, 9, 8]";2000;0.2;0.966;0.998;None;None;None
+broken.swiss;none;"[1, 1, 1]";2000;0.035;None;None;None;None;None
+broken.swiss;mvu.based;"[9, 7, 5]";2000;0.035;1.0;1.0;None;None;None
+broken.swiss;mvu;"[8, 8, 7]";2000;0.036;1.0;1.0;None;None;None
+difficult;pca;"[5, 5, 5]";1024;0.386;0.996;0.998;None;None;None
+difficult;isomap;"[12, 15, 15]";1024;0.348;0.987;0.993;None;None;None
+difficult;lle;"[14, 15, 12]";1024;0.418;0.968;0.982;None;None;None
+difficult;le;"[6, 5, 15]";1024;0.349;0.923;0.907;None;None;None
+difficult;hlle;"[14, 15, 12]";1024;0.418;0.968;0.982;None;None;None
+difficult;ltsa.skl;"[14, 15, 15]";1024;0.457;0.965;0.989;None;None;None
+difficult;mvu.based;"[14, 14, 14]";1024;0.30859;0.999;1.0;None;None;None
+difficult;mvu;"[14, 14, 14]";1024;0.30859;0.999;1.0;None;None;None
+coil20;pca;"[5, 5, 5]";1440;0.051;0.993;0.997;None;None;None
+coil20;isomap;"[8, 13, 5]";1440;0.083;0.979;0.995;None;None;None
+coil20;lle;"[7, 15, 5]";1440;0.088;0.938;0.979;None;None;None
+coil20;le;"[15, 15, 15]";1440;0.155;0.963;0.99;None;None;None
+coil20;hlle;"[6, 13, 6]";1440;0.104;0.944;0.981;None;None;None
+coil20;ltsa.skl;"[7, 15, 15]";1440;0.069;0.936;0.978;None;None;None
+coil20;none;"[1, 1, 1]";1440;0.001;None;None;None;None;None
+coil20;isomap.eng;"[8, 12, 5]";1440;0.084;0.979;0.995;None;None;None
+coil20;lle.eng;"[15, 15, 15]";1440;0.178;0.944;0.974;None;None;None
+coil20;le.eng;"[5, 14, 5]";1440;0.128;0.977;0.996;None;None;None
+coil20;hlle.eng;"[15, 15, 15]";1440;0.217;0.941;0.972;None;None;None
+coil20;mvu;"[15, 15, 15]";1440;0.05278;0.979;0.997;None;None;None
+coil20;mvu.based;"[15, 15, 8]";1440;0.03958;0.965;0.97;None;None;None
+orl;pca;"[5, 5, 5]";400;0.052;0.99;0.989;None;None;None
+orl;isomap;"[12, 5, 5]";400;0.14;0.981;0.996;None;None;None
+orl;lle;"[13, 6, 6]";400;0.102;0.958;0.972;None;None;None
+orl;le;"[5, 5, 5]";400;0.133;0.982;0.992;None;None;None
+orl;hlle;"[13, 6, 6]";400;0.102;0.958;0.972;None;None;None
+orl;mvu;"[15, 14, 13]";400;0.0625;0.981;0.997;None;None;None
+orl;mvu.based;"[14, 11, 11]";400;0.045;0.987;0.998;None;None;None
+parallel.swiss;isomap;"[8, 5, 5]";2000;0.104;0.996;0.998;None;None;None
+parallel.swiss;isomap.eng;"[6, 6, 5]";2000;0.09;0.999;0.999;None;None;None
+parallel.swiss;lle;"[6, 7, 7]";2000;0.417;0.898;0.989;None;None;None
+parallel.swiss;lle.eng;"[7, 9, 7]";2000;0.172;0.965;0.998;None;None;None
+parallel.swiss;le;"[8, 9, 15]";2000;0.457;0.843;0.885;None;None;None
+parallel.swiss;le.eng;"[10, 8, 5]";2000;0.113;0.995;0.998;None;None;None
+parallel.swiss;hlle;"[5, 5, 5]";2000;0.409;0.866;0.983;None;None;None
+parallel.swiss;hlle.eng;"[7, 9, 7]";2000;0.172;0.965;0.998;None;None;None
+parallel.swiss;none;"[1, 1, 1]";2000;0.071;None;None;None;None;None
+parallel.swiss;mvu;"[7, 7, 7]";2000;0.072;1.0;1.0;None;None;None
+parallel.swiss;mvu.based;"[9, 6, 6]";2000;0.071;1.0;1.0;None;None;None
+broken.s_curve;isomap;"[9, 5, 5]";1000;0.197;0.959;0.989;None;None;None
+broken.s_curve;isomap.eng;"[11, 7, 7]";1000;0.081;0.993;0.996;None;None;None
+broken.s_curve;lle;"[5, 15, 15]";1000;0.486;0.882;0.912;None;None;None
+broken.s_curve;lle.eng;"[14, 9, 9]";1000;0.071;0.991;0.993;None;None;None
+broken.s_curve;le;"[5, 15, 15]";1000;0.296;0.889;0.9;None;None;None
+broken.s_curve;le.eng;"[15, 15, 11]";1000;0.251;0.956;0.988;None;None;None
+broken.s_curve;hlle;"[15, 15, 15]";1000;0.48;0.908;0.934;None;None;None
+broken.s_curve;hlle.eng;"[14, 9, 9]";1000;0.071;0.991;0.993;None;None;None
+broken.s_curve;none;"[1, 1, 1]";1000;0.065;None;None;None;None;None
+two.swiss;none;"[1, 1, 1]";2000;0.071;None;None;None;None;None
+two.swiss;isomap;"[8, 5, 5]";2000;0.197;0.964;0.994;None;None;None
+two.swiss;isomap.eng;"[9, 9, 5]";2000;0.18;0.964;0.994;None;None;None
+two.swiss;lle;"[5, 12, 8]";2000;0.436;0.863;0.979;None;None;None
+two.swiss;lle.eng;"[7, 7, 7]";2000;0.204;0.965;0.992;None;None;None
+two.swiss;le.eng;"[15, 5, 5]";2000;0.189;0.968;0.995;None;None;None
+two.swiss;hlle;"[5, 12, 12]";2000;0.45;0.862;0.962;None;None;None
+two.swiss;hlle.eng;"[7, 7, 7]";2000;0.204;0.965;0.992;None;None;None
+four.moons;isomap;"[5, 13, 15]";2000;0.001;0.986;0.994;None;None;None
+four.moons;isomap.eng;"[11, 9, 11]";2000;0.018;0.985;0.997;None;None;None
+four.moons;lle;"[7, 15, 10]";2000;0.0;0.78;0.817;None;None;None
+four.moons;lle.eng;"[5, 11, 10]";2000;0.0;0.992;0.995;None;None;None
+four.moons;none;"[1, 1, 1]";2000;0.0;None;None;None;None;None
+four.moons;le.eng;"[6, 6, 14]";2000;0.0;0.831;0.927;None;None;None
+four.moons;hlle;"[9, 7, 15]";2000;0.0;0.765;0.818;None;None;None
+four.moons;hlle.eng;"[5, 11, 10]";2000;0.0;0.992;0.995;None;None;None
+four.moons;lle.skl;"[6, 5, 5]";2000;0.0;0.94;0.968;None;None;None
+four.moons;le.skl;"[5, 14, 14]";2000;0.0;0.848;0.91;None;None;None
+four.moons;hlle.skl;"[13, 8, 15]";2000;0.001;0.686;0.818;None;None;None
+mit-cbcl;isomap;"[13, 9, 5]";2059;0.021;0.988;0.996;None;None;None
+mit-cbcl;isomap.eng;"[5, 5, 5]";2059;0.019;0.991;0.998;None;None;None
+mit-cbcl;lle;"[13, 5, 12]";2059;0.019;0.989;0.991;None;None;None
+mit-cbcl;lle.eng;"[13, 5, 7]";2059;0.018;0.987;0.991;None;None;None
+mit-cbcl;le;"[13, 14, 13]";2059;0.028;0.989;0.994;None;None;None
+mit-cbcl;le.eng;"[8, 5, 5]";2059;0.017;0.994;0.998;None;None;None
+mit-cbcl;hlle;"[13, 5, 6]";2059;0.016;0.988;0.99;None;None;None
+mit-cbcl;hlle.eng;"[7, 5, 5]";2059;0.018;0.989;0.991;None;None;None
+mit-cbcl;le.skl;"[6, 5, 8]";2059;0.017;0.995;0.996;None;None;None
+mit-cbcl;mvu.based;"[9, 14, 11]";2059;0.09034;0.883;0.922;None;None;None
+mit-cbcl;mvu;"[14, 14, 13]";2059;0.02331;0.985;0.997;None;None;None

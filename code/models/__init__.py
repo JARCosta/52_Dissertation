@@ -13,7 +13,7 @@ from .hlle import *
 
 from .extensions import *
 
-def run(X, model_args):
+def run(X, model_args, labels:np.ndarray=None):
     import sklearn.manifold
     from utils import stamp
 
@@ -101,6 +101,7 @@ def run(X, model_args):
     elif model_args['model'].lower() == "mvu.based":
 
         model = models.mvu.Based(model_args, k1=model_args['#neighs'], k2=model_args['#neighs'])
+        model.model_args['labels'] = labels
         Y = model.fit_transform(X)
 
 

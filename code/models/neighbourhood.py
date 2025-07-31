@@ -6,7 +6,7 @@ import warnings
 
 
 from models.spectral import Spectral
-from plot import plot
+
 from utils import stamp
 import utils
 
