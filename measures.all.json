@@ -2098,9 +2098,9 @@
         "mvu.based": {
             "5": {
                 "#points": 2000,
-                "#dimensions": 2,
-                "1-NN": 0.043,
-                "T": 0.983,
+                "#dimensions": 3,
+                "1-NN": 0.0355,
+                "T": 1.0,
                 "C": 1.0,
                 "status": "Solved",
                 "restricted": null,
@@ -2108,17 +2108,17 @@
             },
             "6": {
                 "#points": 2000,
-                "#dimensions": 2,
-                "1-NN": 0.0495,
-                "T": 0.986,
-                "C": 0.999,
+                "#dimensions": 3,
+                "1-NN": 0.036,
+                "T": 1.0,
+                "C": 1.0,
                 "status": "Solved",
                 "restricted": null,
                 "artificial_connected": null
             },
             "7": {
                 "#points": 2000,
-                "#dimensions": 2,
+                "#dimensions": 3,
                 "1-NN": 0.036,
                 "T": 1.0,
                 "C": 1.0,
@@ -2128,7 +2128,7 @@
             },
             "8": {
                 "#points": 2000,
-                "#dimensions": 2,
+                "#dimensions": 3,
                 "1-NN": 0.036,
                 "T": 1.0,
                 "C": 1.0,
@@ -2178,7 +2178,7 @@
             },
             "13": {
                 "#points": 2000,
-                "#dimensions": 3,
+                "#dimensions": 4,
                 "1-NN": 0.035,
                 "T": 1.0,
                 "C": 1.0,
@@ -2188,21 +2188,21 @@
             },
             "14": {
                 "#points": 2000,
-                "#dimensions": 3,
+                "#dimensions": 4,
                 "1-NN": 0.035,
                 "T": 1.0,
                 "C": 1.0,
-                "status": "Unbounded",
+                "status": "Solved",
                 "restricted": null,
                 "artificial_connected": null
             },
             "15": {
                 "#points": 2000,
-                "#dimensions": 3,
+                "#dimensions": 4,
                 "1-NN": 0.035,
                 "T": 1.0,
                 "C": 1.0,
-                "status": "Unbounded",
+                "status": "Solved",
                 "restricted": null,
                 "artificial_connected": null
             }
@@ -2777,7 +2777,7 @@
             "5": {
                 "#points": 1024,
                 "#dimensions": 5,
-                "1-NN": 0.52734,
+                "1-NN": 0.37988,
                 "T": 0.776,
                 "C": 0.778,
                 "status": "Solved",
@@ -2787,7 +2787,7 @@
             "6": {
                 "#points": 1024,
                 "#dimensions": 5,
-                "1-NN": 0.49805,
+                "1-NN": 0.35352,
                 "T": 0.79,
                 "C": 0.774,
                 "status": "Solved",
@@ -2797,7 +2797,7 @@
             "7": {
                 "#points": 1024,
                 "#dimensions": 6,
-                "1-NN": 0.49805,
+                "1-NN": 0.33984,
                 "T": 0.794,
                 "C": 0.773,
                 "status": "Solved",
@@ -2807,7 +2807,7 @@
             "8": {
                 "#points": 1024,
                 "#dimensions": 6,
-                "1-NN": 0.49805,
+                "1-NN": 0.32422,
                 "T": 0.794,
                 "C": 0.768,
                 "status": "Solved",
@@ -2817,7 +2817,7 @@
             "9": {
                 "#points": 1024,
                 "#dimensions": 6,
-                "1-NN": 0.49316,
+                "1-NN": 0.32715,
                 "T": 0.798,
                 "C": 0.764,
                 "status": "Solved",
@@ -2827,7 +2827,7 @@
             "10": {
                 "#points": 1024,
                 "#dimensions": 6,
-                "1-NN": 0.4873,
+                "1-NN": 0.3125,
                 "T": 0.793,
                 "C": 0.763,
                 "status": "Solved",
@@ -2837,7 +2837,7 @@
             "11": {
                 "#points": 1024,
                 "#dimensions": 6,
-                "1-NN": 0.48926,
+                "1-NN": 0.30469,
                 "T": 0.79,
                 "C": 0.76,
                 "status": "Solved",
@@ -3856,40 +3856,40 @@
         "mvu.based": {
             "5": {
                 "#points": 1440,
-                "#dimensions": 4,
-                "1-NN": 0.09514,
-                "T": 0.917,
-                "C": 0.969,
+                "#dimensions": 6,
+                "1-NN": 0.08056,
+                "T": 0.921,
+                "C": 0.961,
                 "status": "Solved",
                 "restricted": null,
                 "artificial_connected": null
             },
             "6": {
                 "#points": 1440,
-                "#dimensions": 4,
-                "1-NN": 0.09583,
+                "#dimensions": 6,
+                "1-NN": 0.10208,
                 "T": 0.924,
-                "C": 0.962,
+                "C": 0.959,
                 "status": "Solved",
                 "restricted": null,
                 "artificial_connected": null
             },
             "7": {
                 "#points": 1440,
-                "#dimensions": 5,
-                "1-NN": 0.06181,
-                "T": 0.927,
-                "C": 0.938,
+                "#dimensions": 7,
+                "1-NN": 0.05972,
+                "T": 0.929,
+                "C": 0.958,
                 "status": "Solved",
                 "restricted": null,
                 "artificial_connected": null
             },
             "8": {
                 "#points": 1440,
-                "#dimensions": 5,
+                "#dimensions": 6,
                 "1-NN": 0.07917,
-                "T": 0.939,
-                "C": 0.97,
+                "T": 0.94,
+                "C": 0.971,
                 "status": "Solved",
                 "restricted": null,
                 "artificial_connected": null
@@ -3907,8 +3907,8 @@
             "10": {
                 "#points": 1440,
                 "#dimensions": 8,
-                "1-NN": 0.09722,
-                "T": 0.914,
+                "1-NN": 0.09861,
+                "T": 0.918,
                 "C": 0.969,
                 "status": "Solved",
                 "restricted": null,
@@ -3917,9 +3917,9 @@
             "11": {
                 "#points": 1440,
                 "#dimensions": 10,
-                "1-NN": 0.11597,
-                "T": 0.904,
-                "C": 0.962,
+                "1-NN": 0.11319,
+                "T": 0.907,
+                "C": 0.963,
                 "status": "Solved",
                 "restricted": null,
                 "artificial_connected": null
@@ -3927,8 +3927,8 @@
             "12": {
                 "#points": 1440,
                 "#dimensions": 10,
-                "1-NN": 0.12361,
-                "T": 0.9,
+                "1-NN": 0.12222,
+                "T": 0.902,
                 "C": 0.958,
                 "status": "Solved",
                 "restricted": null,
@@ -3938,7 +3938,7 @@
                 "#points": 1440,
                 "#dimensions": 11,
                 "1-NN": 0.13403,
-                "T": 0.899,
+                "T": 0.902,
                 "C": 0.955,
                 "status": "Solved",
                 "restricted": null,
@@ -3949,7 +3949,7 @@
                 "#dimensions": 10,
                 "1-NN": 0.09375,
                 "T": 0.95,
-                "C": 0.954,
+                "C": 0.953,
                 "status": "Solved",
                 "restricted": null,
                 "artificial_connected": null
@@ -3958,8 +3958,8 @@
                 "#points": 1440,
                 "#dimensions": 10,
                 "1-NN": 0.03958,
-                "T": 0.965,
-                "C": 0.926,
+                "T": 0.964,
+                "C": 0.953,
                 "status": "Solved",
                 "restricted": null,
                 "artificial_connected": null
@@ -4479,7 +4479,7 @@
                 "#dimensions": 7,
                 "1-NN": 0.1975,
                 "T": 0.822,
-                "C": 0.882,
+                "C": 0.883,
                 "status": "Solved",
                 "restricted": null,
                 "artificial_connected": null
@@ -4516,61 +4516,61 @@
             },
             "10": {
                 "#points": 400,
-                "#dimensions": 25,
-                "1-NN": 0.115,
-                "T": 0.98,
+                "#dimensions": 11,
+                "1-NN": 0.145,
+                "T": 0.977,
                 "C": 0.996,
-                "status": "Unbounded",
+                "status": "Solved",
                 "restricted": null,
                 "artificial_connected": false
             },
             "11": {
                 "#points": 400,
-                "#dimensions": 148,
-                "1-NN": 0.0475,
-                "T": 0.987,
-                "C": 0.998,
-                "status": "Unbounded",
+                "#dimensions": 12,
+                "1-NN": 0.12,
+                "T": 0.978,
+                "C": 0.996,
+                "status": "Inaccurate/Unbounded",
                 "restricted": null,
                 "artificial_connected": false
             },
             "12": {
                 "#points": 400,
-                "#dimensions": 47,
-                "1-NN": 0.075,
-                "T": 0.982,
-                "C": 0.997,
-                "status": "Unbounded",
+                "#dimensions": 14,
+                "1-NN": 0.115,
+                "T": 0.98,
+                "C": 0.996,
+                "status": "Solved",
                 "restricted": null,
                 "artificial_connected": false
             },
             "13": {
                 "#points": 400,
-                "#dimensions": 195,
-                "1-NN": 0.0475,
-                "T": 0.986,
-                "C": 0.998,
-                "status": "Unbounded",
+                "#dimensions": 16,
+                "1-NN": 0.105,
+                "T": 0.98,
+                "C": 0.997,
+                "status": "Inaccurate/Unbounded",
                 "restricted": null,
                 "artificial_connected": false
             },
             "14": {
                 "#points": 400,
-                "#dimensions": 203,
-                "1-NN": 0.045,
-                "T": 0.987,
-                "C": 0.998,
-                "status": "Unbounded",
+                "#dimensions": 17,
+                "1-NN": 0.0825,
+                "T": 0.981,
+                "C": 0.997,
+                "status": "Solved",
                 "restricted": null,
                 "artificial_connected": false
             },
             "15": {
                 "#points": 400,
-                "#dimensions": 79,
-                "1-NN": 0.05,
-                "T": 0.983,
-                "C": 0.998,
-                "status": "Unbounded",
+                "#dimensions": 18,
+                "1-NN": 0.0625,
+                "T": 0.981,
+                "C": 0.997,
+                "status": "Solved",
                 "restricted": null,
                 "artificial_connected": false
             }
@@ -5421,17 +5421,17 @@
         "mvu.based": {
             "5": {
                 "#points": 2000,
-                "#dimensions": 2,
-                "1-NN": 0.077,
-                "T": 0.996,
-                "C": 0.999,
+                "#dimensions": 3,
+                "1-NN": 0.075,
+                "T": 1.0,
+                "C": 1.0,
                 "status": "Solved",
                 "restricted": null,
                 "artificial_connected": null
             },
             "6": {
                 "#points": 2000,
-                "#dimensions": 2,
+                "#dimensions": 3,
                 "1-NN": 0.072,
                 "T": 1.0,
                 "C": 1.0,
@@ -5441,7 +5441,7 @@
             },
             "7": {
                 "#points": 2000,
-                "#dimensions": 2,
+                "#dimensions": 3,
                 "1-NN": 0.072,
                 "T": 1.0,
                 "C": 1.0,
@@ -5451,7 +5451,7 @@
             },
             "8": {
                 "#points": 2000,
-                "#dimensions": 2,
+                "#dimensions": 3,
                 "1-NN": 0.0825,
                 "T": 1.0,
                 "C": 1.0,
@@ -5465,57 +5465,67 @@
                 "1-NN": 0.071,
                 "T": 1.0,
                 "C": 1.0,
-                "status": "Unbounded",
+                "status": "Solved",
                 "restricted": null,
                 "artificial_connected": null
             },
             "10": {
                 "#points": 2000,
-                "#dimensions": 3,
+                "#dimensions": 4,
                 "1-NN": 0.071,
                 "T": 1.0,
                 "C": 1.0,
-                "status": "Unbounded",
+                "status": "Solved",
                 "restricted": null,
                 "artificial_connected": null
             },
             "11": {
                 "#points": 2000,
-                "#dimensions": 3,
+                "#dimensions": 4,
                 "1-NN": 0.071,
                 "T": 1.0,
                 "C": 1.0,
-                "status": "Unbounded",
+                "status": "Solved",
                 "restricted": null,
                 "artificial_connected": null
             },
             "12": {
                 "#points": 2000,
-                "#dimensions": 3,
+                "#dimensions": 4,
                 "1-NN": 0.071,
                 "T": 1.0,
                 "C": 1.0,
-                "status": "Unbounded",
+                "status": "Solved",
                 "restricted": null,
                 "artificial_connected": null
             },
             "13": {
                 "#points": 2000,
-                "#dimensions": 3,
+                "#dimensions": 4,
                 "1-NN": 0.071,
                 "T": 1.0,
                 "C": 1.0,
-                "status": "Unbounded",
+                "status": "Solved",
                 "restricted": null,
                 "artificial_connected": null
             },
             "14": {
                 "#points": 2000,
-                "#dimensions": 3,
+                "#dimensions": 4,
                 "1-NN": 0.071,
                 "T": 1.0,
                 "C": 1.0,
-                "status": "Unbounded",
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "15": {
+                "#points": 2000,
+                "#dimensions": 4,
+                "1-NN": 0.071,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Solved",
                 "restricted": null,
                 "artificial_connected": null
             }
@@ -6362,6 +6372,230 @@
                 "C": null,
                 "date": "2025-06-20 15:37:05"
             }
+        },
+        "mvu.based": {
+            "5": {
+                "#points": 1000,
+                "#dimensions": 4,
+                "1-NN": 0.064,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "6": {
+                "#points": 1000,
+                "#dimensions": 4,
+                "1-NN": 0.069,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "7": {
+                "#points": 1000,
+                "#dimensions": 4,
+                "1-NN": 0.065,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "8": {
+                "#points": 1000,
+                "#dimensions": 4,
+                "1-NN": 0.065,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "9": {
+                "#points": 1000,
+                "#dimensions": 4,
+                "1-NN": 0.065,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "10": {
+                "#points": 1000,
+                "#dimensions": 4,
+                "1-NN": 0.065,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "11": {
+                "#points": 1000,
+                "#dimensions": 4,
+                "1-NN": 0.065,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "12": {
+                "#points": 1000,
+                "#dimensions": 4,
+                "1-NN": 0.065,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "13": {
+                "#points": 1000,
+                "#dimensions": 4,
+                "1-NN": 0.065,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "14": {
+                "#points": 1000,
+                "#dimensions": 4,
+                "1-NN": 0.065,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "15": {
+                "#points": 1000,
+                "#dimensions": 4,
+                "1-NN": 0.065,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            }
+        },
+        "mvu": {
+            "5": {
+                "#points": 1000,
+                "#dimensions": 1,
+                "1-NN": 0.346,
+                "T": 0.925,
+                "C": 0.986,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "6": {
+                "#points": 1000,
+                "#dimensions": 1,
+                "1-NN": 0.335,
+                "T": 0.925,
+                "C": 0.985,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "7": {
+                "#points": 1000,
+                "#dimensions": 1,
+                "1-NN": 0.331,
+                "T": 0.929,
+                "C": 0.985,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "8": {
+                "#points": 1000,
+                "#dimensions": 2,
+                "1-NN": 0.199,
+                "T": 0.956,
+                "C": 0.988,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "9": {
+                "#points": 1000,
+                "#dimensions": 4,
+                "1-NN": 0.083,
+                "T": 0.988,
+                "C": 0.996,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "10": {
+                "#points": 1000,
+                "#dimensions": 4,
+                "1-NN": 0.092,
+                "T": 0.986,
+                "C": 0.996,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "11": {
+                "#points": 1000,
+                "#dimensions": 4,
+                "1-NN": 0.106,
+                "T": 0.985,
+                "C": 0.996,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "12": {
+                "#points": 1000,
+                "#dimensions": 4,
+                "1-NN": 0.094,
+                "T": 0.985,
+                "C": 0.996,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "13": {
+                "#points": 1000,
+                "#dimensions": 4,
+                "1-NN": 0.107,
+                "T": 0.985,
+                "C": 0.996,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "14": {
+                "#points": 1000,
+                "#dimensions": 4,
+                "1-NN": 0.095,
+                "T": 0.986,
+                "C": 0.996,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "15": {
+                "#points": 1000,
+                "#dimensions": 4,
+                "1-NN": 0.08,
+                "T": 0.994,
+                "C": 0.996,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            }
         }
     },
     "two.swiss": {
@@ -7001,6 +7235,230 @@
                 "T": 0.937,
                 "C": 0.985,
                 "date": "2025-06-20 19:40:26",
+                "artificial_connected": true
+            }
+        },
+        "mvu.based": {
+            "5": {
+                "#points": 2000,
+                "#dimensions": 3,
+                "1-NN": 0.075,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "6": {
+                "#points": 2000,
+                "#dimensions": 2,
+                "1-NN": 0.072,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "7": {
+                "#points": 2000,
+                "#dimensions": 3,
+                "1-NN": 0.071,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "8": {
+                "#points": 2000,
+                "#dimensions": 3,
+                "1-NN": 0.0825,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "9": {
+                "#points": 2000,
+                "#dimensions": 5,
+                "1-NN": 0.071,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "10": {
+                "#points": 2000,
+                "#dimensions": 5,
+                "1-NN": 0.071,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "11": {
+                "#points": 2000,
+                "#dimensions": 5,
+                "1-NN": 0.071,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "12": {
+                "#points": 2000,
+                "#dimensions": 5,
+                "1-NN": 0.071,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "13": {
+                "#points": 2000,
+                "#dimensions": 5,
+                "1-NN": 0.071,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "14": {
+                "#points": 2000,
+                "#dimensions": 5,
+                "1-NN": 0.071,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "15": {
+                "#points": 2000,
+                "#dimensions": 5,
+                "1-NN": 0.071,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            }
+        },
+        "mvu": {
+            "5": {
+                "#points": 2000,
+                "#dimensions": 1,
+                "1-NN": 0.436,
+                "T": 0.85,
+                "C": 0.986,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "6": {
+                "#points": 2000,
+                "#dimensions": 2,
+                "1-NN": 0.1985,
+                "T": 0.945,
+                "C": 0.991,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "7": {
+                "#points": 2000,
+                "#dimensions": 3,
+                "1-NN": 0.085,
+                "T": 0.984,
+                "C": 1.0,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "8": {
+                "#points": 2000,
+                "#dimensions": 3,
+                "1-NN": 0.0735,
+                "T": 0.995,
+                "C": 1.0,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "9": {
+                "#points": 2000,
+                "#dimensions": 5,
+                "1-NN": 0.0725,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "10": {
+                "#points": 2000,
+                "#dimensions": 5,
+                "1-NN": 0.071,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "11": {
+                "#points": 2000,
+                "#dimensions": 4,
+                "1-NN": 0.1935,
+                "T": 0.972,
+                "C": 0.998,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "12": {
+                "#points": 2000,
+                "#dimensions": 5,
+                "1-NN": 0.076,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "13": {
+                "#points": 2000,
+                "#dimensions": 5,
+                "1-NN": 0.073,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "14": {
+                "#points": 2000,
+                "#dimensions": 5,
+                "1-NN": 0.0705,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "15": {
+                "#points": 2000,
+                "#dimensions": 5,
+                "1-NN": 0.072,
+                "T": 1.0,
+                "C": 1.0,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
                 "artificial_connected": true
             }
         }
@@ -7841,6 +8299,230 @@
                 "C": 0.818,
                 "date": "2025-06-20 23:20:43"
             }
+        },
+        "mvu.based": {
+            "5": {
+                "#points": 2000,
+                "#dimensions": 3,
+                "1-NN": 0.0235,
+                "T": 0.981,
+                "C": 0.997,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "6": {
+                "#points": 2000,
+                "#dimensions": 3,
+                "1-NN": 0.0205,
+                "T": 0.983,
+                "C": 0.997,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "7": {
+                "#points": 2000,
+                "#dimensions": 3,
+                "1-NN": 0.0095,
+                "T": 0.991,
+                "C": 0.997,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "8": {
+                "#points": 2000,
+                "#dimensions": 3,
+                "1-NN": 0.0,
+                "T": 0.999,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "9": {
+                "#points": 2000,
+                "#dimensions": 3,
+                "1-NN": 0.0,
+                "T": 0.999,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "10": {
+                "#points": 2000,
+                "#dimensions": 3,
+                "1-NN": 0.0,
+                "T": 0.999,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "11": {
+                "#points": 2000,
+                "#dimensions": 3,
+                "1-NN": 0.0,
+                "T": 0.999,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "12": {
+                "#points": 2000,
+                "#dimensions": 3,
+                "1-NN": 0.0,
+                "T": 0.999,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "13": {
+                "#points": 2000,
+                "#dimensions": 3,
+                "1-NN": 0.0,
+                "T": 0.999,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "14": {
+                "#points": 2000,
+                "#dimensions": 3,
+                "1-NN": 0.0,
+                "T": 0.999,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            },
+            "15": {
+                "#points": 2000,
+                "#dimensions": 3,
+                "1-NN": 0.0,
+                "T": 0.999,
+                "C": 1.0,
+                "status": "Solved",
+                "restricted": null,
+                "artificial_connected": null
+            }
+        },
+        "mvu": {
+            "5": {
+                "#points": 2000,
+                "#dimensions": 1,
+                "1-NN": 0.073,
+                "T": 0.97,
+                "C": 0.993,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "6": {
+                "#points": 2000,
+                "#dimensions": 1,
+                "1-NN": 0.061,
+                "T": 0.972,
+                "C": 0.993,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "7": {
+                "#points": 2000,
+                "#dimensions": 1,
+                "1-NN": 0.041,
+                "T": 0.975,
+                "C": 0.993,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "8": {
+                "#points": 2000,
+                "#dimensions": 1,
+                "1-NN": 0.0635,
+                "T": 0.971,
+                "C": 0.993,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "9": {
+                "#points": 2000,
+                "#dimensions": 1,
+                "1-NN": 0.0545,
+                "T": 0.971,
+                "C": 0.992,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "10": {
+                "#points": 2000,
+                "#dimensions": 1,
+                "1-NN": 0.0445,
+                "T": 0.971,
+                "C": 0.99,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "11": {
+                "#points": 2000,
+                "#dimensions": 1,
+                "1-NN": 0.0215,
+                "T": 0.972,
+                "C": 0.989,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "12": {
+                "#points": 2000,
+                "#dimensions": 1,
+                "1-NN": 0.0055,
+                "T": 0.974,
+                "C": 0.989,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "13": {
+                "#points": 2000,
+                "#dimensions": 1,
+                "1-NN": 0.003,
+                "T": 0.975,
+                "C": 0.989,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "14": {
+                "#points": 2000,
+                "#dimensions": 1,
+                "1-NN": 0.0015,
+                "T": 0.975,
+                "C": 0.989,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            },
+            "15": {
+                "#points": 2000,
+                "#dimensions": 1,
+                "1-NN": 0.002,
+                "T": 0.975,
+                "C": 0.988,
+                "status": "Inaccurate/Unbounded",
+                "restricted": null,
+                "artificial_connected": true
+            }
         }
     },
     "mit-cbcl": {
@@ -8570,7 +9252,7 @@
             "5": {
                 "#points": 2059,
                 "#dimensions": 6,
-                "1-NN": 0.34094,
+                "1-NN": 0.32297,
                 "T": 0.724,
                 "C": 0.894,
                 "status": "Solved",
@@ -8580,7 +9262,7 @@
             "6": {
                 "#points": 2059,
                 "#dimensions": 7,
-                "1-NN": 0.1661,
+                "1-NN": 0.08111,
                 "T": 0.811,
                 "C": 0.907,
                 "status": "Solved",
@@ -8590,7 +9272,7 @@
             "7": {
                 "#points": 2059,
                 "#dimensions": 6,
-                "1-NN": 0.15784,
+                "1-NN": 0.06751,
                 "T": 0.817,
                 "C": 0.91,
                 "status": "Solved",
@@ -8600,7 +9282,7 @@
             "8": {
                 "#points": 2059,
                 "#dimensions": 7,
-                "1-NN": 0.09713,
+                "1-NN": 0.03788,
                 "T": 0.855,
                 "C": 0.904,
                 "status": "Solved",
@@ -8610,7 +9292,7 @@
             "9": {
                 "#points": 2059,
                 "#dimensions": 8,
-                "1-NN": 0.09034,
+                "1-NN": 0.02914,
                 "T": 0.875,
                 "C": 0.909,
                 "status": "Solved",
@@ -8620,7 +9302,7 @@
             "10": {
                 "#points": 2059,
                 "#dimensions": 8,
-                "1-NN": 0.12433,
+                "1-NN": 0.02963,
                 "T": 0.869,
                 "C": 0.902,
                 "status": "Solved",
@@ -8630,7 +9312,7 @@
             "11": {
                 "#points": 2059,
                 "#dimensions": 9,
-                "1-NN": 0.09811,
+                "1-NN": 0.0238,
                 "T": 0.878,
                 "C": 0.922,
                 "status": "Solved",
@@ -8640,7 +9322,7 @@
             "12": {
                 "#points": 2059,
                 "#dimensions": 10,
-                "1-NN": 0.10636,
+                "1-NN": 0.02428,
                 "T": 0.868,
                 "C": 0.916,
                 "status": "Solved",
@@ -8650,7 +9332,7 @@
             "13": {
                 "#points": 2059,
                 "#dimensions": 9,
-                "1-NN": 0.10976,
+                "1-NN": 0.02477,
                 "T": 0.876,
                 "C": 0.897,
                 "status": "Solved",
@@ -8660,7 +9342,7 @@
             "14": {
                 "#points": 2059,
                 "#dimensions": 10,
-                "1-NN": 0.09908,
+                "1-NN": 0.02088,
                 "T": 0.883,
                 "C": 0.895,
                 "status": "Solved",
@@ -8670,9 +9352,9 @@
             "15": {
                 "#points": 2059,
                 "#dimensions": 11,
-                "1-NN": 0.09179,
-                "T": 0.88,
-                "C": 0.881,
+                "1-NN": 0.01991,
+                "T": 0.877,
+                "C": 0.894,
                 "status": "Solved",
                 "restricted": null,
                 "artificial_connected": null

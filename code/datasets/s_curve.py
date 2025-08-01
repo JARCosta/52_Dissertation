@@ -14,6 +14,7 @@ def default(n_points, noise):
     ]) + noise * np.random.randn(n_points, 3)
 
     labels = np.remainder(np.sum(np.hstack([np.round(t / 2), np.round(height / 2)]), axis=1), 2)  # TODO: ajust
+    labels = labels[:, None] # make labels from (n,) into (n, 1)
     t = np.hstack([t, height])
 
     return X, labels, t
@@ -36,6 +37,7 @@ def broken(n_points, noise, class_splits=2):
     ]) + noise * np.random.randn(n_points, 3)
     
     labels = np.remainder(np.sum(np.hstack([np.round(t / class_splits), np.round(height / class_splits)]), axis=1), 2)
+    labels = labels[:, None] # make labels from (n,) into (n, 1)
     t = np.hstack([t, height])
 
     return X, labels, t

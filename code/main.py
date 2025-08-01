@@ -33,17 +33,19 @@ def model_func(threads_return:multiprocessing.managers.DictProxy, X:np.ndarray, 
     #         utils.warning(f"Y has {Y.shape[1]} dimensions, intrinsic is {model_args['#components']}. Increasing to {model_args['#components']} components")
     #         Y = np.concatenate([Y, np.zeros((Y.shape[0], model_args['#components'] - Y.shape[1]))], axis=1)
 
-    if model_args['plotation']:
-        plot.plot_scales(X, c=labels, block=False, title=f"{model_args['model']} {model_args['dataname']}({model_args['#neighs']}) Original data")
-        plot.plot_scales(Y, c=labels, block=False, title=f"{model_args['model']} {model_args['dataname']}({model_args['#neighs']}) Embedding", legend=model_args)
-        if Y.shape[1] > 3:
-            plot.plot_scales(Y[:, 3:], c=labels, block=False, title=f"{model_args['model']} {model_args['dataname']}({model_args['#neighs']}) Embedding, 3-D", legend=model_args)
 
     if 'labels' in model_args:
         labels = model_args['labels']
     One_nn, T, C = utils.compute_measures(X, Y, labels, model_args["#neighs"])
     if measure_bool:
         utils.add_measure(model_args, Y.shape[1], One_nn, T, C)
+    
+    if model_args['plotation']:
+        plot.plot_scales(X, c=labels, block=False, title=f"{model_args['model']} {model_args['dataname']}({model_args['#neighs']}) Original data")
+        plot.plot_scales(Y, c=labels, block=False, title=f"{model_args['model']} {model_args['dataname']}({model_args['#neighs']}) Embedding", legend=model_args)
+        if Y.shape[1] > 3:
+            plot.plot_scales(Y[:, 3:], c=labels, block=False, title=f"{model_args['model']} {model_args['dataname']}({model_args['#neighs']}) Embedding, 3-D", legend=model_args)
+    
     threads_return[model_args['#neighs']] = (model_args, Y, One_nn, T, C)
 
 def model_launcher(model_args:dict, models:list, X:np.ndarray, labels:np.ndarray, t:np.ndarray, threaded:bool, plotation:bool, verbose:bool, measure:bool, pause:bool):

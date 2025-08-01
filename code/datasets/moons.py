@@ -16,6 +16,7 @@ def default(n_points, noise):
 
     X = np.vstack([X1, X2])
     labels = np.hstack([np.zeros(n_points // 2), np.ones(n_points // 2 + n_points % 2)])
+    labels = labels[:, None] # make labels from (n,) into (n, 1)
     t = np.hstack([t1, t2])
 
     return X, labels, t
@@ -31,7 +32,7 @@ def four(n_points, noise):
 
 
     X = np.vstack([X1, X2])
-    labels = np.hstack([labels1, labels2])
+    labels = np.vstack([labels1, labels2])
     t = np.hstack([t1, t2])
 
     return X, labels, t

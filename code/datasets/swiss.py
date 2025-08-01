@@ -11,6 +11,7 @@ def default(n_points, noise):
     ]) + noise * np.random.randn(n_points, 3)
 
     labels = np.remainder(np.sum(np.hstack([np.round(t / 2), np.round(height / 12)]), axis=1), 2)
+    labels = labels[:, None] # make labels from (n,) into (n, 1)
     t = np.hstack([t, height])
 
     return X, labels, t
@@ -30,6 +31,7 @@ def broken(n_points, noise):
     ]) + noise * np.random.randn(t.shape[0], 3)
     
     labels = np.remainder(np.sum(np.hstack([np.round(t / 2), np.round(height / 12)]), axis=1), 2)
+    labels = labels[:, None] # make labels from (n,) into (n, 1)
     t = np.hstack([t, height])
 
     return X, labels, t
@@ -40,7 +42,7 @@ def parallel(n_points, noise):
     X2[:, 1] += 60
     
     X = np.vstack([X1, X2])
-    labels = np.hstack([labels1, labels2])
+    labels = np.vstack([labels1, labels2])
     t = np.vstack([t1, t2])
     t = np.vstack([np.ones((X.shape[0], 1)), 2 * np.ones((X.shape[0], 1))])
 
@@ -68,7 +70,7 @@ def two(n_points, noise):
     X2[:, 1] += -20
 
     X = np.vstack([X1, X2])
-    labels = np.hstack([labels1, labels2])
+    labels = np.vstack([labels1, labels2])
     t = np.vstack([t1, t2])
     # t = np.hstack([np.ones((X.shape[0], 1)), 2 * np.ones((X.shape[0], 1))])
 
@@ -87,6 +89,7 @@ def changing(n_points, noise):
     height = 21 * np.random.rand(n_points, 1)
     X = np.hstack([t * np.cos(t), height, t * np.sin(t)]) + noise * np.random.randn(n_points, 3)
     labels = np.remainder(np.sum(np.hstack([np.round(t / 2), np.round(height / 10)]), axis=1), 2)
+    labels = labels[:, None] # make labels from (n,) into (n, 1)
 
     return X, labels, t
 
@@ -109,6 +112,6 @@ def toro(n, noise):
         (phi) * np.sin(phi)
     ]) + noise * np.random.randn(n, 3)
     labels = np.remainder(np.sum(np.hstack([np.round(4 * theta / np.pi), np.round(2 * phi / np.pi)]), axis=1), 2)
+    labels = labels[:, None] # make labels from (n,) into (n, 1)
     t = np.hstack([np.sin(theta/2), phi])
-
     return X, labels, t

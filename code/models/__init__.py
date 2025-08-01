@@ -2,6 +2,7 @@
 
 from .spectral import *
 from .neighbourhood import *
+from .extensions import *
 
 from .mvu import *
 from .isomap import *
@@ -10,8 +11,6 @@ from .le import *
 from .lle import *
 from .ltsa import *
 from .hlle import *
-
-from .extensions import *
 
 def run(X, model_args, labels:np.ndarray=None):
     import sklearn.manifold

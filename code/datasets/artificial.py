@@ -7,6 +7,7 @@ def helix(n, noise):
     t = (t ** 1.0) * 2 * np.pi
     X = np.hstack([(2 + np.cos(8 * t)) * np.cos(t), (2 + np.cos(8 * t)) * np.sin(t), np.sin(8 * t)]) + noise * np.random.randn(n, 3)
     labels = np.remainder(np.round(t * 1.5), 2)
+    labels = labels[:, None] # make labels from (n,) into (n, 1)
 
     return X, labels, t
 
@@ -18,6 +19,7 @@ def twinpeaks(n, noise):
     X = np.hstack([xy.T, (np.sin(np.pi * xy[0, :]) * np.tanh(3 * xy[1, :]))[:, None]]) + noise * np.random.randn(n, 3)
     X[:, 2] *= 10
     labels = np.remainder(np.sum(np.round((X - np.min(X, axis=0)) / 10), axis=1), 2)
+    labels = labels[:, None] # make labels from (n,) into (n, 1)
 
     return X, labels, None
 
@@ -33,6 +35,7 @@ def difficult(n, noise):
                     t[:, 1][:, None], (t[:, 2] * t[:, 3])[:, None], t[:, 0][:, None]])
     X += noise * np.random.randn(*X.shape)
     labels = np.remainder(np.sum(1 + np.round(t), axis=1), 2)
+    labels = labels[:, None] # make labels from (n,) into (n, 1)
 
     return X, labels, None
 
@@ -53,6 +56,7 @@ def clusters_3d(n, noise):
                 labels[k] = i + 1
                 k += 1
     X += noise * np.random.randn(n, 3)
+    labels = labels[:, None] # make labels from (n,) into (n, 1)
 
     return X, labels, None
 
@@ -64,5 +68,6 @@ def intersect(n, noise):
     height = np.random.rand(len(x), 1) * 5
     X = np.hstack([x, x * y, height]) + noise * np.random.randn(n, 3)
     labels = np.remainder(np.sum(np.hstack([np.round(t / 2), np.round(height / 2)]), axis=1), 2)
+    labels = labels[:, None] # make labels from (n,) into (n, 1)
 
     return X, labels, None

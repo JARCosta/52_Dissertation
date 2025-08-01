@@ -104,7 +104,7 @@ if __name__ == "__main__":
             
             
             # 'mnist', # TODO: memory overload
-            # 'coil20',
+            'coil20',
             # 'orl',
             # 'nisis', # Does not exist
             # 'hiva', # TODO: problems on the import
